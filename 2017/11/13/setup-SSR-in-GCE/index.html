@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="谷歌云搭建SSR"/><meta name="keywords" content="gfw, GCE, SSR, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/11/13/setup-SSR-in-GCE/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>谷歌云搭建SSR - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">谷歌云搭建SSR
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-11-13
+        </span><span class="post-category">
+            <a href="/categories/%E9%A3%9E%E8%B7%83%E9%95%BF%E5%9F%8E/">飞跃长城</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#为什么用GCE"><span class="toc-text">为什么用GCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何申请GCE"><span class="toc-text">如何申请GCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何部署SSR"><span class="toc-text">如何部署SSR</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#常用命令"><span class="toc-text">常用命令</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSR客户端"><span class="toc-text">SSR客户端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#其它SSR"><span class="toc-text">其它SSR</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><blockquote>
+<p>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了……</p>
+</blockquote>
+<h1 id="为什么用GCE"><a href="#为什么用GCE" class="headerlink" title="为什么用GCE"></a>为什么用GCE</h1><ol>
+<li><p><strong>速度快</strong>. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力.  Chrome可以愉快地把Google用作默认浏览器了</p>
+</li>
+<li><p><strong>免费一年</strong>. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)</p>
+<p>​</p>
+</li>
+</ol>
+<h1 id="如何申请GCE"><a href="#如何申请GCE" class="headerlink" title="如何申请GCE"></a>如何申请GCE</h1><p>​    网上搜到教程很多,就不细述了</p>
+<p>​    有几个可能会卡时间的步骤包括</p>
+<ul>
+<li><p>选用静态IP</p>
+</li>
+<li><p>和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules</p>
+</li>
+<li><p>Xshell生成的SSH的私钥可能要在后面加上</p>
+<p> <code>google-ssh {&quot;userName&quot;:&quot;xxxxx@gmail.com&quot;,&quot;expireOn&quot;:&quot;2017-11-10T04:39:03+0000&quot;}</code> </p>
+<p>​</p>
+</li>
+</ul>
+<h1 id="如何部署SSR"><a href="#如何部署SSR" class="headerlink" title="如何部署SSR"></a>如何部署SSR</h1><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>获取root权限</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装SSR</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N --no-check-certificate https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;91yun&#x2F;shadowsocks_install&#x2F;master&#x2F;shadowsocksR.sh &amp;&amp; bash shadowsocksR.sh</span><br></pre></td></tr></table></figure>
+
+<p>​    安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息</p>
+<ol start="3">
+<li>安装BBR</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https:&#x2F;&#x2F;github.com&#x2F;teddysun&#x2F;across&#x2F;raw&#x2F;master&#x2F;bbr.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x bbr.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;bbr.sh</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>重置VM实例</p>
+</li>
+<li><p>sudo su</p>
+</li>
+<li><p>检查是否成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl net.ipv4.tcp_available_congestion_control</span><br></pre></td></tr></table></figure>
+
+<p>看是不是出现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_available_congestion_control &#x3D; bbr cubic reno</span><br></pre></td></tr></table></figure>
+
+<p>类似有 bbr 的字样,有就表示BBR也装好了</p>
+</li>
+</ol>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><p>/etc/init.d/shadowsocks restart    重启SSR</p>
+<p>vi /etc/shadowsocks.json                 修改配置文件</p>
+<h1 id="SSR客户端"><a href="#SSR客户端" class="headerlink" title="SSR客户端"></a>SSR客户端</h1><p>下载网址  <a href="https://github.com/shadowsocksrr/shadowsocks-rss" target="_blank" rel="noopener">github</a></p>
+<p>或者<a href="http://ots7yt7am.bkt.clouddn.com/file/ShadowsocksR-4.7.0.7z" target="_blank" rel="noopener">这里直接下载</a> </p>
+<p>配置和以前的SS也差不多, 有几点注意的是</p>
+<ol>
+<li>填写加密/协议/混淆, 默认的是chacha20/auth_sha1_v4/tls1.2_ticket_auth</li>
+<li>在选项设置里将本地端口设置成你SwitchOmega配置的本地端口.比如我就用了10801而不是默认的1080</li>
+</ol>
+<h1 id="其它SSR"><a href="#其它SSR" class="headerlink" title="其它SSR"></a>其它SSR</h1><p>​    <a href="https://52world.top" target="_blank" rel="noopener">https://52world.top</a>    </p>
+<p>​    不知道在哪看来的这个SSR网站,有免费SSR,也可以充钱升级专业版. 目前还是能用的 , 可以收藏着防止哪天其它翻墙方式失效吧.</p>
+<p>​    毕竟翻墙第一定律就是:永远不要在一种翻墙方式上吊死!</p>
+<hr>
+<p>参考网站</p>
+<ol>
+<li><a href="https://suiyuanjian.com/124.html" target="_blank" rel="noopener">https://suiyuanjian.com/124.html</a></li>
+<li><a href="http://www.jianshu.com/p/6bd66829a1ce" target="_blank" rel="noopener">http://www.jianshu.com/p/6bd66829a1ce</a></li>
+<li><a href="http://suppore.cn/512.html" target="_blank" rel="noopener">http://suppore.cn/512.html</a></li>
+</ol>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/11/13/setup-SSR-in-GCE/">http://heeexy.com/2017/11/13/setup-SSR-in-GCE/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/gfw/">gfw</a>
+            <a href="/tags/GCE/">GCE</a>
+            <a href="/tags/SSR/">SSR</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/12/14/mybatis_design_patterns/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">MyBatis 的日志设计--适配器模式 & 工厂模式</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/10/29/end-to-end/">
+        <span class="next-text nav-default">前后端分离实践小结</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/11/13/setup-SSR-in-GCE/';
+        this.page.identifier = '2017/11/13/setup-SSR-in-GCE/';
+        this.page.title = '谷歌云搭建SSR';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

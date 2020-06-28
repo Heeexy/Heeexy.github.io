@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="前后端分离实践小结"/><meta name="keywords" content="java, shiro, Spring Boot, vue, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/10/29/end-to-end/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>前后端分离实践小结 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">前后端分离实践小结
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-10-29
+        </span><span class="post-category">
+            <a href="/categories/%E5%B0%8F%E7%BB%93/">小结</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分离原因"><span class="toc-text">分离原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术选型"><span class="toc-text">技术选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目前进展"><span class="toc-text">目前进展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口端小技巧"><span class="toc-text">接口端小技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存在的问题"><span class="toc-text">存在的问题</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.</p>
+<h2 id="分离原因"><a href="#分离原因" class="headerlink" title="分离原因"></a>分离原因</h2><ol>
+<li>最关键一点,受不了jsp/freemarker里一塌糊涂的代码,分离之后,代码按规范写,简洁,好管理</li>
+<li>原本我们后端就一直在给Android/iOS提供接口,本次分离,可以方便以后H5端的项目重构,实现Android+iOS+H5的统一,一套接口可以供三端同时使用,大量节省工作量,也可以更好地保证公司产品质量的统一性.</li>
+<li>方便后端专心处理数据,前端实现页面效果.而不是前端仅仅画页面写css,后端还需要复制粘贴过来,套数据,修改已有页面时,前端更是不方便插手.</li>
+</ol>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>​    组员后端技术都是SSM,前端都只是略接触过AngularJS/Vue.</p>
+<p>​    我之前接触了一下Spring Boot,感觉配置很清爽,搭框架轻松,业务写起来快,可以让组员无缝切过来,无需费时学习,因此后端框架选定Spring Boot.而登录控制与权限管理一直是公司以前几个项目的弱项,因此本次决定引入shiro,而组员无一对shiro熟悉的,研究shiro的任务自然由我承担.</p>
+<p>​    前端框架是本次前后端分离的重点,由于我们组无人熟悉前端的新框架,所以这次势必每个人都需要学习许多新的前端知识.我拿公司的H5项目的几个页面进行过搭建vue框架重构练手,认为vue文档清晰,资料丰富,相关开源方案够多,我们这次可以放心学习,使用.(当然最主要的还是因为坑全都得由我来填,得挑个熟悉的)</p>
+<h2 id="目前进展"><a href="#目前进展" class="headerlink" title="目前进展"></a>目前进展</h2><p>​    后端:Spring Boot框架搭建完成,shiro可以进行权限管理,自定义拦截器,常用工具类完成,对常用的增删改查,返回结果,异常处理都可以快速搞定.</p>
+<p>​    前端:数据交互封装完毕,路由熟悉,前端权限管理初步熟悉,选用饿了么开源的Element框架,常用的增删改查的页面元素及工具方法都已让大家掌握.</p>
+<p>​    本周一开始教组员使用Intellij IDEA,教前端快速铺页面的方法,介绍前后端我封装的各种小轮子.经过一周时间,全部都已熟悉这套新的前后端框架,每个人都可以独立快速地推出常用页面.</p>
+<h2 id="接口端小技巧"><a href="#接口端小技巧" class="headerlink" title="接口端小技巧"></a>接口端小技巧</h2><p>​    因为后端全部返回统一json格式的接口,所以我设计了一些小的工具方法,方便快速推出新接口,节省重复代码.</p>
+<ol>
+<li><p>使用JSONObject而不是实体类</p>
+<p>​    因为后端业务不算复杂,所以舍弃了实体类的语义性,转而使用阿里的fastjson的JSONObject接收MyBatis返回的结果.比如一个简单的查询只需要</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getSimple"</span> <span class="attr">resultType</span>=<span class="string">"com.alibaba.fastjson.JSONObject"</span>&gt;</span></span><br><span class="line">    SELECT</span><br><span class="line">        s.order_id                                      shopOrderId,</span><br><span class="line">        s.operation                                     operation,</span><br><span class="line">        date_format(s.create_time, '%Y.%m.%d %H:%i:%s') createTime</span><br><span class="line">    FROM shop_order_log s</span><br><span class="line">    WHERE s.user_delete_status = "1"</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>就可以将三个字段shopOrderId,operation,createTime放入json内,字段名称更加灵活,也免去了大量的建实体类,写resultMap的代码.</p>
+<p>​    更好的一点是,不使用实体类,可以在返回结果中避免掉很多空的需不要的字段.</p>
+<p>​    还有,因为所有的接口层都返回JSONObject,所以编写工具方法,快速返回成功/失败结果也很简单,我写了多个工具方法,包括入参转json,入参非空校验,返回成功/失败结果,分页,这里就不一一贴出代码了.</p>
+</li>
+<li><p>自定义Exception</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonJsonException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> JSONObject resultJson;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">* 调用时可以在任何代码处直接throws这个Exception,</span></span><br><span class="line"><span class="comment">* 都会统一被拦截,并封装好json返回给前台</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> errorEnum 以错误的ErrorEnum做参数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">CommonJsonException</span><span class="params">(ErrorEnum errorEnum)</span> </span>&#123;</span><br><span class="line">       JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">       CommonUtil.returnJson(jsonObject, errorEnum);</span><br><span class="line">       <span class="keyword">this</span>.resultJson = jsonObject;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">CommonJsonException</span><span class="params">(JSONObject resultJson)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.resultJson = resultJson;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> JSONObject <span class="title">getResultJson</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> resultJson;</span><br><span class="line">   &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ControllerAdvice</span></span><br><span class="line">   <span class="meta">@ResponseBody</span></span><br><span class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalExceptionHandler</span> </span>&#123;</span><br><span class="line">        <span class="meta">@ExceptionHandler</span>(CommonJsonException<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">   <span class="title">public</span> <span class="title">JSONObject</span> <span class="title">CommonJsonExceptionHandler</span>(<span class="title">CommonJsonException</span> <span class="title">commonJsonException</span>) <span class="title">throws</span> <span class="title">Exception</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> commonJsonException.getResultJson();</span><br><span class="line">   &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>在需要返回给前端错误代码编号时,比如校验参数非空,校验手机号失败,可以直接抛出此异常,经错误拦截器拦截到此异常后,可以直接返回错误码给前端,节省大量的判断/返回的代码.这一点也是前阵子从Spring源码中学到的.</p>
+</li>
+</ol>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
+<li>近期主要问题基本都是待我去研究深入的技术,比如shiro的动态权限与vue-router的异步路由的结合,vue组件的通信,vuex的状态管理</li>
+<li>其次是组员需要对vue更加熟悉,我这次要求了大家抛弃jQuery,用数据绑定的思想去写前端.目前大家的前端水平也还只是可以快速复制粘贴出页面,对于复杂的页面和组件,甚至对我们前端项目的目录结构与各部分功能,都不算掌握.</li>
+<li>目前我们所谓的前后端分离其实还只是初步的业务和代码上的分离,以后如果要重构H5项目,可能还需要开NodeJS项目来解决和Android/iOS一样的接口加密问题,统一session管理问题,以及更多的前后端分离可能给我们带来的问题.</li>
+</ol>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/10/29/end-to-end/">http://heeexy.com/2017/10/29/end-to-end/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/shiro/">shiro</a>
+            <a href="/tags/Spring-Boot/">Spring Boot</a>
+            <a href="/tags/vue/">vue</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/11/13/setup-SSR-in-GCE/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">谷歌云搭建SSR</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/10/22/build-springboot-shiro-vue/">
+        <span class="next-text nav-default">搭建springboot-shiro-vue框架时遇到的坑</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/10/29/end-to-end/';
+        this.page.identifier = '2017/10/29/end-to-end/';
+        this.page.title = '前后端分离实践小结';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

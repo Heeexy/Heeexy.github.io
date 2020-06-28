@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="MyBatis 中使用 JSONObject 处理一对多结果"/><meta name="keywords" content="MyBatis, JSONObject, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/12/31/One2Many/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>MyBatis 中使用 JSONObject 处理一对多结果 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">MyBatis 中使用 JSONObject 处理一对多结果
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-31
+        </span><span class="post-category">
+            <a href="/categories/MyBatis%E7%AC%94%E8%AE%B0/">MyBatis笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在<a href="/2017/12/30/JSONObject-in-MyBatis/">上一文</a>介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。</p>
+<p>比如要查询一个角色下的多个用户，resultMap如下定义</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"roleMap"</span> <span class="attr">type</span>=<span class="string">"com.alibaba.fastjson.JSONObject"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"roleId"</span> <span class="attr">property</span>=<span class="string">"roleId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"roleName"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"users"</span> <span class="attr">ofType</span>=<span class="string">"com.alibaba.fastjson.JSONObject"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"userId"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"nickname"</span> <span class="attr">property</span>=<span class="string">"nickname"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>期望查出来的<code>users</code> 属性对应着一个数组,</p>
+<p><img src="http://img.heeexy.com/rightJson.png" alt=""></p>
+<p>然而实际查出来只是一个对象，只有一条数据。</p>
+<p><img src="http://img.heeexy.com/wrongJson.png" alt=""></p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>只需要建一个实体类继承 JSONObject ,里面有你要的集合类型的成员变量，就足够了。</p>
+<p>比如我建的 One2Many 类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">One2Many</span> <span class="keyword">extends</span> <span class="title">JSONObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;JSONObject&gt; users;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后xml改为</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"roleMap"</span> <span class="attr">type</span>=<span class="string">"com.heeexy.example.util.model.One2Many"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"roleId"</span> <span class="attr">property</span>=<span class="string">"roleId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"roleName"</span> <span class="attr">property</span>=<span class="string">"roleName"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"users"</span> <span class="attr">ofType</span>=<span class="string">"com.alibaba.fastjson.JSONObject"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"userId"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"nickname"</span> <span class="attr">property</span>=<span class="string">"nickname"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>是不是非常简单？</p>
+<p>更棒的是，这个 One2Many 类是可以复用的，里面再添加其它的成员变量就 OK 了。而且 Dao 层不需要改动，外面正常的还是用 JSONObject 就可以了。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>MyBatis 在处理嵌套结果的时候，会判断这个属性的类型，如果是集合，就会初始化一个集合来接收这个属性，否则就只是一个普通的 Object 了。</p>
+<p>什么，不满意这个答案？那就拿出源码来吧！</p>
+<p>首先我们直接看到最底层判断这个属性是不是集合的这段源码：</p>
+<p>DefaultResultSetHandler.instantiateCollectionPropertyIfAppropriate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">instantiateCollectionPropertyIfAppropriate</span><span class="params">(ResultMapping resultMapping, MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> String propertyName = resultMapping.getProperty();</span><br><span class="line">  <span class="comment">//先去拿在metaObject已经存好的这个属性值，我们这里以users属性为例</span></span><br><span class="line">  Object propertyValue = metaObject.getValue(propertyName);</span><br><span class="line">  <span class="keyword">if</span> (propertyValue == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">//在这里拿你的users的java类型，由于我们使用的是JSONObject,这里的类型都会返回Object，如果是One2Many,这里就会拿到List类型</span></span><br><span class="line">    Class&lt;?&gt; type = resultMapping.getJavaType();</span><br><span class="line">    <span class="keyword">if</span> (type == <span class="keyword">null</span>) &#123;</span><br><span class="line">      type = metaObject.getSetterType(propertyName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">//判断属性类型是不是集合，如果是结合才会初始化一个集合的值返回到下一步，否则都会返回null</span></span><br><span class="line">      <span class="keyword">if</span> (objectFactory.isCollection(type)) &#123;</span><br><span class="line">        propertyValue = objectFactory.create(type);</span><br><span class="line">        metaObject.setValue(propertyName, propertyValue);</span><br><span class="line">        <span class="keyword">return</span> propertyValue;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">"Error instantiating collection property for result '"</span> + resultMapping.getProperty() + <span class="string">"'.  Cause: "</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (objectFactory.isCollection(propertyValue.getClass())) &#123;</span><br><span class="line">    <span class="comment">//propertyValue不为空的情况，即我们的JSONObject里已经塞入了users属性，即使是这样，MyBatis还是要求你塞入的users属性必须是集合，才返回到下一步，否则还是会返回null到下一步。</span></span><br><span class="line">    <span class="keyword">return</span> propertyValue;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面这段代码我们就知道 MyBatis 确实有做这个判断，你定义的 users 属性到底是不是集合类型，</p>
+<ol>
+<li>如果是并且没有初始化好的话，就帮你初始化一个集合到下一步，</li>
+<li>如果已经初始化好了（通常这时候就是已经塞入了几个 user 对象了），就直接返回这个 users 的值到下一步</li>
+<li>如果不是集合类型，就返回 null 到下一步。</li>
+</ol>
+<p>那么下一步到底是干啥呢？正常情况下应该就是继续往 users 集合里添加元素吧。</p>
+<p> DefaultResultSetHandler.linkObjects</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkObjects</span><span class="params">(MetaObject metaObject, ResultMapping resultMapping, Object rowValue)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Object collectionProperty = instantiateCollectionPropertyIfAppropriate(resultMapping, metaObject);</span><br><span class="line">  <span class="keyword">if</span> (collectionProperty != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">//如果上一步返回来的不是null,那就向这个集合里添加元素</span></span><br><span class="line">    <span class="keyword">final</span> MetaObject targetMetaObject = configuration.newMetaObject(collectionProperty);</span><br><span class="line">    targetMetaObject.add(rowValue);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//上一步返回了null,那就直接把这个属性赋上本值，就是这种情况导致了上面的第二张图片的情况，我们的users变成了一个对象，而不是想要的数组。</span></span><br><span class="line">    metaObject.setValue(resultMapping.getProperty(), rowValue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/12/31/One2Many/">http://heeexy.com/2017/12/31/One2Many/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/MyBatis/">MyBatis</a>
+            <a href="/tags/JSONObject/">JSONObject</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/01/02/TypeHandler/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">MyBatis 对未知数据类型的转换(一)TypeHandler</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/12/30/JSONObject-in-MyBatis/">
+        <span class="next-text nav-default">MyBatis 中使用 JSONObject 替代 JavaBean</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/12/31/One2Many/';
+        this.page.identifier = '2017/12/31/One2Many/';
+        this.page.title = 'MyBatis 中使用 JSONObject 处理一对多结果';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

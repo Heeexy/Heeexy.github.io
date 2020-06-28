@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Spring源码笔记-2.4 获取单例"/><meta name="keywords" content="java, spring, 笔记, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/09/29/getSingleton/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Spring源码笔记-2.4 获取单例 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Spring源码笔记-2.4 获取单例
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-09-29
+        </span><span class="post-category">
+            <a href="/categories/Spring%E7%AC%94%E8%AE%B0/">Spring笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#获取单例bean-getSingleton"><span class="toc-text">获取单例bean getSingleton</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="获取单例bean-getSingleton"><a href="#获取单例bean-getSingleton" class="headerlink" title="获取单例bean getSingleton"></a>获取单例bean <code>getSingleton</code></h2><blockquote>
+<p>明明之前一篇已经讲过了获取单例,为什么这里又是获取单例bean呢?</p>
+<p>两天不看书,果断又忘了.前面学的是<strong>从缓存中</strong>获取,这里是真正的获取.</p>
+</blockquote>
+<p><code>DefaultSingletonBeanRegistry</code>  中重载此方法,第二参数为ObjectFactory&lt;?&gt;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">      Assert.notNull(beanName, <span class="string">"'beanName' must not be null"</span>);</span><br><span class="line">  	<span class="comment">//这里再次看到了这个singletonObjects,上篇文章介绍过,是维护了单例对象</span></span><br><span class="line">  	<span class="comment">//书中说法是:用于保存BeanName和创建bean实例之间的关系</span></span><br><span class="line">      Map var3 = <span class="keyword">this</span>.singletonObjects;</span><br><span class="line">      <span class="keyword">synchronized</span>(<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">          Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">        	<span class="comment">//首先获取一遍,如果不存在,才去创建</span></span><br><span class="line">          <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span>) &#123;</span><br><span class="line">            	<span class="comment">//工厂如果正在销毁,这时候获取bean就会报错</span></span><br><span class="line">              <span class="keyword">if</span> (<span class="keyword">this</span>.singletonsCurrentlyInDestruction) &#123;</span><br><span class="line">                  <span class="keyword">throw</span> <span class="keyword">new</span> BeanCreationNotAllowedException(beanName, <span class="string">"Singleton bean creation not allowed while the singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)"</span>);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">                	<span class="comment">//打印日志,正在创建单例bean(beanName)的共享的实例</span></span><br><span class="line">                  <span class="keyword">this</span>.logger.debug(<span class="string">"Creating shared instance of singleton bean '"</span> + beanName + <span class="string">"'"</span>);</span><br><span class="line">              &#125;</span><br><span class="line">		<span class="comment">//标志这个beanName正在创建,如果同时重复创建,会报错</span></span><br><span class="line">              <span class="keyword">this</span>.beforeSingletonCreation(beanName);</span><br><span class="line">              <span class="keyword">boolean</span> newSingleton = <span class="keyword">false</span>;</span><br><span class="line">              <span class="keyword">boolean</span> recordSuppressedExceptions = <span class="keyword">this</span>.suppressedExceptions == <span class="keyword">null</span>;</span><br><span class="line">              <span class="keyword">if</span> (recordSuppressedExceptions) &#123;</span><br><span class="line">                  <span class="keyword">this</span>.suppressedExceptions = <span class="keyword">new</span> LinkedHashSet();</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">try</span> &#123;</span><br><span class="line">                	<span class="comment">//=============这里应该是最关键的创建bean的步骤===============</span></span><br><span class="line">                  singletonObject = singletonFactory.getObject();</span><br><span class="line">                	<span class="comment">//标识新创建出来的单例</span></span><br><span class="line">                  newSingleton = <span class="keyword">true</span>;</span><br><span class="line">              &#125; <span class="keyword">catch</span> (IllegalStateException var16) &#123;</span><br><span class="line">                	<span class="comment">//非法状态错误,应该是创建过程中发现存在其他线程已创建此单例</span></span><br><span class="line">                	<span class="comment">//所以此处catch里面再次调用了singletonObjects.get(beanName);</span></span><br><span class="line">                  singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">                  <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span>) &#123;</span><br><span class="line">                      <span class="keyword">throw</span> var16;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125; <span class="keyword">catch</span> (BeanCreationException var17) &#123;</span><br><span class="line">                	<span class="comment">//其它创建bean错误</span></span><br><span class="line">                  BeanCreationException ex = var17;</span><br><span class="line">                  <span class="keyword">if</span> (recordSuppressedExceptions) &#123;</span><br><span class="line">                      Iterator var8 = <span class="keyword">this</span>.suppressedExceptions.iterator();</span><br><span class="line">                      <span class="keyword">while</span>(var8.hasNext()) &#123;</span><br><span class="line">                          Exception suppressedException = (Exception)var8.next();</span><br><span class="line">                        	<span class="comment">//把其它recordSuppressedExceptions塞入这个ex一并抛出</span></span><br><span class="line">                          ex.addRelatedCause(suppressedException);</span><br><span class="line">                      &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">throw</span> ex;</span><br><span class="line">              &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                  <span class="keyword">if</span> (recordSuppressedExceptions) &#123;</span><br><span class="line">                      <span class="keyword">this</span>.suppressedExceptions = <span class="keyword">null</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                	<span class="comment">//确认这个beanName在几个set中的状态</span></span><br><span class="line">                  <span class="keyword">this</span>.afterSingletonCreation(beanName);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">if</span> (newSingleton) &#123;</span><br><span class="line">               	<span class="comment">//如果是新创建的,则加入缓存,移除几个新创建的标识,名字加入registeredSingletons</span></span><br><span class="line">                  <span class="keyword">this</span>.addSingleton(beanName, singletonObject);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        	<span class="comment">//返回,如果是NULL_OBJECT也作为null返回.</span></span><br><span class="line">        	<span class="comment">//这个NULL_OBJECT应该是在前面的获取方法中有可能的特殊返回值</span></span><br><span class="line">          <span class="keyword">return</span> singletonObject != NULL_OBJECT ? singletonObject : <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上可以看出,获取单例还是通过 <code>synchronized(this.singletonObjects)</code>  加锁来实现，先从 <code>singletonObjects</code> 查一遍有没有已存在的，若没有则再进行创建。</p>
+<p>而创建的步骤，则是在入参的 <code>ObjectFactory&lt;?&gt;</code> 中完成，调用其 getObject() 依然还是调用我们本身<code>AbstractBeanFactory</code> 的 <code>createBean</code> 方法。</p>
+<hr>
+<p>我们先不急着往下看，先理一理，首先第一点要知道的是单例加锁都是 <code>synchronized(this.singletonObjects)</code> 。其次获取单例 bean 的大致步骤，无非就是：</p>
+<ol>
+<li><p>上一文中介绍的，从缓存中拿，并且允许“早期引用” ，即从 <code>earlySingletonObjects</code> 中拿。</p>
+</li>
+<li><p>如果缓存中没有，则自己创建，</p>
+<p>2.1 在各种 map 里记录它的 创建、销毁等信息</p>
+<p>2.2 通过<code>createBean</code> 方法去具体创建这个实例。</p>
+</li>
+</ol>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/09/29/getSingleton/">http://heeexy.com/2017/09/29/getSingleton/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/spring/">spring</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/10/22/build-springboot-shiro-vue/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">搭建springboot-shiro-vue框架时遇到的坑</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/09/26/getSingleton/">
+        <span class="next-text nav-default">Spring源码笔记-2.3 缓存中获取单例bean及获取对象</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/09/29/getSingleton/';
+        this.page.identifier = '2017/09/29/getSingleton/';
+        this.page.title = 'Spring源码笔记-2.4 获取单例';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

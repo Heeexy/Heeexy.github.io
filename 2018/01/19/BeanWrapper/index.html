@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis"/><meta name="keywords" content="java, spring, 笔记, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2018/01/19/BeanWrapper/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-19
+        </span><span class="post-category">
+            <a href="/categories/Spring%E7%AC%94%E8%AE%B0/">Spring笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-vs-MyBatis"><span class="toc-text">Spring vs MyBatis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#功能"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#共同点"><span class="toc-text">共同点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同点"><span class="toc-text">不同点</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="Spring-vs-MyBatis"><a href="#Spring-vs-MyBatis" class="headerlink" title="Spring vs MyBatis"></a>Spring vs MyBatis</h2><p>Spring 和 MyBatis 中都有 BeanWrapper , Spring 中为接口， 实现类为 BeanWrapperImpl , 为了方便后面区分，本文用 SB 指代 Spring 的 BeanWrapperImpl ，用 MB 指代 MyBatis 中的 BeanWrapper。</p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>BeanWrapper 都属于各自框架的<strong>反射工具箱</strong>的重要组成部分。都是创建实例并且为其属性赋值的。以 SB 为例，下面的代码应该很容易看明白它的功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">BeanWrapper company = BeanWrapperImpl(<span class="keyword">new</span> Company());</span><br><span class="line"><span class="comment">// setting the company name..</span></span><br><span class="line">company.setPropertyValue(<span class="string">"name"</span>, <span class="string">"Some Company Inc."</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... can also be done like this:</span></span><br><span class="line">PropertyValue value = <span class="keyword">new</span> PropertyValue(<span class="string">"name"</span>, <span class="string">"Some Company Inc."</span>);</span><br><span class="line">company.setPropertyValue(value);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ok, let's create the director and tie it to the company:</span></span><br><span class="line">BeanWrapper jim = BeanWrapperImpl(<span class="keyword">new</span> Employee());</span><br><span class="line">jim.setPropertyValue(<span class="string">"name"</span>, <span class="string">"Jim Stravinsky"</span>);</span><br><span class="line">company.setPropertyValue(<span class="string">"managingDirector"</span>, jim.getWrappedInstance());</span><br><span class="line"></span><br><span class="line"><span class="comment">// retrieving the salary of the managingDirector through the company</span></span><br><span class="line">Float salary = (Float) company.getPropertyValue(<span class="string">"managingDirector.salary"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h2><ol>
+<li><strong>核心功能</strong>功能基本相同</li>
+<li>对要生成的类的要求规范也相同，有 get set 方法。</li>
+<li>它们的<strong>底层</strong>也没有什么秘密，归根到底都是使用 <code>java.lang.reflect</code> 包下的 Constructor , Method 等等工具。</li>
+</ol>
+<h2 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h2><p>可能是我刚开始研究 SB 的原因，感觉 SB 源码更加复杂，结构也没那么清楚，关联了向下层级的工具类，很长很长一段的源码。 <a href="http://blog.csdn.net/zhiweianran/article/details/7919129" target="_blank" rel="noopener">这篇博文</a> 分析了其中一部分。</p>
+<p>得益于已经学习过结构更为清晰的 MB，尽管 SB 源码复杂，但是读的时候不再会恐惧，因为简略的Debug 一遍就知道它底层还是调 getter/setter 的反射。再复杂的结构也离不开这最终的方法。</p>
+<p>已目前对 SB 粗浅的了解来说，感受到最大的区别就是在工具箱中的<strong>结构地位不同</strong>。</p>
+<p>MB 属于<code>BaseWrapper</code> 的子类之一，同级别的还有 MapWrapper ，上级还有 CollectionWrapper 。</p>
+<p>而 SB 就已经是在创建 Bean 时直接使用到的接口了。</p>
+<p>像<strong>解析嵌套参数名</strong> (比如 user.name  /  address.city.mailcode)，<strong>类型转换</strong>这些事情，SB 都能处理完。而 MB 都是先要使用其它工具类处理，比如依靠 PropertyTokenizer 。</p>
+<p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2018/01/19/BeanWrapper/">http://heeexy.com/2018/01/19/BeanWrapper/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/spring/">spring</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/01/23/findAutowireCandidates/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Spring 源码笔记-2.7 根据类型寻找 bean</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2018/01/18/createBean/">
+        <span class="next-text nav-default">Spring源码笔记-2.5 createBean</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2018/01/19/BeanWrapper/';
+        this.page.identifier = '2018/01/19/BeanWrapper/';
+        this.page.title = 'Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

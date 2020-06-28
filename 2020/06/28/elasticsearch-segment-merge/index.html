@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="日志ES集群的潜在性能瓶颈--段合并"/><meta name="keywords" content="ElasticSearch, 性能优化, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2020/06/28/elasticsearch-segment-merge/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>日志ES集群的潜在性能瓶颈--段合并 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">日志ES集群的潜在性能瓶颈--段合并
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-06-28
+        </span><span class="post-category">
+            <a href="/categories/ElasticSearch/">ElasticSearch</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#先抛结论"><span class="toc-text">先抛结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查"><span class="toc-text">排查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="先抛结论"><a href="#先抛结论" class="headerlink" title="先抛结论"></a>先抛结论</h2><p>如果日志型ES集群system load 过高，I/O打满，尤其是在<strong>读写低谷时间段 read 异常高</strong>，可以考虑排查段合并的问题。</p>
+<p>如果的确是遇到了段合并问题，可以考虑两个方向：</p>
+<ol>
+<li>机械硬盘升级为SSD。</li>
+<li>大索引拆分成小索引。</li>
+</ol>
+<blockquote>
+<p>PS. 再附送一个潜在的查询问题可能导致的IO打满：通配符查询，参见<a href="https://elasticsearch.cn/article/171" target="_blank" rel="noopener">文章</a>。</p>
+</blockquote>
+<h2 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h2><p>详细的排查过程就不赘述了，无非是加监控，包括业务层面、ES层面、机器层面，然后横向、纵向的分析各种监控指标。</p>
+<p>这里分享几个容易被忽略的指标/api</p>
+<ol>
+<li><p>查看最大的索引的 _stats 中merge部分：</p>
+<p>total_stopped_time_in_millis ：通常应该是0</p>
+<p>total_size_in_bytes：总共merge了这么多数据，你会发现远大于索引大小。下文会介绍这一指标。</p>
+</li>
+<li><p>观察线程状况，api详细参数可以查阅<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-hot-threads.html#cluster-nodes-hot-threads-api-query-params" target="_blank" rel="noopener">官方文档</a>。我在定位问题时还不知道hot_threads这个api，如果提前知道的话可能就省下不少时间了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET _cat/thread_pool?v</span><br><span class="line">GET /_nodes/hot_threads</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>段合并的基本原理很简单，两个（多个）已提交的段写入一个新的段。</p>
+<p><img src="https://www.elastic.co/guide/cn/elasticsearch/guide/current/images/elas_1110.png" alt=""></p>
+<p>这种读写除了尚在内存中的部分，就难免需要消耗磁盘IO了。</p>
+<p>而从<a href="http://blog.mikemccandless.com/2011/02/visualizing-lucenes-segment-merges.html" target="_blank" rel="noopener">可视化Lucene段合并</a>一文中得知，这种类似于<a href="https://en.wikipedia.org/wiki/Write_amplification" target="_blank" rel="noopener">SSD写放大</a>的过程其实是一种浪费（文中称为tax），一个最终1G的索引可能由于merge而需要读写10G磁盘。</p>
+<p>段合并算法优化的一个目标就是降低这种浪费，更高效地做段合并。</p>
+<p>而减小我们索引的体积就可以轻松的带来显著的提升。</p>
+<p><img src="http://img.heeexy.com/es-io.png" alt="es-io"></p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2020/06/28/elasticsearch-segment-merge/">http://heeexy.com/2020/06/28/elasticsearch-segment-merge/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ElasticSearch/">ElasticSearch</a>
+            <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            </div>
+        
+        <nav class="post-nav"><a class="next" href="/2020/02/17/optimization-experience/">
+        <span class="next-text nav-default">QPS从1k到2w，我做了什么</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2020/06/28/elasticsearch-segment-merge/';
+        this.page.identifier = '2020/06/28/elasticsearch-segment-merge/';
+        this.page.title = '日志ES集群的潜在性能瓶颈--段合并';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Spring源码笔记-2.5 createBean"/><meta name="keywords" content="java, spring, 笔记, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2018/01/18/createBean/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Spring源码笔记-2.5 createBean - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Spring源码笔记-2.5 createBean
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-18
+        </span><span class="post-category">
+            <a href="/categories/Spring%E7%AC%94%E8%AE%B0/">Spring笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#prepareMethodOverrides"><span class="toc-text">prepareMethodOverrides</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resolveBeforeInstantiation"><span class="toc-text">resolveBeforeInstantiation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#循环依赖"><span class="toc-text">循环依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#构造器循环依赖"><span class="toc-text">构造器循环依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setter-循环依赖"><span class="toc-text">setter 循环依赖</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><p>此方法交给了 <code>AbstractBeanFactory</code> 的子类 <code>AbstractAutowireCapableBeanFactory</code> 去实现。</p>
+<p>并且不管这个bean是单例还是 prototype 还是其它 scope ,最终都是会走到此处，只是前后的一些验证、处理有区别。比如单例的就要先去缓存中获取，prototype 就不需要。</p>
+<p>源码阅读到这里，我们已经习惯了一层一层剥。createBean 依然还是没有直接地把 bean 创建出来（当然我所期望的看到创建 bean 就是看到它的反射源码为止）。</p>
+<p>createBean 的大致步骤为:</p>
+<ol>
+<li>根据 RootBeanDefinition 来获取要创建 bean 的 class 。这 class 还有可能为 null。</li>
+<li>prepareMethodOverrides 。准备 override 方法，对 override 属性进行验证。</li>
+<li>给后处理器一个机会来返回代理，替代真正的 bean.</li>
+<li>doCreateBean 创建真正的 bean 实例。</li>
+</ol>
+<h3 id="prepareMethodOverrides"><a href="#prepareMethodOverrides" class="headerlink" title="prepareMethodOverrides"></a>prepareMethodOverrides</h3><p>首先去温习一遍 lookup-method 和 replace-method 吧。<a href="http://blog.csdn.net/qq_22912803/article/details/52503914" target="_blank" rel="noopener">博文</a> </p>
+<p>其实就是通过配置把原本 bean 中的某个方法给替代掉。</p>
+<p>此处我们先只是确认一遍指定的替代方法存在于要生成的 bean 中。</p>
+<p>顺带看一看这个方法有没有重载overload)，做个标记。</p>
+<h3 id="resolveBeforeInstantiation"><a href="#resolveBeforeInstantiation" class="headerlink" title="resolveBeforeInstantiation"></a>resolveBeforeInstantiation</h3><p>经过一波预处理器<code>InstantiationAwareBeanPostProcessor</code> ，如果生产出了 bean，再经过一波后处理器。</p>
+<p>一旦生产出 bean，则立即将此 bean 返回。</p>
+<p>此处就是留下了一个拓展点，经过此方法之后，bean可能已经不是我们认为的 bean 了，而可能已经变成了一个经过处理的代理 bean 。</p>
+<h1 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h1><h4 id="构造器循环依赖"><a href="#构造器循环依赖" class="headerlink" title="构造器循环依赖"></a>构造器循环依赖</h4><p>如果是 prototype，无法解决，只能抛错。</p>
+<p>代码在 <code>AbstractBeanFactory</code> : 256 <code>doGetBean()</code> 。</p>
+<p>当创建 bean 时，首先去“当前创建 bean 池”查找是否当前 bean 正在创建，如果发现存在，则表示循环依赖了。抛出 BeanCurrentlyInCreationExcetion 。</p>
+<p>当前创建 bean 池：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ThreadLocal&lt;Object&gt; prototypesCurrentlyInCreation =</span><br><span class="line">      <span class="keyword">new</span> NamedThreadLocal&lt;Object&gt;(<span class="string">"Prototype beans currently in creation"</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="setter-循环依赖"><a href="#setter-循环依赖" class="headerlink" title="setter 循环依赖"></a>setter 循环依赖</h4><p>只能解决单例的情况。</p>
+<p>在创建单例 bean 时，提前暴露刚完成构造器但未完成其他步骤（如 setter 注入）的 bean 。</p>
+<p>通过提前暴露这个单例工厂方法，从而使其他 bean 能够引用到此 bean。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (earlySingletonExposure) &#123;</span><br><span class="line">   <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">      logger.debug(<span class="string">"Eagerly caching bean '"</span> + beanName +</span><br><span class="line">            <span class="string">"' to allow for resolving potential circular references"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   addSingletonFactory(beanName, <span class="keyword">new</span> ObjectFactory&lt;Object&gt;() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="comment">//注意这里返回的是 早期引用</span></span><br><span class="line">         <span class="keyword">return</span> getEarlyBeanReference(beanName, mbd, bean);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">		Assert.notNull(singletonFactory, <span class="string">"Singleton factory must not be null"</span>);</span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">              <span class="comment">//单例工厂注册</span></span><br><span class="line">				<span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">              <span class="comment">//早期单例移出</span></span><br><span class="line">				<span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">              <span class="comment">//注册单例加入</span></span><br><span class="line">				<span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单地记一下这里解决步骤：</p>
+<p>testA 先创建，并且暴露一个工厂出去，进行 setter 注入 testB.</p>
+<p>testB 创建，并且暴露一个工厂，进行 setter 注入 testA.</p>
+<p>在这里想用 testA 时，<strong>由于发现提前暴露的工厂，从而在此处走了另一条路</strong>，使用此工厂来创建 testA ,在此处解决了循环问题。</p>
+<p>再返回回去继续完成 testA 的 setter 注入。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2018/01/18/createBean/">http://heeexy.com/2018/01/18/createBean/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/spring/">spring</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/01/19/BeanWrapper/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2018/01/04/TypeHandlerRegistry/">
+        <span class="next-text nav-default">MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2018/01/18/createBean/';
+        this.page.identifier = '2018/01/18/createBean/';
+        this.page.title = 'Spring源码笔记-2.5 createBean';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="搭建springboot-shiro-vue框架时遇到的坑"/><meta name="keywords" content="java, springboot, shiro, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/10/22/build-springboot-shiro-vue/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>搭建springboot-shiro-vue框架时遇到的坑 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">搭建springboot-shiro-vue框架时遇到的坑
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-10-22
+        </span><span class="post-category">
+            <a href="/categories/shiro/">shiro</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#跨域"><span class="toc-text">跨域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shiro拦截ajax返回json"><span class="toc-text">shiro拦截ajax返回json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Access-Control-Allow-Origin"><span class="toc-text">Access-Control-Allow-Origin</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>​    最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.</p>
+<h3 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h3><p>​    一大部分问题就是跨域造成的,本身vue-cli搭建的项目可以用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. axios的baseURL设置为/api</span></span><br><span class="line"><span class="comment">// 2. 如下设置</span></span><br><span class="line">proxyTable: &#123;</span><br><span class="line">      <span class="string">'/api'</span>: &#123;</span><br><span class="line">        target: <span class="string">'http://127.0.0.1:8080/'</span>,</span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">          <span class="string">'^/api'</span>: <span class="string">'/'</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>来解决开发环境跨域的问题,生产环境反正可以打包静态文件到springboot项目中直接跑.</p>
+<p>而我还是脑抽得选择了强行跨域,假装自己要把静态文件单独放个服务器跑…为此遇到很多问题,折腾好几天.</p>
+<p><strong>因此强力推荐上面的方案,简单快捷地解决跨域!</strong></p>
+<p>如果生产环境真的需要跨域的话,再按下面方法设置</p>
+<p>大部分跨域的配置都能百度搜出来:</p>
+<ol>
+<li><p>axios要 <code>withCredentials: true</code> </p>
+</li>
+<li><p>用session而不用啥特殊的token之类的话,就不用 <code>config.headers[&#39;X-Token&#39;] = getToken()</code> ,这句是<a href="https://github.com/PanJiaChen/vueAdmin-template" target="_blank" rel="noopener"><strong>vueAdmin-template</strong></a> 中带的,需要删掉.</p>
+</li>
+<li><p>后端需要配置允许跨域</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CorsConfig</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> CorsConfiguration <span class="title">buildConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        CorsConfiguration corsConfiguration = <span class="keyword">new</span> CorsConfiguration();</span><br><span class="line">        corsConfiguration.addAllowedOrigin(<span class="string">"*"</span>); <span class="comment">// 1 设置访问源地址</span></span><br><span class="line">        corsConfiguration.addAllowedHeader(<span class="string">"*"</span>); <span class="comment">// 2 设置访问源请求头</span></span><br><span class="line">        corsConfiguration.addAllowedMethod(<span class="string">"*"</span>); <span class="comment">// 3 设置访问源请求方法</span></span><br><span class="line">        corsConfiguration.setAllowCredentials(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> corsConfiguration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CorsFilter <span class="title">corsFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        UrlBasedCorsConfigurationSource source = <span class="keyword">new</span> UrlBasedCorsConfigurationSource();</span><br><span class="line">        source.registerCorsConfiguration(<span class="string">"/**"</span>, buildConfig()); <span class="comment">// 4 对接口配置跨域设置</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CorsFilter(source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ol>
+<h3 id="shiro拦截ajax返回json"><a href="#shiro拦截ajax返回json" class="headerlink" title="shiro拦截ajax返回json"></a>shiro拦截ajax返回json</h3><p>​    shiro拦截到需要登录而用户尚未的请求时,会重定向至 /login/auth (未配置时是login.jsp),而ajax是不允许重定向的,ajax会收到302错误码,报错</p>
+<blockquote>
+<p>Failed to load <a href="http://localhost:8080/test" target="_blank" rel="noopener">http://localhost:8080/test</a>: Redirect from ‘<a href="http://localhost:8080/test&#39;" target="_blank" rel="noopener">http://localhost:8080/test&#39;</a> to ‘<a href="http://localhost:8080/login/auth&#39;" target="_blank" rel="noopener">http://localhost:8080/login/auth&#39;</a> has been blocked by CORS policy: No ‘Access-Control-Allow-Origin’ header is present on the requested resource. Origin ‘<a href="http://localhost:9528&#39;">http://localhost:9528&#39;</a> is therefore not allowed access.</p>
+</blockquote>
+<p>因此我们需要对拦截器进行改造,不要它默认的重定向了,我们直接去response里把json写好输出给前端.</p>
+<p>自定义filter,(因为我的后端全部返回json,所以这里不判断是否ajax了)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AjaxPermissionsAuthorizationFilter</span> <span class="keyword">extends</span> <span class="title">FormAuthenticationFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">onAccessDenied</span><span class="params">(ServletRequest request, ServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">        jsonObject.put(<span class="string">"returnMsg"</span>, <span class="string">"未登录或登录已失效"</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.isLoginRequest(request, response)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.isLoginSubmission(request, response)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.executeLogin(request, response);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            PrintWriter out = <span class="keyword">null</span>;</span><br><span class="line">            HttpServletResponse res = (HttpServletResponse) response;</span><br><span class="line">           	<span class="comment">//下面这几行也是后面要讲的坑, 这里的Access-Control-Allow-Origin 设置为*的话,前端还是会报错. </span></span><br><span class="line">            res.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"http://localhost:9528"</span>);</span><br><span class="line">            <span class="comment">//  response1.setHeader("Access-Control-Allow-Origin", "*");</span></span><br><span class="line">            res.setHeader(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="string">"true"</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                res.setCharacterEncoding(<span class="string">"UTF-8"</span>);<span class="comment">//设置编码</span></span><br><span class="line">                res.setContentType(<span class="string">"application/json"</span>);<span class="comment">//设置返回类型</span></span><br><span class="line">                out = response.getWriter();</span><br><span class="line">                out.println(jsonObject);<span class="comment">//输出</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">null</span> != out) &#123;</span><br><span class="line">                    out.flush();</span><br><span class="line">                    out.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是最坑的地方了,拦截器的注入.</p>
+<p><a href="http://m.blog.csdn.net/u014042146/article/details/72834582" target="_blank" rel="noopener">原本搜到的方法</a>是在ShiroConfiguration类中注入.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(name = <span class="string">"ajaxPermissionsAuthorizationFilter"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> AjaxPermissionsAuthorizationFilter <span class="title">ajaxPermissionsAuthorizationFilter</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> AjaxPermissionsAuthorizationFilter();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//然后shiroFilterFactoryBean设置过滤器</span></span><br><span class="line"> 		Map&lt;String, Filter&gt; filterMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">       filterMap.put(<span class="string">"authc"</span>, <span class="keyword">new</span> AjaxPermissionsAuthorizationFilter());</span><br><span class="line">       shiroFilterFactoryBean.setFilters(filterMap);</span><br></pre></td></tr></table></figure>
+
+<p>结果自定义的拦截器把所有的请求都拦截了,直接无视了我设置的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filterChainDefinitionMap.put(<span class="string">"/"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/static/**"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/login/**"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/error"</span>, <span class="string">"anon"</span>);</span><br><span class="line">filterChainDefinitionMap.put(<span class="string">"/**"</span>, <span class="string">"authc"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>各种百度,能搜到的相关的资料也就只有<a href="https://segmentfault.com/q/1010000010747919" target="_blank" rel="noopener">segmentfault的提问没解决,题主给我的回复也不能解决</a> , <a href="https://zhidao.baidu.com/question/436777330932025604.html" target="_blank" rel="noopener">百度知道提问的没解决</a> , <a href="http://www.jianshu.com/p/e30dc5e78641" target="_blank" rel="noopener">简书方案并不能解决</a> .</p>
+<p>最终在某个百度结果的第三页找到<a href="http://www.hillfly.com/2017/179.html" target="_blank" rel="noopener">这篇博客</a> ,博主对问题一步一步的排查分析,debug源码,最终知道</p>
+<p><strong>Springboot 先加载了我们自定义的 Filter，然后再加载了 ShiroFilter</strong></p>
+<p>解决方法:<br>在自定义的filter里加上下面的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public FilterRegistrationBean registration(自定义Filter filter) &#123;</span><br><span class="line">    FilterRegistrationBean registration &#x3D; new FilterRegistrationBean(filter);</span><br><span class="line">    registration.setEnabled(false);</span><br><span class="line">    return registration;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在configration类里就不需要声明这个bean,只需要直接调用 <code>filterMap.put(&quot;authc&quot;, new 自定义Filter());</code></p>
+<h3 id="Access-Control-Allow-Origin"><a href="#Access-Control-Allow-Origin" class="headerlink" title="Access-Control-Allow-Origin"></a>Access-Control-Allow-Origin</h3><p>在上面的自定义filter里,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"http://localhost:9528"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果设置为*的话,前端虽然可以收到json,但还是会报错</p>
+<blockquote>
+<p>Failed to load <a href="http://localhost:8080/test" target="_blank" rel="noopener">http://localhost:8080/test</a>: The value of the ‘Access-Control-Allow-Origin’ header in the response must not be the wildcard ‘*’ when the request’s credentials mode is ‘include’. Origin ‘<a href="http://localhost:9528&#39;">http://localhost:9528&#39;</a> is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.</p>
+</blockquote>
+<p>不允许设置为通配符* .</p>
+<p>虽然此处设置了”<a href="http://localhost:9528&quot;">http://localhost:9528&quot;</a> 但是这种做法终究不合适.</p>
+<p>百度继续搜到<a href="http://blog.csdn.net/u011517841/article/details/68490586" target="_blank" rel="noopener">此博客</a></p>
+<p>得到解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(&quot;Access-Control-Allow-Origin&quot;, ((HttpServletRequest) request).getHeader(&quot;Origin&quot;));</span><br></pre></td></tr></table></figure>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/10/22/build-springboot-shiro-vue/">http://heeexy.com/2017/10/22/build-springboot-shiro-vue/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/springboot/">springboot</a>
+            <a href="/tags/shiro/">shiro</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/10/29/end-to-end/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">前后端分离实践小结</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/09/29/getSingleton/">
+        <span class="next-text nav-default">Spring源码笔记-2.4 获取单例</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/10/22/build-springboot-shiro-vue/';
+        this.page.identifier = '2017/10/22/build-springboot-shiro-vue/';
+        this.page.title = '搭建springboot-shiro-vue框架时遇到的坑';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

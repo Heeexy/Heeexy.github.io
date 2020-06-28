@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Spring源码笔记-1.4 获取bean流程之注册BeanDefinition"/><meta name="keywords" content="java, spring, 笔记, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2017/09/15/registerBeanDefinition/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Spring源码笔记-1.4 获取bean流程之注册BeanDefinition
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-09-15
+        </span><span class="post-category">
+            <a href="/categories/Spring%E7%AC%94%E8%AE%B0/">Spring笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#本文要看啥"><span class="toc-text">本文要看啥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始进入方法吧"><span class="toc-text">开始进入方法吧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册BeanDefinitionHolder"><span class="toc-text">注册BeanDefinitionHolder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册Alias"><span class="toc-text">注册Alias</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册完成"><span class="toc-text">注册完成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#告一段落"><span class="toc-text">告一段落</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h3 id="本文要看啥"><a href="#本文要看啥" class="headerlink" title="本文要看啥"></a>本文要看啥</h3><hr>
+<p>这个bean总算是解析完了,也装饰完了,等于是说信息我们都提取好了,现在该做的就是去注册啦.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, <span class="keyword">this</span>.getReaderContext().getRegistry());</span><br></pre></td></tr></table></figure>
+
+<p>就是这个方法了</p>
+<h3 id="开始进入方法吧"><a href="#开始进入方法吧" class="headerlink" title="开始进入方法吧"></a>开始进入方法吧</h3><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerBeanDefinition</span><span class="params">(BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)</span> <span class="keyword">throws</span> BeanDefinitionStoreException </span>&#123;</span><br><span class="line">    String beanName = definitionHolder.getBeanName();</span><br><span class="line">    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());</span><br><span class="line">    String[] aliases = definitionHolder.getAliases();</span><br><span class="line">    <span class="keyword">if</span> (aliases != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String[] var4 = aliases;</span><br><span class="line">        <span class="keyword">int</span> var5 = aliases.length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> var6 = <span class="number">0</span>; var6 &lt; var5; ++var6) &#123;</span><br><span class="line">            String alias = var4[var6];</span><br><span class="line">            registry.registerAlias(beanName, alias);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>拿到beanName</p>
+</li>
+<li><p>用beanName和bd去registry里注册.</p>
+<blockquote>
+<p>registry是个接口,具体的实现在4.3.7版本中看到两种,一种是SimpleBeanDefinitionRegistry里,和它名字一样非常简单,就是塞进map, 另外一种就复杂了,稍后我们再来看</p>
+</blockquote>
+</li>
+<li><p>用beanName和alias去registry里注册</p>
+<blockquote>
+<p>注册aliases也是接口 ,BeanDefinitionRegistry还是继承自AliasRegistry的, 4.3.7只看到SimpleAliasRegistry一种实现</p>
+</blockquote>
+<p>注册alias就简单多了, SimpleAliasRegistry里有</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, String&gt; aliasMap = <span class="keyword">new</span> ConcurrentHashMap(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+
+<p>稍后我再另开一文把SimpleAliasRegistry来读一遍</p>
+</li>
+</ol>
+<h3 id="注册BeanDefinitionHolder"><a href="#注册BeanDefinitionHolder" class="headerlink" title="注册BeanDefinitionHolder"></a>注册BeanDefinitionHolder</h3><hr>
+<p>除了之前的<code>SimpleBeanDefinitionRegistry</code> 直接往map里面塞值的注册方式之外,我们还有DefaultListableBeanFactory 这个类来实现注册功能,我们主要来了解一下这种注册方式</p>
+<ol>
+<li><p>校验空参数</p>
+</li>
+<li><p>如果bdh是<code>AbstractBeanDefinition</code> ,那就要执行它的<code>validate()</code> 校验</p>
+<ol>
+<li>bdh的methodOverride和它的工厂<strong>不能同时存在</strong></li>
+<li>如果它beanClass有值,那就要为方法覆盖做准备 <code>prepareMethodOverrides()</code>  ,遍历它的overrides,找这个Bean的Class里面有几个叫这个名字的方法, <strong>如果0个,就抛错</strong>,如果1个,就设置重载属性为false表示没重载.</li>
+</ol>
+</li>
+<li><p>从这个工厂里面<code>beanDefinitionMap</code> 拿原来的叫这个beanName的bd出来,如果不为空,进行下列校验及操作</p>
+<blockquote>
+<p>书中源码spring 3.2 采用sychronized , 而4.3版本的beanDefinitionMap已经用上了ConcurrentHashMap,并且map的value用了BD,而不是3.2里面的Object</p>
+</blockquote>
+<ol>
+<li>如果工厂不允许bean覆盖,那么抛错</li>
+<li>如果旧bean的role值小于新的,或者新旧bd完全相等,或者不相等,各打印一下日志</li>
+<li>把新的bd放入<code>beanDefinitionMap</code> </li>
+</ol>
+</li>
+<li><p>第一次注册这个bean, 如果本工厂的<code>alreadyCreated</code> 也是空的话,那就不用加锁,直接</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//map里塞入bd				</span></span><br><span class="line"><span class="keyword">this</span>.beanDefinitionMap.put(beanName, beanDefinition);</span><br><span class="line"> <span class="comment">//已注册名字里加入beanName              </span></span><br><span class="line"><span class="keyword">this</span>.beanDefinitionNames.add(beanName);</span><br><span class="line"> <span class="comment">//唯一名册里移出beanName(啥时候加入了???)              </span></span><br><span class="line"><span class="keyword">this</span>.manualSingletonNames.remove(beanName);</span><br></pre></td></tr></table></figure>
+
+<p>如果本工程已经有创建过bean了,那么接下来一段代码就要加synchronized了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Map var4 = <span class="keyword">this</span>.beanDefinitionMap;</span><br><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>.beanDefinitionMap) &#123;</span><br><span class="line">   <span class="comment">//map里塞入bd		</span></span><br><span class="line">    <span class="keyword">this</span>.beanDefinitionMap.put(beanName, beanDefinition);</span><br><span class="line">  <span class="comment">//注意到后面这段操作其实是新建个数组,加上这次注册beanName,然后替换之前的数组....</span></span><br><span class="line">  <span class="comment">//为什么这么复杂呢???</span></span><br><span class="line">    List&lt;String&gt; updatedDefinitions = <span class="keyword">new</span> ArrayList(<span class="keyword">this</span>.beanDefinitionNames.size() + <span class="number">1</span>);</span><br><span class="line">    updatedDefinitions.addAll(<span class="keyword">this</span>.beanDefinitionNames);</span><br><span class="line">    updatedDefinitions.add(beanName);</span><br><span class="line">    <span class="keyword">this</span>.beanDefinitionNames = updatedDefinitions;</span><br><span class="line">  <span class="comment">//如果唯一名册里包含beanName</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.manualSingletonNames.contains(beanName)) &#123;</span><br><span class="line">      <span class="comment">//就移出去,但是这里也和上面一样,搞替换....</span></span><br><span class="line">        Set&lt;String&gt; updatedSingletons = <span class="keyword">new</span> LinkedHashSet(<span class="keyword">this</span>.manualSingletonNames);</span><br><span class="line">        updatedSingletons.remove(beanName);</span><br><span class="line">        <span class="keyword">this</span>.manualSingletonNames = updatedSingletons;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>疑问: 这里都用了替换,明明<code>beanDefinitionNames</code> 和<code>manualSingletonNames</code> 都是volatile声明的,每次读都从主内存取,每次写都都将值写到主内存, 这里为什么还要这么麻烦得去开新的list和set,替换旧的呢?</p>
+<p>答:从网上搜到,volatile修饰的变量如果是对象或数组之类的，其含义是对象或数组的<strong>地址具有可见性</strong>，但是数组或对象<strong>内部的成员改变不具备可见性</strong>,那等于就是说非得整个地址替换才行咯.</p>
+<p>很爽,从这本书要跳到我正在读的并发编程相关的内容了,这几天再去研究一波volatile,可以再开一文. <a href="http://blog.csdn.net/u014108122/article/details/38173201" target="_blank" rel="noopener">准备参考地址</a></p>
+</blockquote>
+</li>
+</ol>
+<p>然后<code>this.frozenBeanDefinitionNames = null;</code>  这个冻结/取消冻结bdNames的功能暂时也不知道干啥的,在注册和删除bd的地方看到了这样的置为null, </p>
+<p>​    只在<code>freezeConfiguration()</code> 方法内看到把它置为bdNames转的String[] .</p>
+<p>​    另外在<code>getBeanDefinitionNames()</code> 方法里有判断这个</p>
+<p>然后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果有老bd或者 这个bean是单例对象?</span></span><br><span class="line"><span class="keyword">if</span> (oldBeanDefinition != <span class="keyword">null</span> || <span class="keyword">this</span>.containsSingleton(beanName)) &#123;</span><br><span class="line">  <span class="comment">//重置bean</span></span><br><span class="line">            <span class="keyword">this</span>.resetBeanDefinition(beanName);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>重置的主要内容有</p>
+<ul>
+<li>清除mergedBD </li>
+<li>销毁单例</li>
+<li>遍历之前的bean,看新注册的这个bean是谁的爹(parent),那些儿子也都要调用这个方法进行重置</li>
+</ul>
+<blockquote>
+<p>不得不说这个<code>DefaultListableBeanFactory</code> 的成员变量实在太多了,搞不清楚一个个都是要干啥的,后面再次遇到的时候再慢慢看吧</p>
+</blockquote>
+<h3 id="注册Alias"><a href="#注册Alias" class="headerlink" title="注册Alias"></a>注册Alias</h3><hr>
+<p>4.3.7版本的实现在<code>SimpleAliasRegistry</code> 里, 详情见 <a href="/2017/09/15/spring_SimpleAliasRegistry/">这一篇博文</a></p>
+<h3 id="注册完成"><a href="#注册完成" class="headerlink" title="注册完成"></a>注册完成</h3><hr>
+<p>其实没有操作了, 但是作者留了个位置在这</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.getReaderContext().fireComponentRegistered(<span class="keyword">new</span> BeanComponentDefinition(bdHolder));</span><br></pre></td></tr></table></figure>
+
+<p>如果程序开发人员需要对注册BeanDefinition时间进行监听时,可以通过注册监听器的方式来做.Spring并没有再此做任何逻辑处理</p>
+<h3 id="告一段落"><a href="#告一段落" class="headerlink" title="告一段落"></a>告一段落</h3><hr>
+<p>至此,我们的解析注册Bean标签可算是告一段落啦,虽然里面还留下了很多疑问待后续阅读中弄清.</p>
+<p>先想想之前是在哪分叉出去的吧.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">parseDefaultElement</span><span class="params">(Element ele, BeanDefinitionParserDelegate delegate)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (delegate.nodeNameEquals(ele, <span class="string">"import"</span>)) &#123;</span><br><span class="line">           <span class="keyword">this</span>.importBeanDefinitionResource(ele);</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (delegate.nodeNameEquals(ele, <span class="string">"alias"</span>)) &#123;</span><br><span class="line">           <span class="keyword">this</span>.processAliasRegistration(ele);</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (delegate.nodeNameEquals(ele, <span class="string">"bean"</span>)) &#123;</span><br><span class="line">         <span class="comment">//就是这里啦,我们先去阅读最复杂的bean的</span></span><br><span class="line">           <span class="keyword">this</span>.processBeanDefinition(ele, delegate);</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (delegate.nodeNameEquals(ele, <span class="string">"beans"</span>)) &#123;</span><br><span class="line">         <span class="comment">//这个地方我还记得,beans标签是绕回去解析的,不用看了</span></span><br><span class="line">           <span class="keyword">this</span>.doRegisterBeanDefinitions(ele);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>再之前呢,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">parseBeanDefinitions</span><span class="params">(Element root, BeanDefinitionParserDelegate delegate)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (delegate.isDefaultNamespace(root)) &#123;</span><br><span class="line">        NodeList nl = root.getChildNodes();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nl.getLength(); ++i) &#123;</span><br><span class="line">            Node node = nl.item(i);</span><br><span class="line">            <span class="keyword">if</span> (node <span class="keyword">instanceof</span> Element) &#123;</span><br><span class="line">                Element ele = (Element)node;</span><br><span class="line">                <span class="keyword">if</span> (delegate.isDefaultNamespace(ele)) &#123;</span><br><span class="line">                  <span class="comment">//就是这个地方,差不多想起来了,beans标签里面的子元素, 如果是默认命名空间,就按默认方式去解析</span></span><br><span class="line">                    <span class="keyword">this</span>.parseDefaultElement(ele, delegate);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  <span class="comment">//这里是个分叉,解析自定义元素,以后再看</span></span><br><span class="line">                    delegate.parseCustomElement(ele);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//这和上面一样的分叉,解析自定义元素</span></span><br><span class="line">        delegate.parseCustomElement(root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再之前呢</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doRegisterBeanDefinitions</span><span class="params">(Element root)</span> </span>&#123;</span><br><span class="line">    BeanDefinitionParserDelegate parent = <span class="keyword">this</span>.delegate;</span><br><span class="line">    <span class="keyword">this</span>.delegate = <span class="keyword">this</span>.createDelegate(<span class="keyword">this</span>.getReaderContext(), root, parent);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.delegate.isDefaultNamespace(root)) &#123;</span><br><span class="line">        String profileSpec = root.getAttribute(<span class="string">"profile"</span>);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.hasText(profileSpec)) &#123;</span><br><span class="line">            String[] specifiedProfiles = StringUtils.tokenizeToStringArray(profileSpec, <span class="string">",; "</span>);</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.getReaderContext().getEnvironment().acceptsProfiles(specifiedProfiles)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.logger.isInfoEnabled()) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.logger.info(<span class="string">"Skipped XML bean definition file due to specified profiles ["</span> + profileSpec + <span class="string">"] not matching: "</span> + <span class="keyword">this</span>.getReaderContext().getResource());</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.preProcessXml(root);</span><br><span class="line">    <span class="comment">//从这里走出去的</span></span><br><span class="line">    <span class="keyword">this</span>.parseBeanDefinitions(root, <span class="keyword">this</span>.delegate);</span><br><span class="line">    <span class="keyword">this</span>.postProcessXml(root);</span><br><span class="line">    <span class="keyword">this</span>.delegate = parent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 到这还要温习一遍的话,可以去看Spring的<a href="/2017/09/11/spring_note_1/">第一篇笔记</a>了</p>
+<p>哈哈,这么点东西,读了一个礼拜,读了后面的忘了前面的,还是在读读记记的情况下,</p>
+<p>要是没有这个笔记,这时候估计已经迷路得要放弃了,不容易啊</p>
+<p>不说了 <a href="/2017/09/15/spring_SimpleAliasRegistry/">SimpleAliasRegistry</a> 和<code>volatile</code> 两篇文章的坑还留着呢,继续…</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2017/09/15/registerBeanDefinition/">http://heeexy.com/2017/09/15/registerBeanDefinition/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/spring/">spring</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/09/15/spring_SimpleAliasRegistry/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SimpleAliasRegistry</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2017/09/15/spring_note_3/">
+        <span class="next-text nav-default">Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2017/09/15/registerBeanDefinition/';
+        this.page.identifier = '2017/09/15/registerBeanDefinition/';
+        this.page.title = 'Spring源码笔记-1.4 获取bean流程之注册BeanDefinition';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

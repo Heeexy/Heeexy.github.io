@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="极简 Spring 框架 -- 浅析循环依赖"/><meta name="keywords" content="java, spring, 笔记, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://heeexy.com/2018/01/28/IoC/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103584593-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-103584593-1');
+</script><script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>极简 Spring 框架 -- 浅析循环依赖 - 街上的动物园</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="街上的动物园" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">街上的动物园</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">街上的动物园</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            分类
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">极简 Spring 框架 -- 浅析循环依赖
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-28
+        </span><span class="post-category">
+            <a href="/categories/Spring%E7%AC%94%E8%AE%B0/">Spring笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#循环依赖"><span class="toc-text">循环依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码改造"><span class="toc-text">代码改造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-amp-A"><span class="toc-text">Q &amp; A</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#心得"><span class="toc-text">心得</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><blockquote>
+<p> 从网上看到一篇博文 <a href="https://diaozxin007.github.io/2018/01/08/spring-ioc/" target="_blank" rel="noopener">徒手撸框架–实现IoC</a> ，写得很棒，作者抛开了 Spring 源码中复杂的校验，拓展等功能，实现了一个极简的 IoC 框架，让 Spring 源码初学者可以清楚的看到 IOC 的实现流程。</p>
+<p> 本文就借其框架，略加改造，再次介绍一下 Spring 是如何处理循环依赖的。</p>
+</blockquote>
+<p>了解本项目核心代码需要先参考原作者的博文 <a href="https://diaozxin007.github.io/2018/01/08/spring-ioc/" target="_blank" rel="noopener">徒手撸框架–实现IoC</a> 。</p>
+<h3 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h3><p>其实很好理解，A 类依赖 B，B 又依赖 A。</p>
+<p>说具体点就是 ，我们要 getBean(“a”)， A 在实例化时需要为类型为 B 的成员变量赋值，因此去 getBean(“b”)，而 getBean(“b”) 的时候又需要为其类型为A 的成员变量赋值，此时又会回过头去实例化 A ，导致无限循环。</p>
+<p>用代码展示就是 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="meta">@AutoWired</span></span><br><span class="line">    <span class="keyword">private</span> B b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="meta">@AutoWired</span></span><br><span class="line">    <span class="keyword">private</span> A a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码改造"><a href="#代码改造" class="headerlink" title="代码改造"></a>代码改造</h3><p>最主要的代码改造在于 BeanFactoryImpl 内， 添加了成员变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+<p>用于缓存正在创建中的，提前暴露出来的单例 bean。</p>
+<p>在获取 bean 时，会在创建之前先从此 Map 中尝试获取，而这就是解决循环依赖的关键。</p>
+<p>以上面的例子来说，就是一开始 getBean(“a”) 时，将未完成的 a 放入缓存，getBean(“b”) 时，需要去获取 a ,会从缓存中获取，而不是再去实例化 a。</p>
+<p><img src="http://img.heeexy.com/CyclicDependence.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getBean</span><span class="params">(String name)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//查找对象是否已经实例化过</span></span><br><span class="line">    Object bean = beanMap.get(name);</span><br><span class="line">    <span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> bean;</span><br><span class="line">    &#125;</span><br><span class="line">    Object earlyBean = earlySingletonObjects.get(name);</span><br><span class="line">    <span class="keyword">if</span> (earlyBean != <span class="keyword">null</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">"循环依赖，提前返回尚未加载完成的bean:"</span> + name);</span><br><span class="line">        <span class="keyword">return</span> earlyBean;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果没有实例化，那就需要调用createBean来创建对象</span></span><br><span class="line">    BeanDefinition beanDefinition = beanDefineMap.get(name);</span><br><span class="line">    bean = createBean(beanDefinition);</span><br><span class="line">    <span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">        earlySingletonObjects.put(name, bean);</span><br><span class="line">        <span class="comment">//对象创建成功以后，注入对象需要的参数</span></span><br><span class="line">        populatebean(bean, beanDefinition);</span><br><span class="line">        <span class="comment">//再吧对象存入Map中方便下次使用。</span></span><br><span class="line">        beanMap.put(name, bean);</span><br><span class="line">        <span class="comment">//从早期单例Map中移除</span></span><br><span class="line">        earlySingletonObjects.remove(name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//结束返回</span></span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q &amp; A"></a>Q &amp; A</h3><p>Q: 构造器循环依赖为什么无法解决？</p>
+<p>A: 从上面代码可以看出，需要在 createBean 之后，才能将其放入缓存，而构造过程是在 createBean 之内的，此时尚未构造好一个基本的 bean ,拿什么放入缓存呢？</p>
+<h3 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h3><p>上面只贴了 getBean 的代码，仅仅修改了原作者不到 10 行代码，其实在修改原框架，实现我们要的功能时不止这么多，包括调整对 json 的解析，对 bean 的填充等。</p>
+<p>感受到 Spring 框架真的是很复杂很全面，这复杂程度靠说是说不清楚的，也不是翻一遍书看看源码就能明白的。而且看源码其实还是似懂非懂，中间的细节迷迷糊糊就可能跳过去了。</p>
+<p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition,  BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="http://heeexy.com">heeexy</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="http://heeexy.com/2018/01/28/IoC/">http://heeexy.com/2018/01/28/IoC/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/java/">java</a>
+            <a href="/tags/spring/">spring</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/01/28/recent-summary/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">近期阅读源码的总结与转变</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2018/01/24/beanNamesForTypeIncludingAncestors/">
+        <span class="next-text nav-default">Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:heeexy@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/Heeexy" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">heeexy</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://heeexy.com/2018/01/28/IoC/';
+        this.page.identifier = '2018/01/28/IoC/';
+        this.page.title = '极简 Spring 框架 -- 浅析循环依赖';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//heeexy.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
