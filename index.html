@@ -110,6 +110,94 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/07/16/Redisson-IllegalMonitorStateException/">Redisson分布式锁报错问题排查</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-07-16
+        </span><span class="post-category">
+            <a href="/categories/Redisson/">Redisson</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="故障"><a href="#故障" class="headerlink" title="故障"></a>故障</h2><p>业务线测试同学反馈压测时，有以下报错日志：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalMonitorStateException: attempt to unlock lock, not locked by current thread by node id: def1bd2c-<span class="number">1f</span>49-<span class="number">4802</span>-b635-<span class="number">5</span>ea78543c033 thread-id: <span class="number">109</span></span><br><span class="line">	at org.redisson.RedissonLock.unlock(RedissonLock.java:<span class="number">366</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="先抛结论"><a href="#先抛结论" class="headerlink" title="先抛结论"></a>先抛结论</h2><p>建议遇到类似问题的人先检查项目中是否确保了 <strong>redissonClient 的单例</strong>。（单线程当然也是必须的，不过排查起来很简单，估计看到文章的人首先已经排查过单线程的问题了）</p>
+<p>本次报错是因为:</p>
+<ol>
+<li><p>redissonClient 虽然是单例的静态成员变量，但初始化时未加锁，而是简单使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> RedissonClient redisson = <span class="keyword">null</span>;</span><br><span class="line">      </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RedissonClient <span class="title">getRedisson</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(redisson == <span class="keyword">null</span>)&#123;</span><br><span class="line">      RedissonManager.init(); <span class="comment">//初始化</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> redisson;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加锁解锁没有同一个 lock，而是每次都使用<code>getRedisson().getLock(key)</code> 。导致解锁时从另一个 redissonClient 并没有获取到锁。<br>换言之，报错里的<code>not locked by current thread by node id: def1bd2c-1f49-4802-b635-5ea78543c033 thread-id: 109</code> 其实关键问题在于<code>by node id</code> ，而不是线程id。</p>
+</li>
+</ol>
+<h2 id="定位问题依据"><a href="#定位问题依据" class="headerlink" title="定位问题依据"></a>定位问题依据</h2><p>不需要改代码、加日志甚至debug，只需要搜索日志里是否有两行</p>
+<p><code>13:58:07.972 [main] INFO org.redisson.Version - Redisson 2.8.2</code></p>
+<p>打印两次版本信息说明肯定初始化了两次 Redisson。</p>
+<p>是的，定位和结论就这么简单，如果能早点知道，我就能省下这十几个小时和一大把头发了。</p>
+<h2 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h2><h3 id="一、搜索解决方案"><a href="#一、搜索解决方案" class="headerlink" title="一、搜索解决方案"></a>一、搜索解决方案</h3><p>把报错信息复制出去很容易就搜到了一些文章遇到类似的报错，解决方式就是解锁前判断是否自己持有的这个锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(lock.isHeldByCurrentThread())&#123;</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并且从“源码”级别解释了lock方法catch了InterruptedException等概念。</p>
+<h3 id="二、质疑解决方案"><a href="#二、质疑解决方案" class="headerlink" title="二、质疑解决方案"></a>二、质疑解决方案</h3><p>很显然加上这一行代码，不会再报错了，但是这给我带来的问题更多了。</p>
+<ol>
+<li><p>自己手写demo里将线程interrupt复现这个问题可以理解，但是我们实际项目中线程被谁interrupt了？</p>
+</li>
+<li><p>加了<code>if(lock.isHeldByCurrentThread())</code>的确不报错了，但这个线程本质上就没拿到这个分布式锁，在else中还是应该手动抛个异常出去的。轻度压测都出现这种情况，那项目岂不是毫无并发度可言？</p>
+</li>
+<li><p>Redisson 应该也是个成熟的框架了，为什么特地暴露个 lock 接口出来，实际功能只是隐藏掉<code>InterruptedException</code>? 如果我们实际项目中线程被 interrupt 是常态，那暴露这种接口岂不是挖坑？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">(<span class="keyword">long</span> leaseTime, TimeUnit unit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        lockInterruptibly(leaseTime, unit);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        Thread.currentThread().interrupt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>看来问题并非一行代码就能掩盖过去的，事情开始变得有意思了。</p>
+<h3 id="三、排查线程问题"><a href="#三、排查线程问题" class="headerlink" title="三、排查线程问题"></a>三、排查线程问题</h3><p>既然网上文章都说源码里catch 了 InterruptedException，那就研究下源码看是不是有地方会interrupt。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lockInterruptibly</span><span class="params">(<span class="keyword">long</span> leaseTime, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">     <span class="keyword">long</span> threadId = Thread.currentThread().getId();</span><br><span class="line">   <span class="comment">//先获取一次锁试试看</span></span><br><span class="line">     Long ttl = tryAcquire(leaseTime, unit, threadId);</span><br><span class="line">     <span class="comment">// lock acquired</span></span><br><span class="line">     <span class="keyword">if</span> (ttl == <span class="keyword">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">     &#125;</span><br><span class="line"><span class="comment">//拿不到锁就订阅channel</span></span><br><span class="line">     RFuture&lt;RedissonLockEntry&gt; future = subscribe(threadId);</span><br><span class="line">     commandExecutor.syncSubscription(future);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="comment">//循环获取锁</span></span><br><span class="line">         <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">             ttl = tryAcquire(leaseTime, unit, threadId);</span><br><span class="line">             <span class="comment">// lock acquired</span></span><br><span class="line">             <span class="keyword">if</span> (ttl == <span class="keyword">null</span>) &#123;</span><br><span class="line">                 <span class="keyword">break</span>;</span><br><span class="line">             &#125;</span><br><span class="line"></span><br><span class="line">             <span class="comment">// waiting for message</span></span><br><span class="line">             <span class="keyword">if</span> (ttl &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="comment">//事实上通常等锁都会走到这，内部是semaphore在等资源。而发生InterruptedException也是在这里面。</span></span><br><span class="line">                 getEntry(threadId).getLatch().tryAcquire(ttl, TimeUnit.MILLISECONDS);</span><br><span class="line">             &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                 getEntry(threadId).getLatch().acquire();</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">         unsubscribe(future, threadId);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>而这边用到的Semaphore其实是0个permmit的，作用就是用来阻塞线程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.latch = <span class="keyword">new</span> Semaphore(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>再继续深入无非就只有Semaphore和AQS的基础知识了。有处理interrupted的地方，但是没有手动interrupt()的地方。</p>
+<p><code>unlock()</code> 方法则更为简单，就是用脚本去redis查这个锁，解锁。失败的话会报我们遇到的错误。</p>
+<p>源码再加上一些手动实验，都无法知道何时被interrupt，此时线程中断的排查似乎走到了死胡同。</p>
+<h3 id="四、排查client问题"><a href="#四、排查client问题" class="headerlink" title="四、排查client问题"></a>四、排查client问题</h3><p>经过一番沟通和折腾，终于测试同学可以压测我的电脑上部署的项目。</p>
+<p>前后压了5、6遍，几十万次请求，流量近10倍于压测环境。</p>
+<p>然而只有第一次和第三次压复现了异常，而第一次压时发现原项目日志用的还是<code>System.out.println</code>，打印的信息也不完善，无法帮助排查。第三次压刚启动进了异常断点，以为是项目启动有问题，放掉断点跑了十几万次请求都OK。</p>
+<p>全部压测结束，最后几次也无法复现问题，到了收工时间，无法再压测。</p>
+<p>再回过头看唯一一次有记录的异常日志信息，发现日志里显示的是 “interrupted:false,hold:true”。表明线程没被中断过，但是并不是这个锁的持有者。</p>
+<p>只能继续带着更多的问题去做推测&amp;验证。</p>
+<p>Q1:会不会是加锁和解锁用到的两个方法各自去获取的lock对象不一致导致的问题？</p>
+<p>A1:自己试验了很多遍，两个对象不一致并不影响结果。</p>
+<p>Q2:会不会是项目启动的初始化redissonClient没加锁导致了异常？</p>
+<p>A2:翻了下日志，项目打印日志多，请求量又特别大，几十万行的日志中找到报错位置和项目启动位置似乎时间间隔有点长，应该不是这个原因。（就是这里第一次错过了正确的答案。。。）</p>
+<p>Q3:会不会是因为加锁解锁间隔过短，两个lock对象分别连接了master和slave，主从延迟导致的？(半夜刷牙想到这个，似乎非常有可能，高兴坏了)</p>
+<p>A3:第二天来公司用demo验证，用了半天时间，各自改代码，几百上千个线程跑了很多遍都没复现这个问题，redis都打得有节点连接不上了，跑得我都要怀疑人生了。</p>
+<p>Q4:试验中发现解锁用到的lock2对象如果是通过redissonClient2获取的，能稳定复现这个问题，是否与我们的项目遇到的异常有关联呢？</p>
+<p>A4:再去看了下项目代码，除了初始化redissonClient没加锁之外，运行过程中用的都是静态变量指向的redissonClient，应该是同一个，与这个试验场景不一样。（第二次错过正确答案。。。）</p>
+<p>没有了思路，只能逐行debug，走一行看一眼Redisson打的长串日志。</p>
+<p>观察发现调用 <code>lock.isHeldByCurrentThread()</code> 等方法其实都是在请求redis，并非像普通的java对象一样读取成员变量。</p>
+<p>仔细看每个lock的每次查询是否用了相同的connection，搜索每个connection的id发现，每次并不相同，且应该都是从初始化连接池中拿的。</p>
+<p>排除了各种情况的答案后，我发现了请求redis的脚本中元素的key其实有规律，是id+key，而id就是这个client初始化时生成的uuid，稍加验证，很轻松解释了之前的Q4中能稳定复现这个异常的原因。就是多个client就相当于分布式的多个jvm，即使同一个线程，使用的锁id肯定也是不一样的。</p>
+<p>因此我又把目光转回了多个client的这个问题，光看代码的确是有这个可能性，现在还需要在错误日志里找到相应的依据去证实自己的猜测。</p>
+<p>回到Q2位忽略掉的日志，在vscode中打开庞大的日志文件，CTRL+F搜索异常的时间点等信息，发现了自己之前的一个误解，其实 项目启动!=client初始化， client是等到请求打过来才初始化的。</p>
+<p>再稍加搜索，虽然日志中没有打印client的id，但是两个不同的线程打印了两次Redission的版本信息便足以佐证我的猜测了。</p>
+<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>十几个小时的排查过程虽然学到了很多，但是自己的几个失误其实大大拉长了这痛苦的时间。</p>
+<ol>
+<li><p>没有第一时间去加日志，压测，复现问题。</p>
+<p>如果在原项目中加上日志看下锁的 <code>isInterrupted()</code> 和 <code>isHeldByCurrentThread()</code>状态，其实很快就能发现线程根本没有被 interrupt，不用往那个方向排查。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">log.info(<span class="string">"lock:"</span> + lock.toString() + <span class="string">",interrupted:"</span> + Thread.currentThread().isInterrupted() </span><br><span class="line">         + <span class="string">",hold:"</span> + lock.isHeldByCurrentThread() + <span class="string">",threadId:"</span> + Thread.currentThread().getId());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多次错过了正确答案。</p>
+</li>
+</ol>
+<p>其实也主要是因为不是自己的项目，在改代码、发布、压测、日志、监控这些方面都缺乏掌控，因此难免走了一些弯路。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/06/28/elasticsearch-segment-merge/">日志ES集群的潜在性能瓶颈--段合并</a>
         </h1>
 
@@ -1102,97 +1190,6 @@
 <p>​    LogFactory 提供了对外的 getLog(String logger) 方法，给需要 logger 的地方提供一个 Log 的实例。</p>
 <p>​    内部的实现依靠 <code>logConstructor</code>  这个构造器通过反射来实例化一个 Log 的 Impl ，也就是之前的适配器，比如 Slf4jLoggerImpl 。</p>
 <p>​    判断采用哪种<code>logConstructor</code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。</p>
-
-        </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2017/11/13/setup-SSR-in-GCE/">谷歌云搭建SSR</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2017-11-13
-        </span><span class="post-category">
-            <a href="/categories/%E9%A3%9E%E8%B7%83%E9%95%BF%E5%9F%8E/">飞跃长城</a>
-            </span>
-        </div>
-    </header>
-
-    <div class="post-content"><blockquote>
-<p>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了……</p>
-</blockquote>
-<h1 id="为什么用GCE"><a href="#为什么用GCE" class="headerlink" title="为什么用GCE"></a>为什么用GCE</h1><ol>
-<li><p><strong>速度快</strong>. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力.  Chrome可以愉快地把Google用作默认浏览器了</p>
-</li>
-<li><p><strong>免费一年</strong>. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)</p>
-<p>​</p>
-</li>
-</ol>
-<h1 id="如何申请GCE"><a href="#如何申请GCE" class="headerlink" title="如何申请GCE"></a>如何申请GCE</h1><p>​    网上搜到教程很多,就不细述了</p>
-<p>​    有几个可能会卡时间的步骤包括</p>
-<ul>
-<li><p>选用静态IP</p>
-</li>
-<li><p>和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules</p>
-</li>
-<li><p>Xshell生成的SSH的私钥可能要在后面加上</p>
-<p> <code>google-ssh {&quot;userName&quot;:&quot;xxxxx@gmail.com&quot;,&quot;expireOn&quot;:&quot;2017-11-10T04:39:03+0000&quot;}</code> </p>
-<p>​</p>
-</li>
-</ul>
-<h1 id="如何部署SSR"><a href="#如何部署SSR" class="headerlink" title="如何部署SSR"></a>如何部署SSR</h1><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
-<li>获取root权限</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>安装SSR</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -N --no-check-certificate https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;91yun&#x2F;shadowsocks_install&#x2F;master&#x2F;shadowsocksR.sh &amp;&amp; bash shadowsocksR.sh</span><br></pre></td></tr></table></figure>
-
-<p>​    安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息</p>
-<ol start="3">
-<li>安装BBR</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https:&#x2F;&#x2F;github.com&#x2F;teddysun&#x2F;across&#x2F;raw&#x2F;master&#x2F;bbr.sh</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x bbr.sh</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;bbr.sh</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><p>重置VM实例</p>
-</li>
-<li><p>sudo su</p>
-</li>
-<li><p>检查是否成功</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl net.ipv4.tcp_available_congestion_control</span><br></pre></td></tr></table></figure>
-
-<p>看是不是出现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_available_congestion_control &#x3D; bbr cubic reno</span><br></pre></td></tr></table></figure>
-
-<p>类似有 bbr 的字样,有就表示BBR也装好了</p>
-</li>
-</ol>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><p>/etc/init.d/shadowsocks restart    重启SSR</p>
-<p>vi /etc/shadowsocks.json                 修改配置文件</p>
-<h1 id="SSR客户端"><a href="#SSR客户端" class="headerlink" title="SSR客户端"></a>SSR客户端</h1><p>下载网址  <a href="https://github.com/shadowsocksrr/shadowsocks-rss" target="_blank" rel="noopener">github</a></p>
-<p>或者<a href="http://ots7yt7am.bkt.clouddn.com/file/ShadowsocksR-4.7.0.7z" target="_blank" rel="noopener">这里直接下载</a> </p>
-<p>配置和以前的SS也差不多, 有几点注意的是</p>
-<ol>
-<li>填写加密/协议/混淆, 默认的是chacha20/auth_sha1_v4/tls1.2_ticket_auth</li>
-<li>在选项设置里将本地端口设置成你SwitchOmega配置的本地端口.比如我就用了10801而不是默认的1080</li>
-</ol>
-<h1 id="其它SSR"><a href="#其它SSR" class="headerlink" title="其它SSR"></a>其它SSR</h1><p>​    <a href="https://52world.top" target="_blank" rel="noopener">https://52world.top</a>    </p>
-<p>​    不知道在哪看来的这个SSR网站,有免费SSR,也可以充钱升级专业版. 目前还是能用的 , 可以收藏着防止哪天其它翻墙方式失效吧.</p>
-<p>​    毕竟翻墙第一定律就是:永远不要在一种翻墙方式上吊死!</p>
-<hr>
-<p>参考网站</p>
-<ol>
-<li><a href="https://suiyuanjian.com/124.html" target="_blank" rel="noopener">https://suiyuanjian.com/124.html</a></li>
-<li><a href="http://www.jianshu.com/p/6bd66829a1ce" target="_blank" rel="noopener">http://www.jianshu.com/p/6bd66829a1ce</a></li>
-<li><a href="http://suppore.cn/512.html" target="_blank" rel="noopener">http://suppore.cn/512.html</a></li>
-</ol>
 
         </div></article>
       <nav class="pagination"><a class="next" href="/page/2/">
