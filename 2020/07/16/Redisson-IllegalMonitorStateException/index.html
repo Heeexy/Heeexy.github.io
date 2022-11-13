@@ -128,7 +128,7 @@
       <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#故障"><span class="toc-text">故障</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#先抛结论"><span class="toc-text">先抛结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位问题依据"><span class="toc-text">定位问题依据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排查过程"><span class="toc-text">排查过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、搜索解决方案"><span class="toc-text">一、搜索解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、质疑解决方案"><span class="toc-text">二、质疑解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、排查线程问题"><span class="toc-text">三、排查线程问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、排查client问题"><span class="toc-text">四、排查client问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反思"><span class="toc-text">反思</span></a></li></ol>
     </div>
   </div><div class="post-content"><h2 id="故障"><a href="#故障" class="headerlink" title="故障"></a>故障</h2><p>业务线测试同学反馈压测时，有以下报错日志：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalMonitorStateException: attempt to unlock lock, not locked by current thread by node id: def1bd2c-<span class="number">1f</span>49-<span class="number">4802</span>-b635-<span class="number">5</span>ea78543c033 thread-id: <span class="number">109</span></span><br><span class="line">	at org.redisson.RedissonLock.unlock(RedissonLock.java:<span class="number">366</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalMonitorStateException: attempt to unlock lock, </span><br><span class="line">not locked by current thread by node id: def1bd2c-<span class="number">1f</span>49-<span class="number">4802</span>-b635-<span class="number">5</span>ea78543c033 thread-id: <span class="number">109</span></span><br><span class="line">	at org.redisson.RedissonLock.unlock(RedissonLock.java:<span class="number">366</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="先抛结论"><a href="#先抛结论" class="headerlink" title="先抛结论"></a>先抛结论</h2><p>建议遇到类似问题的人先检查项目中是否确保了 <strong>redissonClient 的单例</strong>。（单线程当然也是必须的，不过排查起来很简单，估计看到文章的人首先已经排查过单线程的问题了）</p>
 <p>本次报错是因为:</p>
@@ -220,7 +220,12 @@
             <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">分布式锁</a>
             </div>
         
-        <nav class="post-nav"><a class="next" href="/2020/06/28/elasticsearch-segment-merge/">
+        <nav class="post-nav"><a class="prev" href="/2020/07/29/Elasticsearch-RestClient-IO-Reactor-stopped-exception/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">干掉一台ES，Java客户端就不干活了？--Elasticsearch-Java客户端连接报错问题排查</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2020/06/28/elasticsearch-segment-merge/">
         <span class="next-text nav-default">日志ES集群的潜在性能瓶颈--段合并</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
@@ -248,7 +253,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">heeexy</span>

@@ -110,6 +110,104 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2017/12/30/JSONObject-in-MyBatis/">MyBatis 中使用 JSONObject 替代 JavaBean</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-30
+        </span><span class="post-category">
+            <a href="/categories/MyBatis%E7%AC%94%E8%AE%B0/">MyBatis笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h1 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h1><p>项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？</p>
+<p>其实是因为 User 实体类定义了太多字段，转为 JSON 的时候都被包括进去了。稍微多几个还能忍，但通常 User/Order 这些实体类字段特别多，对调试开发实在非常不友好。</p>
+<p>因此本次任务就是：确保每个接口返回字段都与接口文档上一模一样，去除冗余字段。</p>
+<p>解决过程就省略了，直接抛出我最后的解决方案吧：就是 MyBatis 的返回值几乎完全抛弃实体类，全部使用<code>com.alibaba.fastjson.JSONObject</code> 。</p>
+<h1 id="使用-JSONObject"><a href="#使用-JSONObject" class="headerlink" title="使用 JSONObject"></a>使用 JSONObject</h1><p>先最简化直观的看一下 JSONObject 的使用吧。</p>
+<p>Controller:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/list"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> JSONObject <span class="title">listUser</span><span class="params">(@RequestBody JSONObject requestJson)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> userService.listUser(requestJson);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Service:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">JSONObject <span class="title">listUser</span><span class="params">(JSONObject jsonObject)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>ServiceImpl:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> JSONObject <span class="title">listUser</span><span class="params">(JSONObject jsonObject)</span> </span>&#123;</span><br><span class="line">  	<span class="comment">//fillPageParam是自定义的封装分页参数</span></span><br><span class="line">    CommonUtil.fillPageParam(jsonObject);</span><br><span class="line">    <span class="keyword">int</span> count = userDao.countUser(jsonObject);</span><br><span class="line">    List&lt;JSONObject&gt; list = userDao.listUser(jsonObject);</span><br><span class="line">    <span class="comment">//自定义successPage封装分页结果</span></span><br><span class="line">    <span class="keyword">return</span> CommonUtil.successPage(jsonObject, list, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dao:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserDao</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countUser</span><span class="params">(JSONObject jsonObject)</span></span>;</span><br><span class="line">    <span class="function">List&lt;JSONObject&gt; <span class="title">listUser</span><span class="params">(JSONObject jsonObject)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UserMapper.xml , 这里的 resultType 直接就是 JSONObject ,如果是一对多的情况，就要多加一步，请移步看<a href="/2017/12/31/One2Many">这篇文章</a>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"countUser"</span> <span class="attr">resultType</span>=<span class="string">"Integer"</span>&gt;</span></span><br><span class="line">    SELECT count(0)</span><br><span class="line">    FROM sys_user u</span><br><span class="line">  	WHERE age=#&#123;age&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"users"</span> <span class="attr">resultType</span>=<span class="string">"com.alibaba.fastjson.JSONObject"</span>&gt;</span></span><br><span class="line">     SELECT</span><br><span class="line">   		id  		userId,</span><br><span class="line">   		nickname     	nickname,</span><br><span class="line">   		avatar       	avatar</span><br><span class="line">     FROM sys_user</span><br><span class="line">  	 WHERE age=#&#123;age&#125;</span><br><span class="line">     LIMIT #&#123;offSet&#125;, #&#123;pageRow&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="为什么可以使用JSONObject"><a href="#为什么可以使用JSONObject" class="headerlink" title="为什么可以使用JSONObject"></a>为什么可以使用JSONObject</h1><p>因为 JSONObject 实现了 <code>Map&lt;String,Object&gt;</code> , MyBatis 那边完全是把它当成 <code>Map&lt;String,Object&gt;</code>  处理的，相信不少人都直接用过 map 来接收MyBatis 返回结果。</p>
+<blockquote>
+<p> fastjson 是这样的，Gson 并不是，所以 Gson 的 JsonObject 是不可以的。</p>
+</blockquote>
+<p>有兴趣了解更深入的原理的话，请参考我此系列的其它文章。</p>
+<h1 id="优劣对比"><a href="#优劣对比" class="headerlink" title="优劣对比"></a>优劣对比</h1><h4 id="便捷性"><a href="#便捷性" class="headerlink" title="便捷性"></a>便捷性</h4><p>JSONObject 便捷到可以说是无脑，接收参数、 sql 传参、封装 sql 结果、返回到前端，全程使用。</p>
+<p>JavaBean 则接口层接收参数转为实体类，返回给前端再转为 json，新增一个业务通常还需要多建一个实体类。</p>
+<h4 id="工具方法拓展"><a href="#工具方法拓展" class="headerlink" title="工具方法拓展"></a>工具方法拓展</h4><p>JSONObject 可以方便地封装出通用的工具方法，比如封装分页信息，比如封装处理结果的成功和失败信息，特别是校验参数字段非空，不同的接口通常需要校验的字段不同，如下面这个简单的方法就可以校验各字段是否都非空。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">hasAllRequired</span><span class="params">(<span class="keyword">final</span> JSONObject jsonObject, String requiredColumns)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!StringTools.isNullOrEmpty(requiredColumns)) &#123;</span><br><span class="line">        String[] columns = requiredColumns.split(<span class="string">","</span>);</span><br><span class="line">        String missCol = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span> (String column : columns) &#123;</span><br><span class="line">            Object val = jsonObject.get(column.trim());</span><br><span class="line">            <span class="keyword">if</span> (StringTools.isNullOrEmpty(val)) &#123;</span><br><span class="line">                missCol += column + <span class="string">"  "</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!StringTools.isNullOrEmpty(missCol)) &#123;</span><br><span class="line">            jsonObject.clear();</span><br><span class="line">            jsonObject.put(<span class="string">"returnCode"</span>, ErrorEnum.E_90003.getErrorCode());</span><br><span class="line">            jsonObject.put(<span class="string">"returnMsg"</span>, <span class="string">"缺少必填参数:"</span> + missCol.trim());</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> CommonJsonException(jsonObject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JavaBean 在处理分页上通常要引各自写的 PageBean 工具类 , 使用过程通常不会比上面ServiceImpl里的分页简单。</p>
+<p>JavaBean 的参数校验都不用说，更头痛更复杂了，不知道有没有人有用起来很爽的方法。</p>
+<h4 id="返回字段"><a href="#返回字段" class="headerlink" title="返回字段"></a>返回字段</h4><p>JSONObject 想返回几个字段就几个字段，而 JavaBean 如果只想返回某几个字段的话，就需要单独建个实体类。</p>
+<p>字段有改动的话，JSONObject 灵活性就更强了，直接在 mapper.xml 里改下就完事。</p>
+<h4 id="业务层"><a href="#业务层" class="headerlink" title="业务层"></a>业务层</h4><p>不可否认的是，JSONObject 在业务层进行处理时，失去了 JavaBean 的编译提示，也失去了 IDE 的快捷补全，更有可能出现取错值的情况。</p>
+<p>比如 jsonObject.getString(“pasword”) ,输入错了单词都可能没注意，最终取出来 null 。</p>
+<h4 id="可读性"><a href="#可读性" class="headerlink" title="可读性"></a>可读性</h4><p>通常大家可能认为 JavaBean 有更好的可读性，我觉得只要变量名取得好，JSONObject 也是没有什么问题的。毕竟类名是固定死的，变量名和参数名才能更好地反映此处业务的处理。</p>
+<p>尤其是如今前后端分离的项目，前后端开发人员一般对照着文档确认字段含义。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>JSONObject 开发非常方便，具有更强的灵活性，适用于中小型项目，简单业务的开发，也适用于<strong>文档至上</strong>的前后端分离开发与微服务项目。</p>
+<p>更具体的用法，可以参考 <a href="https://github.com/Heeexy/SpringBoot-Shiro-Vue" target="_blank" rel="noopener">Github 项目</a>。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2017/12/14/mybatis_design_patterns/">MyBatis 的日志设计--适配器模式 & 工厂模式</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-14
+        </span><span class="post-category">
+            <a href="/categories/MyBatis%E7%AC%94%E8%AE%B0/">MyBatis笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>​    MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。</p>
+<h2 id="问题-1"><a href="#问题-1" class="headerlink" title="问题 1"></a>问题 1</h2><p>​    市面上各家的打印机 slf4j、java.util.logging、log4j 甚至 System.out 都是各种不同的用法，这使用起来就太麻烦了。</p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>​    不管市面上打印机有多少型号，我家 MyBatis 包里的类只用自家的统一接口，我家的类只管 log.debug()、log.error()…</p>
+<p>​    定义好了接口，就需要实现类 impl 来实现这些 debug()、error() 方法了 , 咱假装是自己来实现，其实去调用真正打印机 slf4、log4j 的方法，这样就把别人家的打印机和咱自家的接口关联起来啦。</p>
+<p>​    这就是<strong>适配器模式</strong>。</p>
+<p>​    我家的每个实现类其实就是一个适配器，每个适配器去适配一种打印机。比如 slf4jLoggerImpl 就完成了对 slf4j 打印机的适配，slf4jLoggerImpl .debug() 调用了slf4j.Logger.debug()。</p>
+<p>​    这样市面上每多一种打印机，比如想用 log4j2 了，我就只需要加一种适配器 log4j2LoggerImpl 去适配它就可以了。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>​    定义接口 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Log</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isDebugEnabled</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">debug</span><span class="params">(String s)</span></span>;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    在实现类里完成适配，比如适配 slf4j 的 <code>Slf4jLoggerImpl</code> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.ibatis.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Slf4jLoggerImpl</span> <span class="keyword">implements</span> <span class="title">Log</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Logger log;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//注意这个地方，入参为 org.slf4j.Logger </span></span><br><span class="line">  <span class="comment">//说明咱这个适配器要用起来，是需要传入一个真正的 slf4j 家的打印机进来的</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Slf4jLoggerImpl</span><span class="params">(Logger logger)</span> </span>&#123;</span><br><span class="line">    log = logger;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//看似外面调用咱 MyBatis 的 Log 的 debug()</span></span><br><span class="line">  <span class="comment">//其实是调用 org.slf4j.Logger 的 debug() </span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">debug</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    log.debug(s);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="问题-2"><a href="#问题-2" class="headerlink" title="问题 2"></a>问题 2</h2><p>​    适配器咱是做好了，slf4j、log4j、stdout…做了那么多适配器，可是怎么用啊？我真正要打印机的时候，怎么才能知道我该调用哪款适配器啊？难道每次取打印机的时候，都去查一遍咱的系统配了那款打印机（jar) 包么？而且以后多加了1种打印机，我还去每个地方都改一遍，都多加一道判断么？</p>
+<h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><p>​    这其实就是获取实例的时候的问题，咱获取实例太累了，不如来个统一的工厂吧，我每次想打印的时候，都去找工厂要一台打印机，你工厂按照我 Log 的接口给我一个实例就是了。我也不管你给的具体实现到底是 slf4j 家的，还是 log4j 的，甚至可能是 <code>NoLoggingImpl</code> 每次调接口都不处理的这种空壳打印机。</p>
+<p>​    这样一来，有了统一的工厂，判断系统用哪种适配器的任务就可以在工厂完成了。</p>
+<p>​    而且以后就算新加了打印机，也只要改改工厂的代码，在工厂里多加一重判断就可以了。</p>
+<p>​    这就是<strong>工厂模式</strong>。</p>
+<h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><p>​    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">LogFactory</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Constructor&lt;? extends Log&gt; logConstructor;</span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    tryImplementation(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        useSlf4jLogging();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    tryImplementation(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        useCommonsLogging();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">LogFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// disable construction</span></span><br><span class="line">  &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Log <span class="title">getLog</span><span class="params">(String logger)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> logConstructor.newInstance(logger);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    LogFactory 提供了对外的 getLog(String logger) 方法，给需要 logger 的地方提供一个 Log 的实例。</p>
+<p>​    内部的实现依靠 <code>logConstructor</code>  这个构造器通过反射来实例化一个 Log 的 Impl ，也就是之前的适配器，比如 Slf4jLoggerImpl 。</p>
+<p>​    判断采用哪种<code>logConstructor</code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。</p>
+
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2017/11/13/setup-SSR-in-GCE/">谷歌云搭建SSR</a>
         </h1>
 
@@ -1454,7 +1552,7 @@
     <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
   </span>
 
-  <span class="copyright-year">&copy;2017 - 2020<span class="heart">
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
     <span class="author">heeexy</span>
