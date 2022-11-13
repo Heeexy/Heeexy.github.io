@@ -127,7 +127,7 @@
 <p>那么正在写入中的数据呢？写入请求发给了数据库，还没收到成功/失败的响应，这时候数据库断电，你慌不慌？</p>
 <p><img src="http://img.heeexy.com/database-crash-safe-1.png" alt="Untitled"></p>
 <p>当然，作为数据库，自有它保障数据安全的方式，只要做好了合适的配置，就可以应对断电的情况。</p>
-<p>我们先来简单复习下 Elasticsearch 和 MySQL 保障数据安全的原理。</p>
+<p>今天我们就以 Elasticsearch 和 MySQL 为例来了解下数据库是如何保障数据安全的。</p>
 <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h2><p>数据在 lucene 中的主要写入流程上如下图所示，</p>
 <p><img src="http://img.heeexy.com/database-crash-safe-2.png" alt="Untitled"></p>
 <p>从图上可以看出，只有 segment 落盘了，数据才是真正安全的。但是这会带来一个比较严重的问题：在 refresh 之后，commit 之前，数据已经可以被用户查到，然而断电后数据丢失，重启后这个数据无法被搜到。</p>
@@ -166,7 +166,7 @@
 </li>
 <li>log 保存时长不同：<ul>
 <li>translog 在每次 flush 完后都会清空，体积很小。</li>
-<li>redo log 循环使用ib_logfile0、ib_logfile1… 体积也不会特别大。（仅讨论 crash-safe 问题的话，这一点应该放在 Elasticsearch 和 MySQL 的【同】下面）</li>
+<li>redo log 循环使用ib_logfile0、ib_logfile1… 体积也不会特别大。（仅讨论 crash-safe 问题的话，这一点应该属于相同点）</li>
 <li>binlog 可以保存很久，时长完全取决于用户想要数据可追溯多久。</li>
 </ul>
 </li>
