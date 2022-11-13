@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-<meta name="description" content="数据库如果断电，我们需不需要慌？"/><meta name="keywords" content="crash-safe - Elasticsearch - MySQL, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<meta name="description" content="数据库如果断电，我们需不需要慌？"/><meta name="keywords" content="Elasticsearch, MySQL, crash-safe, 街上的动物园" /><link rel="alternate" href="/atom.xml" title="街上的动物园"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
 <link rel="canonical" href="http://heeexy.com/2022/11/13/database-crash-safe/"/>
 
 <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
@@ -130,7 +130,7 @@
   </div><div class="post-content"><h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？</p>
 <p>心大的同学可能会说，我们生产环境的数据有副本，不用慌！</p>
 <p>那么正在写入中的数据呢？写入请求发给了数据库，还没收到成功/失败的响应，这时候数据库断电，你慌不慌？</p>
-<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E6%9E%9C%E6%96%AD%E7%94%B5%EF%BC%8C%E6%88%91%E4%BB%AC%E9%9C%80%E4%B8%8D%E9%9C%80%E8%A6%81%E6%85%8C%EF%BC%9F%20b3dc4d5238eb43a5b8d518c8450919c9/Untitled.png" alt="Untitled"></p>
+<p><img src="http://img.heeexy.com/database-crash-safe-1.png" alt="Untitled"></p>
 <p>当然，作为数据库，自有它保障数据安全的方式，只要做好了合适的配置，就可以应对断电的情况。</p>
 <p>我们先来简单复习下 Elasticsearch 和 MySQL 保障数据安全的原理。</p>
 <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h2><p>数据在 lucene 中的主要写入流程上如下图所示，</p>
@@ -214,11 +214,13 @@
   </div>
       <footer class="post-footer">
         <div class="post-tags">
-            <a href="/tags/crash-safe-Elasticsearch-MySQL/">crash-safe - Elasticsearch - MySQL</a>
+            <a href="/tags/Elasticsearch/">Elasticsearch</a>
+            <a href="/tags/MySQL/">MySQL</a>
+            <a href="/tags/crash-safe/">crash-safe</a>
             </div>
         
-        <nav class="post-nav"><a class="next" href="/2020/07/29/Elasticsearch-RestClient-IO-Reactor-stopped-exception/">
-        <span class="next-text nav-default">干掉一台ES，Java客户端就不干活了？--Elasticsearch-Java客户端连接报错问题排查</span>
+        <nav class="post-nav"><a class="next" href="/2020/07/16/Redisson-IllegalMonitorStateException/">
+        <span class="next-text nav-default">Redisson分布式锁报错问题排查</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
