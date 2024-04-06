@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>MySQL on 网站标题</title><link>https://heeexy.com/tags/mysql/</link><description>Recent content in MySQL on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Nov 2022 21:17:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/posts/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 21:17:00 +0000</pubDate><guid>https://heeexy.com/posts/database-crash-safe/</guid><description>序 生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？
+心大的同学可能会说，我们生产环境的数据有副本，不用慌！
+那么正在写入中的数据呢？写入请求发给了数据库，还没收到成功/失败的响应，这时候数据库断电，你慌不慌？
+当然，作为数据库，自有它保障数据安全的方式，只要做好了合适的配置，就可以应对断电的情况。
+今天我们就以 Elasticsearch 和 MySQL 为例来了解下数据库是如何保障数据安全的。
+原理 Elasticsearch 数据在 lucene 中的主要写入流程上如下图所示，
+从图上可以看出，只有 segment 落盘了，数据才是真正安全的。但是这会带来一个比较严重的问题：在 refresh 之后，commit 之前，数据已经可以被用户查到，然而断电后数据丢失，重启后这个数据无法被搜到。
+因此 es 设计了translog，每次数据的写入，会在分词、加入倒排索引等重逻辑的 lucene 操作之前，数据的原始信息率先写入 translog。这就是 WAL (write-ahead-logging) 机制。
+有了 translog 后，即使是没有落盘到 segment 的数据，崩溃想要恢复也有了依据，如下图所示，前2个阶段依靠 translog 恢复。
+当然 translog 文件本身也会有 fsync 的问题，可以通过配置选择 translog 文件 fsync 的时机，而这个时机最终决定了数据的可恢复性。
+Elasticsearch 比较常见的设置是：
+index.translog.durability=async
+index.translog.sync_interval=5s
+这样配置下，最多可能丢失 5s 的数据。而 Elasticsearch 要保障数据支持崩溃恢复，比较极端的追求崩溃恢复的设置为：
+index.translog.durability=request
+每个 request 都会进行数据落盘。
+MySQL 数据更新操作在 MySQL中的流程如下图所示，
+其中崩溃恢复的核心是 redo log，innodb_flush_log_at_trx_commit 参数设置为 1 时，可以保障每次事务 commit 的时候 redo log 刷到磁盘。</description></item></channel></rss>

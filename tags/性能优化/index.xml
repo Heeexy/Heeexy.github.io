@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>性能优化 on 网站标题</title><link>https://heeexy.com/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</link><description>Recent content in 性能优化 on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 28 Jun 2020 18:37:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/posts/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/posts/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</guid><description>先抛结论 如果日志型ES集群system load 过高，I/O打满，尤其是在读写低谷时间段 read 异常高，可以考虑排查段合并的问题。
+如果的确是遇到了段合并问题，可以考虑两个方向：
+机械硬盘升级为SSD。 大索引拆分成小索引。 PS. 再附送一个潜在的查询问题可能导致的IO打满：通配符查询，参见文章。
+排查 详细的排查过程就不赘述了，无非是加监控，包括业务层面、ES层面、机器层面，然后横向、纵向的分析各种监控指标。
+这里分享几个容易被忽略的指标/api
+查看最大的索引的 _stats 中merge部分：
+total_stopped_time_in_millis ：通常应该是0
+total_size_in_bytes：总共merge了这么多数据，你会发现远大于索引大小。下文会介绍这一指标。
+观察线程状况，api详细参数可以查阅官方文档。我在定位问题时还不知道hot_threads这个api，如果提前知道的话可能就省下不少时间了。
+GET _cat/thread_pool?v GET /_nodes/hot_threads 原理 段合并的基本原理很简单，两个（多个）已提交的段写入一个新的段。
+这种读写除了尚在内存中的部分，就难免需要消耗磁盘IO了。
+而从可视化Lucene段合并一文中得知，这种类似于SSD写放大的过程其实是一种浪费（文中称为tax），一个最终1G的索引可能由于merge而需要读写10G磁盘。
+段合并算法优化的一个目标就是降低这种浪费，更高效地做段合并。
+而减小我们索引的体积就可以轻松的带来显著的提升。</description></item><item><title>QPS从1k到2w，我做了什么</title><link>https://heeexy.com/posts/%E5%88%97%E8%A1%A8%E9%A1%B5%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/</link><pubDate>Mon, 17 Feb 2020 21:15:00 +0000</pubDate><guid>https://heeexy.com/posts/%E5%88%97%E8%A1%A8%E9%A1%B5%E4%BC%98%E5%8C%96%E7%BB%8F%E9%AA%8C/</guid><description>这两年有幸参与了商品列表系统的两次黑五挑战，QPS从最开始的1k都顶不住，到1w，再到2w，加上支持大量的AB实验，排序千人千面，功能越来越复杂，系统越来越庞大，可能这样的机会都不会常有，在此简单记录一下做系统优化的实践心得。
+要素 仔细想想，做优化其实并没有很多门道，个人总结起来就三个要素：
+业务 工具 人 业务 业务就是你的任务，是优化的目标，业务的复杂性和独特性决定了你的问题只有自己去解决，网上没有答案，即使挖个大神来也不能立马帮到你。
+业务不仅仅包括公司对外提供的服务，还包括项目内部的一切细枝末节，比如代码的逻辑、服务器的部署、后台的配置、数据的流转，甚至不同团队间的分工合作等等。
+我们要做的其实就是优化这些业务，业务中的任何一个点都可以是优化的方向。
+工具 我们能用到的一切手段都是工具，有直接应对线上流量的服务器、代码、JVM、DB，也有间接可以帮助我们做优化的辅助工具，监控(Prometheus/Grafana)、日志(ELK)、压测(Goreplay)、诊断工具(Arthas)等等。
+人 只了解业务的人面对问题束手无策，只钻研技术的人能解决的问题往往被技术限制了天花板。
+我们需要的是精通业务，善用工具的人，能从监控数据中发现蛛丝马迹，能从复杂的业务关系中抽丝剥茧，能利用手上一切工具，发挥它们最大的作用。
+步骤 抛开搭建环境、压测、回归测试等工作，优化步骤最精简的话只有两步：
+找系统瓶颈 优化，突破瓶颈 找系统瓶颈 找瓶颈就需要有依据，依据就是监控指标。
+监控指标的全面对于一个庞大的系统来说至关重要，不仅包括接口的耗时、JVM的状态、机器的负载等一些常见的指标，更需要细致到收集缓存的命中率、不同逻辑分支的占比、每张表的读写频率等具体业务相关的指标。
+如果缺少了业务指标的监控，定位问题很可能定位不到根源，能优化的空间也会受到技术的限制。
+优化 找到瓶颈之后，看起来问题很快就能解决了，JVM顶不住就调heap，调GC，DB顶不住就加副本，优化sql，毕竟我们学习的时候学的就是这些，面试的时候考的也是这些。
+然而真正漫长而痛苦的优化过程中，这些直接了当的解决方式往往不会带来多少提升，因为简单的方法可能在我们当初开发功能时都已经做过。
+通常想要成倍的提高吞吐量，我们需要做更多看似侧面的工作，解决根源上的问题。
+几个例子 当我们吞吐量在1k不到时，JVM顶不住，这时候不管是升机器配置，还是JVM调优都没有明显效果。因为我们有很多慢接口，即使只占请求总量的1%不到，在大流量下也是拖垮服务的重要因素。我们采用了使用ES的一些高级特性，同时将数据准备成便于查询的结构（见ElasticSearch在高并发复杂查询业务场景的应用）等一系列措施，消灭了慢查询接口。
+当慢接口处理完，吞吐量提升到了一定程度，JVM还是状况不佳，我们就考虑改善缓存。原本使用的JVM内缓存，尝试了调整缓存参数，使用集中式缓存Redis等方案后都没效果。最终通过Nginx层的缓存和一致性哈希大幅减轻了压力。
+当接口都很快，DB（Elasticsearch）开始顶不住，我们尝试了加机器、扩副本、调堆内存大小等手段，最终还是通过将商品详情的查询移出ES，由单独的服务通过查Redis来提供，减轻了ES大半的压力。
+。。。
+以上的手段未必适合其它项目，但系统的优化就是这样，从来就没有标准答案。
+我们能做的就只有深入业务，利用好每一种工具，然后充满信心地迎接下一个挑战。</description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/posts/elasticsearch-for-search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/posts/elasticsearch-for-search/</guid><description>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。
+You Know, for Search
+我们团队就一直使用 ES 作为主力数据库， 从一开始做全文检索，到现在承担全部的商品列表页查询。近几个月将查询系统的 qps 从 1k 优化到了 10k+，其中 ES 的优化占了很重要一部分，准确的来说，应该是对 ES 特性的扬长避短起到了非常大的作用。
+数组 &amp;amp; 嵌套结构 ES 没有 join，很多人直接就会认为 ES 无法处理一对多的情况，其实还有数组和嵌套结构可以应付常见的业务场景。
+比如一个商品拥有多种属性，都存放在一个数组字段中，使用 must 和 must_not 就可以灵活地进行查询筛选。
+比如同款不同色的几件T恤，使用嵌套结构保存，搜索时只需要其中一件满足筛选条件，便可以全部带出来，在页面上以多个小色块展示，而无需占用多个展示位。并且还可以拿满足筛选条件的商品中的某属性最大值/最小值等进行排序，如官网给出的示例:
+{ &amp;#34;query&amp;#34;: { &amp;#34;nested&amp;#34;: { &amp;#34;path&amp;#34;: &amp;#34;parent&amp;#34;, &amp;#34;query&amp;#34;: { &amp;#34;bool&amp;#34;: { &amp;#34;must&amp;#34;: {&amp;#34;range&amp;#34;: {&amp;#34;parent.age&amp;#34;: {&amp;#34;gte&amp;#34;: 21}}}, &amp;#34;filter&amp;#34;: { &amp;#34;nested&amp;#34;: { &amp;#34;path&amp;#34;: &amp;#34;parent.child&amp;#34;, &amp;#34;query&amp;#34;: {&amp;#34;match&amp;#34;: {&amp;#34;parent.child.name&amp;#34;: &amp;#34;matt&amp;#34;}} } } } } } }, &amp;#34;sort&amp;#34; : [ { &amp;#34;parent.</description></item></channel></rss>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>DriverManger on 网站标题</title><link>https://heeexy.com/tags/drivermanger/</link><description>Recent content in DriverManger on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 03 Feb 2020 19:57:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/drivermanger/index.xml" rel="self" type="application/rss+xml"/><item><title>JDBC为什么不需要Class.forName()</title><link>https://heeexy.com/posts/drivermaneger/</link><pubDate>Mon, 03 Feb 2020 19:57:00 +0000</pubDate><guid>https://heeexy.com/posts/drivermaneger/</guid><description>DriverManager 在初学JDBC时，总是记得开头就要来这么一句
+Class.forName(&amp;#34;com.mysql.jdbc.Driver&amp;#34;); 然而今天学习类加载机制时偶然知道不需要这句也同样可以正常运行，测试的确如此，看了一眼源码，看似原因很简单，因为无论写不写那段Class.forName，在触发加载DriverManager时，会运行
+/** * Load the initial JDBC drivers by checking the System property * jdbc.properties and then use the {@code ServiceLoader} mechanism */ static { loadInitialDrivers(); println(&amp;#34;JDBC DriverManager initialized&amp;#34;); } 都会扫描到这个Driver，注册到registeredDrivers中。
+如果只要回答这个问题，可能上面的答案就已经足够了。
+然而兴趣来了，总想把源码继续看下去到底扫描了啥，咋扫描的，明明
+ServiceLoader&amp;lt;Driver&amp;gt; loadedDrivers = ServiceLoader.load(Driver.class); 这里是 java.sql.Driver 接口，上哪找出来的实现类？
+我们就一层层的往下看吧。
+ServiceLoader 主要做了两点
+设置ClassLoader为当前线程的。（破坏双亲委派，让它rt.jar包中的类可以通过AppClassLoader获取到外部的类，很多讲双亲委派机制的文章已经大书特书过了） 初始化了一个懒加载的迭代器 lookupIterator = new LazyIterator(service, loader);。正是这个迭代器中最终帮我们找到了各种driver注册进去。 LazyIterator 既然是迭代器，最重要的当然是hasNext()和next()方法。
+在next()方法中，已经拿到了nextName完整的&amp;quot;com.mysql.cj.jdbc.Driver&amp;quot;类名，说明还是hasNext()方法干了真正的扫描工作。
+hasNext()方法的主要工作也都放在了hasNextService()中
+private boolean hasNextService() { if (nextName != null) { return true; } if (configs == null) { try { //此处拼出了全名为 META-INF/services/java.</description></item></channel></rss>

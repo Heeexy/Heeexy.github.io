@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Elasticsearch on 网站标题</title><link>https://heeexy.com/tags/elasticsearch/</link><description>Recent content in Elasticsearch on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Nov 2022 21:17:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/posts/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 21:17:00 +0000</pubDate><guid>https://heeexy.com/posts/database-crash-safe/</guid><description>序 生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？
+心大的同学可能会说，我们生产环境的数据有副本，不用慌！
+那么正在写入中的数据呢？写入请求发给了数据库，还没收到成功/失败的响应，这时候数据库断电，你慌不慌？
+当然，作为数据库，自有它保障数据安全的方式，只要做好了合适的配置，就可以应对断电的情况。
+今天我们就以 Elasticsearch 和 MySQL 为例来了解下数据库是如何保障数据安全的。
+原理 Elasticsearch 数据在 lucene 中的主要写入流程上如下图所示，
+从图上可以看出，只有 segment 落盘了，数据才是真正安全的。但是这会带来一个比较严重的问题：在 refresh 之后，commit 之前，数据已经可以被用户查到，然而断电后数据丢失，重启后这个数据无法被搜到。
+因此 es 设计了translog，每次数据的写入，会在分词、加入倒排索引等重逻辑的 lucene 操作之前，数据的原始信息率先写入 translog。这就是 WAL (write-ahead-logging) 机制。
+有了 translog 后，即使是没有落盘到 segment 的数据，崩溃想要恢复也有了依据，如下图所示，前2个阶段依靠 translog 恢复。
+当然 translog 文件本身也会有 fsync 的问题，可以通过配置选择 translog 文件 fsync 的时机，而这个时机最终决定了数据的可恢复性。
+Elasticsearch 比较常见的设置是：
+index.translog.durability=async
+index.translog.sync_interval=5s
+这样配置下，最多可能丢失 5s 的数据。而 Elasticsearch 要保障数据支持崩溃恢复，比较极端的追求崩溃恢复的设置为：
+index.translog.durability=request
+每个 request 都会进行数据落盘。
+MySQL 数据更新操作在 MySQL中的流程如下图所示，
+其中崩溃恢复的核心是 redo log，innodb_flush_log_at_trx_commit 参数设置为 1 时，可以保障每次事务 commit 的时候 redo log 刷到磁盘。</description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/posts/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/posts/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</guid><description>先抛结论 如果日志型ES集群system load 过高，I/O打满，尤其是在读写低谷时间段 read 异常高，可以考虑排查段合并的问题。
+如果的确是遇到了段合并问题，可以考虑两个方向：
+机械硬盘升级为SSD。 大索引拆分成小索引。 PS. 再附送一个潜在的查询问题可能导致的IO打满：通配符查询，参见文章。
+排查 详细的排查过程就不赘述了，无非是加监控，包括业务层面、ES层面、机器层面，然后横向、纵向的分析各种监控指标。
+这里分享几个容易被忽略的指标/api
+查看最大的索引的 _stats 中merge部分：
+total_stopped_time_in_millis ：通常应该是0
+total_size_in_bytes：总共merge了这么多数据，你会发现远大于索引大小。下文会介绍这一指标。
+观察线程状况，api详细参数可以查阅官方文档。我在定位问题时还不知道hot_threads这个api，如果提前知道的话可能就省下不少时间了。
+GET _cat/thread_pool?v GET /_nodes/hot_threads 原理 段合并的基本原理很简单，两个（多个）已提交的段写入一个新的段。
+这种读写除了尚在内存中的部分，就难免需要消耗磁盘IO了。
+而从可视化Lucene段合并一文中得知，这种类似于SSD写放大的过程其实是一种浪费（文中称为tax），一个最终1G的索引可能由于merge而需要读写10G磁盘。
+段合并算法优化的一个目标就是降低这种浪费，更高效地做段合并。
+而减小我们索引的体积就可以轻松的带来显著的提升。</description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/posts/updgradeelasticsearch/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/posts/updgradeelasticsearch/</guid><description>集群管理 节点分配 原集群 master*3 data*12 client*0
+新集群 master*3 data*12 injest*0 coordinating*0
+ingest 节点用于支持 pipeline 操作 对bulk和index文档进行预处理
+coordinating 功能主要是分发请求,聚合各节点的处理结果,负载均衡,大规模集群可以设置一个给读,一个给写。但coordinating 数量也不宜过多,会拖慢选举主节点的时间,并且data节点其实也可以处理这些请求.
+节点设置 search.remote.connect: false node.ingest: false
+数据迁移 数据源 由于有数据源及同步方案,所以只需数据全量导入6.3版本的集群即可.
+索引管理 目前生产环境有300个索引需要同步,要检查同步脚本的创建索引,切别名等步骤.
+mapping设置 type 只支持1种，自 ES7.0 起将不再支持 type&amp;mdash;官方说明 对可以使用自增 id 的索引使用自增 id 对大多数字符串字段使用 keyword 类型 对不用于数值范围查找的数值类型改为keyword类型 分词插件可能需要改动 index: no 改为 index:false index: not_analyzed 删掉 提高迁移速度 sudo swapoff -a 副本设置为0 refresh_interval 设置为 -1 （对线上生产集群上索引批量导入时，设置-1后，重新打开时可能会导致集群压力暴增） 导入数据 refresh_interval 设置为30 确认数据正确性 POST /_forcemerge max_num_segments=1（对于大索引可能非常耗时） 副本设置为1 scala项目升级 scala &amp;amp; play 升级, 尤其是play的升级会导致大量代码改动 elastic4s 依赖升级，注意除了core包还需要http包 。 原本的获取client, 构建dsl,excute,解析response的大量代码要修改，尤其是构建dsl涉及大量业务，需要逐一比对修改。 监控 Prometheus + Grafana 主要是获取ES信息的api随之升级，改动通常不大</description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/posts/elasticsearch-for-search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/posts/elasticsearch-for-search/</guid><description>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。
+You Know, for Search
+我们团队就一直使用 ES 作为主力数据库， 从一开始做全文检索，到现在承担全部的商品列表页查询。近几个月将查询系统的 qps 从 1k 优化到了 10k+，其中 ES 的优化占了很重要一部分，准确的来说，应该是对 ES 特性的扬长避短起到了非常大的作用。
+数组 &amp;amp; 嵌套结构 ES 没有 join，很多人直接就会认为 ES 无法处理一对多的情况，其实还有数组和嵌套结构可以应付常见的业务场景。
+比如一个商品拥有多种属性，都存放在一个数组字段中，使用 must 和 must_not 就可以灵活地进行查询筛选。
+比如同款不同色的几件T恤，使用嵌套结构保存，搜索时只需要其中一件满足筛选条件，便可以全部带出来，在页面上以多个小色块展示，而无需占用多个展示位。并且还可以拿满足筛选条件的商品中的某属性最大值/最小值等进行排序，如官网给出的示例:
+{ &amp;#34;query&amp;#34;: { &amp;#34;nested&amp;#34;: { &amp;#34;path&amp;#34;: &amp;#34;parent&amp;#34;, &amp;#34;query&amp;#34;: { &amp;#34;bool&amp;#34;: { &amp;#34;must&amp;#34;: {&amp;#34;range&amp;#34;: {&amp;#34;parent.age&amp;#34;: {&amp;#34;gte&amp;#34;: 21}}}, &amp;#34;filter&amp;#34;: { &amp;#34;nested&amp;#34;: { &amp;#34;path&amp;#34;: &amp;#34;parent.child&amp;#34;, &amp;#34;query&amp;#34;: {&amp;#34;match&amp;#34;: {&amp;#34;parent.child.name&amp;#34;: &amp;#34;matt&amp;#34;}} } } } } } }, &amp;#34;sort&amp;#34; : [ { &amp;#34;parent.</description></item></channel></rss>

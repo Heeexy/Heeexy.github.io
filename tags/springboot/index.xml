@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Springboot on 网站标题</title><link>https://heeexy.com/tags/springboot/</link><description>Recent content in Springboot on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 22 Oct 2017 11:19:33 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/springboot/index.xml" rel="self" type="application/rss+xml"/><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/posts/build-springboot-shiro/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0000</pubDate><guid>https://heeexy.com/posts/build-springboot-shiro/</guid><description>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.
+跨域 ​ 一大部分问题就是跨域造成的,本身vue-cli搭建的项目可以用
+// 1. axios的baseURL设置为/api // 2. 如下设置 proxyTable: { &amp;#39;/api&amp;#39;: { target: &amp;#39;http://127.0.0.1:8080/&amp;#39;, changeOrigin: true, pathRewrite: { &amp;#39;^/api&amp;#39;: &amp;#39;/&amp;#39; } } }, 来解决开发环境跨域的问题,生产环境反正可以打包静态文件到springboot项目中直接跑.
+而我还是脑抽得选择了强行跨域,假装自己要把静态文件单独放个服务器跑&amp;hellip;为此遇到很多问题,折腾好几天.
+因此强力推荐上面的方案,简单快捷地解决跨域!
+如果生产环境真的需要跨域的话,再按下面方法设置
+大部分跨域的配置都能百度搜出来:
+axios要 withCredentials: true
+用session而不用啥特殊的token之类的话,就不用 config.headers['X-Token'] = getToken() ,这句是vueAdmin-template 中带的,需要删掉.
+后端需要配置允许跨域
+@Configuration public class CorsConfig { private CorsConfiguration buildConfig() { CorsConfiguration corsConfiguration = new CorsConfiguration(); corsConfiguration.addAllowedOrigin(&amp;#34;*&amp;#34;); // 1 设置访问源地址 corsConfiguration.addAllowedHeader(&amp;#34;*&amp;#34;); // 2 设置访问源请求头 corsConfiguration.addAllowedMethod(&amp;#34;*&amp;#34;); // 3 设置访问源请求方法 corsConfiguration.setAllowCredentials(true); return corsConfiguration; } @Bean public CorsFilter corsFilter() { UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); source.</description></item></channel></rss>

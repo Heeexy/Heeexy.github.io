@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>SSR on 网站标题</title><link>https://heeexy.com/tags/ssr/</link><description>Recent content in SSR on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 13 Nov 2017 14:02:44 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/ssr/index.xml" rel="self" type="application/rss+xml"/><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了&amp;hellip;&amp;hellip;
+为什么用GCE 速度快. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力. Chrome可以愉快地把Google用作默认浏览器了
+免费一年. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)
+​
+如何申请GCE ​ 网上搜到教程很多,就不细述了
+​ 有几个可能会卡时间的步骤包括
+选用静态IP
+和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules
+Xshell生成的SSH的私钥可能要在后面加上
+google-ssh {&amp;quot;userName&amp;quot;:&amp;quot;xxxxx@gmail.com&amp;quot;,&amp;quot;expireOn&amp;quot;:&amp;quot;2017-11-10T04:39:03+0000&amp;quot;}
+​
+如何部署SSR 步骤 获取root权限 sudo su 安装SSR wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/shadowsocks_install/master/shadowsocksR.sh &amp;amp;&amp;amp; bash shadowsocksR.sh ​ 安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息
+安装BBR wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh chmod +x bbr.sh ./bbr.sh 重置VM实例
+sudo su
+检查是否成功
+sysctl net.ipv4.tcp_available_congestion_control 看是不是出现
+net.ipv4.tcp_available_congestion_control = bbr cubic reno 类似有 bbr 的字样,有就表示BBR也装好了
+常用命令 /etc/init.d/shadowsocks restart 重启SSR</description></item></channel></rss>

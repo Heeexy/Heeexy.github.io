@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Vue on 网站标题</title><link>https://heeexy.com/tags/vue/</link><description>Recent content in Vue on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 29 Oct 2017 00:27:05 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/vue/index.xml" rel="self" type="application/rss+xml"/><item><title>前后端分离实践小结</title><link>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</guid><description>背景 ​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.
+分离原因 最关键一点,受不了jsp/freemarker里一塌糊涂的代码,分离之后,代码按规范写,简洁,好管理 原本我们后端就一直在给Android/iOS提供接口,本次分离,可以方便以后H5端的项目重构,实现Android+iOS+H5的统一,一套接口可以供三端同时使用,大量节省工作量,也可以更好地保证公司产品质量的统一性. 方便后端专心处理数据,前端实现页面效果.而不是前端仅仅画页面写css,后端还需要复制粘贴过来,套数据,修改已有页面时,前端更是不方便插手. 技术选型 ​ 组员后端技术都是SSM,前端都只是略接触过AngularJS/Vue.
+​ 我之前接触了一下Spring Boot,感觉配置很清爽,搭框架轻松,业务写起来快,可以让组员无缝切过来,无需费时学习,因此后端框架选定Spring Boot.而登录控制与权限管理一直是公司以前几个项目的弱项,因此本次决定引入shiro,而组员无一对shiro熟悉的,研究shiro的任务自然由我承担.
+​ 前端框架是本次前后端分离的重点,由于我们组无人熟悉前端的新框架,所以这次势必每个人都需要学习许多新的前端知识.我拿公司的H5项目的几个页面进行过搭建vue框架重构练手,认为vue文档清晰,资料丰富,相关开源方案够多,我们这次可以放心学习,使用.(当然最主要的还是因为坑全都得由我来填,得挑个熟悉的)
+目前进展 ​ 后端:Spring Boot框架搭建完成,shiro可以进行权限管理,自定义拦截器,常用工具类完成,对常用的增删改查,返回结果,异常处理都可以快速搞定.
+​ 前端:数据交互封装完毕,路由熟悉,前端权限管理初步熟悉,选用饿了么开源的Element框架,常用的增删改查的页面元素及工具方法都已让大家掌握.
+​ 本周一开始教组员使用Intellij IDEA,教前端快速铺页面的方法,介绍前后端我封装的各种小轮子.经过一周时间,全部都已熟悉这套新的前后端框架,每个人都可以独立快速地推出常用页面.
+接口端小技巧 ​ 因为后端全部返回统一json格式的接口,所以我设计了一些小的工具方法,方便快速推出新接口,节省重复代码.
+使用JSONObject而不是实体类
+​ 因为后端业务不算复杂,所以舍弃了实体类的语义性,转而使用阿里的fastjson的JSONObject接收MyBatis返回的结果.比如一个简单的查询只需要
+&amp;lt;select id=&amp;#34;getSimple&amp;#34; resultType=&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&amp;gt; SELECT s.order_id shopOrderId, s.operation operation, date_format(s.create_time, &amp;#39;%Y.%m.%d %H:%i:%s&amp;#39;) createTime FROM shop_order_log s WHERE s.user_delete_status = &amp;#34;1&amp;#34; &amp;lt;/select&amp;gt; 就可以将三个字段shopOrderId,operation,createTime放入json内,字段名称更加灵活,也免去了大量的建实体类,写resultMap的代码.
+​ 更好的一点是,不使用实体类,可以在返回结果中避免掉很多空的需不要的字段.
+​ 还有,因为所有的接口层都返回JSONObject,所以编写工具方法,快速返回成功/失败结果也很简单,我写了多个工具方法,包括入参转json,入参非空校验,返回成功/失败结果,分页,这里就不一一贴出代码了.
+自定义Exception
+public class CommonJsonException extends RuntimeException { private JSONObject resultJson; /** * 调用时可以在任何代码处直接throws这个Exception, * 都会统一被拦截,并封装好json返回给前台 * * @param errorEnum 以错误的ErrorEnum做参数 */ public CommonJsonException(ErrorEnum errorEnum) { JSONObject jsonObject = new JSONObject(); CommonUtil.</description></item></channel></rss>
