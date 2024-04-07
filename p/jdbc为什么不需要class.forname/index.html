@@ -1,0 +1,248 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='# DriverManager 在初学JDBC时，总是记得开头就要来这么一句 1 Class.forName("com.mysql.jdbc.Driver"); 然而今天学习类加载机制时偶然知道不需要这句也同样可以正常运行，测试的确如此，看了一眼源码'><title>JDBC为什么不需要Class.forName()</title>
+<link rel=canonical href=https://heeexy.com/p/jdbc%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81class.forname/><link rel=stylesheet href=/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css><meta property='og:title' content="JDBC为什么不需要Class.forName()"><meta property='og:description' content='# DriverManager 在初学JDBC时，总是记得开头就要来这么一句 1 Class.forName("com.mysql.jdbc.Driver"); 然而今天学习类加载机制时偶然知道不需要这句也同样可以正常运行，测试的确如此，看了一眼源码'><meta property='og:url' content='https://heeexy.com/p/jdbc%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81class.forname/'><meta property='og:site_name' content='街上的动物园'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='java'><meta property='article:tag' content='ClassLoader'><meta property='article:tag' content='DriverManger'><meta property='article:published_time' content='2020-02-03T19:57:00+00:00'><meta property='article:modified_time' content='2020-02-03T19:57:00+00:00'><meta name=twitter:title content="JDBC为什么不需要Class.forName()"><meta name=twitter:description content='# DriverManager 在初学JDBC时，总是记得开头就要来这么一句 1 Class.forName("com.mysql.jdbc.Driver"); 然而今天学习类加载机制时偶然知道不需要这句也同样可以正常运行，测试的确如此，看了一眼源码'></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=https://img.heeexy.com/avatar.jpg width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>街上的动物园</a></h1><h2 class=site-description></h2></div></header><ol class=menu id=main-menu><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><ol><li><a href=#drivermanager>DriverManager</a></li><li><a href=#serviceloader>ServiceLoader</a></li><li><a href=#lazyiterator>LazyIterator</a></li><li><a href=#classloader>ClassLoader</a></li><li><a href=#urlclassloader>URLClassLoader</a></li><li><a href=#urlclasspath>URLClassPath</a></li><li><a href=#jarloader>JarLoader</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/jdbc%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81class.forname/>JDBC为什么不需要Class.forName()</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Feb 07, 2020</time></div></footer></div></header><section class=article-content><h3 id=drivermanager><a href=#drivermanager>#</a>
+DriverManager</h3><p>在初学JDBC时，总是记得开头就要来这么一句</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Class</span><span class=p>.</span><span class=na>forName</span><span class=p>(</span><span class=s>&#34;com.mysql.jdbc.Driver&#34;</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>然而今天学习类加载机制时偶然知道不需要这句也同样可以正常运行，测试的确如此，看了一眼源码，看似原因很简单，因为无论写不写那段<code>Class.forName</code>，在触发加载DriverManager时，会运行</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Load the initial JDBC drivers by checking the System property
+</span></span></span><span class=line><span class=cl><span class=cm>     * jdbc.properties and then use the {@code ServiceLoader} mechanism
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>static</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>loadInitialDrivers</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>println</span><span class=p>(</span><span class=s>&#34;JDBC DriverManager initialized&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>都会扫描到这个Driver，注册到<code>registeredDrivers</code>中。</p><hr><p>如果只要回答这个问题，可能上面的答案就已经足够了。</p><p>然而兴趣来了，总想把源码继续看下去到底扫描了啥，咋扫描的，明明</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>ServiceLoader</span><span class=o>&lt;</span><span class=n>Driver</span><span class=o>&gt;</span><span class=w> </span><span class=n>loadedDrivers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ServiceLoader</span><span class=p>.</span><span class=na>load</span><span class=p>(</span><span class=n>Driver</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>这里是 <code>java.sql.Driver</code> 接口，上哪找出来的实现类？</p><p>我们就一层层的往下看吧。</p><h3 id=serviceloader><a href=#serviceloader>#</a>
+ServiceLoader</h3><p>主要做了两点</p><ol><li>设置ClassLoader为当前线程的。（破坏双亲委派，让它rt.jar包中的类可以通过AppClassLoader获取到外部的类，很多讲双亲委派机制的文章已经大书特书过了）</li><li>初始化了一个懒加载的迭代器 <code>lookupIterator = new LazyIterator(service, loader);</code>。正是这个迭代器中最终帮我们找到了各种driver注册进去。</li></ol><h3 id=lazyiterator><a href=#lazyiterator>#</a>
+LazyIterator</h3><p>既然是迭代器，最重要的当然是hasNext()和next()方法。</p><p>在next()方法中，已经拿到了nextName完整的"com.mysql.cj.jdbc.Driver"类名，说明还是hasNext()方法干了真正的扫描工作。</p><p>hasNext()方法的主要工作也都放在了hasNextService()中</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>hasNextService</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>nextName</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>configs</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=c1>//此处拼出了全名为 META-INF/services/java.sql.Driver</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>String</span><span class=w> </span><span class=n>fullName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PREFIX</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>service</span><span class=p>.</span><span class=na>getName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>loader</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>configs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ClassLoader</span><span class=p>.</span><span class=na>getSystemResources</span><span class=p>(</span><span class=n>fullName</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>else</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>configs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>loader</span><span class=p>.</span><span class=na>getResources</span><span class=p>(</span><span class=n>fullName</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>IOException</span><span class=w> </span><span class=n>x</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>fail</span><span class=p>(</span><span class=n>service</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Error locating configuration files&#34;</span><span class=p>,</span><span class=w> </span><span class=n>x</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>while</span><span class=w> </span><span class=p>((</span><span class=n>pending</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=o>!</span><span class=n>pending</span><span class=p>.</span><span class=na>hasNext</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>configs</span><span class=p>.</span><span class=na>hasMoreElements</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>pending</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>parse</span><span class=p>(</span><span class=n>service</span><span class=p>,</span><span class=w> </span><span class=n>configs</span><span class=p>.</span><span class=na>nextElement</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>nextName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pending</span><span class=p>.</span><span class=na>next</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>看起来不算复杂，我们拿着"META-INF/services/java.sql.Driver"去AppClassLoader找个configs。</p><p>但是debug的时候并不直观，因为debug的时候看到config似乎包含了各层类加载器扫出来的几十个jar包，然而到configs.nextElement()时突然就直接拿到了<code>jar:file:/C:/Users/dell/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar!/META-INF/services/java.sql.Driver</code>的完整路径。最后发现实在是源码作者太喜欢实现hasNext()和next()方法（<code>hasMoreElements</code>和<code>nextElement</code>）了，一层又一层的把人看晕了。</p><p>我们先跟进这段代码<code> configs = loader.getResources(fullName);</code>，看configs是如何拿到的吧。</p><h3 id=classloader><a href=#classloader>#</a>
+ClassLoader</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getResources</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@SuppressWarnings</span><span class=p>(</span><span class=s>&#34;unchecked&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;[]</span><span class=w> </span><span class=n>tmp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;[]</span><span class=p>)</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;?&gt;[</span><span class=n>2</span><span class=o>]</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>parent</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>tmp</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>parent</span><span class=p>.</span><span class=na>getResources</span><span class=p>(</span><span class=n>name</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>tmp</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>getBootstrapResources</span><span class=p>(</span><span class=n>name</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//AppClassLoader和ExtClassLoader都是调用父类URLClassLoader的findResources方法</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tmp</span><span class=o>[</span><span class=n>1</span><span class=o>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>findResources</span><span class=p>(</span><span class=n>name</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CompoundEnumeration</span><span class=o>&lt;&gt;</span><span class=p>(</span><span class=n>tmp</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>遵循了双亲委派机制，先向上找parent，一直找到顶部的Bootstrap启动类加载器。再向下一直找到自身类加载器。 当然此处由于可以返回多层结果，因此返回的最终是<code>CompoundEnumeration</code> 组合的结果，而不是单条数据。</p><p>后面我们会看到，不同的实现的Enumeration的<code>hasMoreElements</code>和<code>nextElement</code>真是花里胡哨。用<code>Enumeration&lt;URL></code> 这个看似最简单的只有两个方法的<code>Interface</code>作为返回类型，真是给作者玩出花来了。</p><p>三层找的结果如下图。</p><p><img src=http://img.heeexy.com/BootstrapResouces.png loading=lazy></p><p><img src=http://img.heeexy.com/ExtResouces.png loading=lazy></p><p><img src=http://img.heeexy.com/AppResources.png loading=lazy></p><p>debug看完三层扫描的结果，三层类加载器一共扫了一百多个jar包出来，貌似没毛病，但是明明我传了name进去找resource的啊，如果你要返回全部jar包，还要我传name干啥？要是遍历一百多个jar包的话，<code>pending = parse(service, configs.nextElement());</code>这要遍历一百多次去找<code>java.sql.Driver</code>的实现类？</p><p>但是debug到<code>configs.nextElement()</code>时突然就直接拿到了<code>jar:file:/C:/Users/dell/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar!/META-INF/services/java.sql.Driver</code>的完整路径。我们先看一眼这个jar包中的内容，</p><p><img src=http://img.heeexy.com/TargetDriverMetaInf.png loading=lazy></p><p>的确这就是我们要找的jar包和配置文件，里面写明了我们要注册的Driver的实现类就是"com.mysql.cj.jdbc.Driver"。</p><p>那这到底是什么时候遍历出来的呢？看来返回的这个<code>configs</code>中间大有玄机，我们继续跟进它的<strong>迭代</strong>的方法。</p><h3 id=urlclassloader><a href=#urlclassloader>#</a>
+URLClassLoader</h3><p>AppClassLoader和ExtClassLoader都是继承于URLClassLoader，且它们的<code>findResources</code>方法都是使用父类的。</p><p>而URLClassLoader的这个方法的核心又是调用URLClassPath的<code>findResources</code>方法</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=w>   </span><span class=kd>public</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findResources</span><span class=p>(</span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>final</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=w> </span><span class=n>e</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ucp</span><span class=p>.</span><span class=na>findResources</span><span class=p>(</span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//这里还是在URLClassPath返回的Enumeration上再包了一次，又实现了一遍Enumeration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kd>private</span><span class=w> </span><span class=n>URL</span><span class=w> </span><span class=n>url</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kd>private</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>next</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=c1>//这里额外加上的checkURL方法，连name都没带，肯定也不是校验我们java.sql.Driver的，只是简单校验下路径合法或者存在。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>url</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ucp</span><span class=p>.</span><span class=na>checkURL</span><span class=p>(</span><span class=n>u</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=urlclasspath><a href=#urlclasspath>#</a>
+URLClassPath</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findResources</span><span class=p>(</span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>var1</span><span class=p>,</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>var2</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Enumeration</span><span class=o>&lt;</span><span class=n>URL</span><span class=o>&gt;</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>index</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>0</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=o>[]</span><span class=w> </span><span class=n>cache</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>URLClassPath</span><span class=p>.</span><span class=na>this</span><span class=p>.</span><span class=na>getLookupCache</span><span class=p>(</span><span class=n>var1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=n>URL</span><span class=w> </span><span class=n>url</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>private</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>next</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>url</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>do</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>URLClassPath</span><span class=p>.</span><span class=na>Loader</span><span class=w> </span><span class=n>var1x</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=c1>//终于找到遍历jar包的地方，此处的var1x就是每个jar包</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>if</span><span class=w> </span><span class=p>((</span><span class=n>var1x</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>URLClassPath</span><span class=p>.</span><span class=na>this</span><span class=p>.</span><span class=na>getNextLoader</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>cache</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>index</span><span class=o>++</span><span class=p>))</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=k>return</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=c1>//findResource就是从这个jar包中找出我们要的META-INF/services/java.sql.Driver</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>this</span><span class=p>.</span><span class=na>url</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>var1x</span><span class=p>.</span><span class=na>findResource</span><span class=p>(</span><span class=n>var1</span><span class=p>,</span><span class=w> </span><span class=n>var2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w> </span><span class=k>while</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>url</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><img src=http://img.heeexy.com/URLClassPath.png loading=lazy></p><p>在一个jar包中，又有很多的配置文件路径，如何找到我们要的那个的呢？</p><p>这里var1x就是JarLoader，用了其中的getResource方法。</p><h3 id=jarloader><a href=#jarloader>#</a>
+JarLoader</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Resource</span><span class=w> </span><span class=nf>getResource</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>var1</span><span class=p>,</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=n>var2</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//关键就在这个metaIndex中，mayContain方法去查了jar包中是否包含我们要找的目标文件</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>metaIndex</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=k>this</span><span class=p>.</span><span class=na>metaIndex</span><span class=p>.</span><span class=na>mayContain</span><span class=p>(</span><span class=n>var1</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>this</span><span class=p>.</span><span class=na>ensureOpen</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>IOException</span><span class=w> </span><span class=n>var5</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>InternalError</span><span class=p>(</span><span class=n>var5</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>JarEntry</span><span class=w> </span><span class=n>var3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>jar</span><span class=p>.</span><span class=na>getJarEntry</span><span class=p>(</span><span class=n>var1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>var3</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>checkResource</span><span class=p>(</span><span class=n>var1</span><span class=p>,</span><span class=w> </span><span class=n>var2</span><span class=p>,</span><span class=w> </span><span class=n>var3</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>index</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>HashSet</span><span class=w> </span><span class=n>var4</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashSet</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getResource</span><span class=p>(</span><span class=n>var1</span><span class=p>,</span><span class=w> </span><span class=n>var2</span><span class=p>,</span><span class=w> </span><span class=n>var4</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><img src=http://img.heeexy.com/JarLoader.png loading=lazy></p><p>至此，我们已经找到了全部遍历的地方，URLClassLoader加载了全部jar包之后，在开始迭代时，URLClassPath 遍历每个jar包，JarLoader查找每个jar包中是否有目标文件META-INF/services/java.sql.Driver。</p></section><footer class=article-footer><section class=article-tags><a href=/tags/java/>Java</a>
+<a href=/tags/classloader/>ClassLoader</a>
+<a href=/tags/drivermanger/>DriverManger</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><footer class=site-footer><section class=copyright>&copy;
+2017 -
+2024 Heeexy</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.25.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
