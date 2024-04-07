@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elasticsearch on 街上的动物园</title><link>https://heeexy.com/categories/elasticsearch/</link><description>Recent content in Elasticsearch on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 28 Jun 2020 18:37:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/categories/elasticsearch/index.xml" rel="self" type="application/rss+xml"/><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/p/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</guid><description>&lt;h2 id="先抛结论">
+&lt;a href="#%e5%85%88%e6%8a%9b%e7%bb%93%e8%ae%ba">#&lt;/a>
+先抛结论
+&lt;/h2>&lt;p>如果日志型ES集群system load 过高，I/O打满，尤其是在&lt;strong>读写低谷时间段 read 异常高&lt;/strong>，可以考虑排查段合并的问题。&lt;/p>
+&lt;p>如果的确是遇到了段合并问题，可以考虑两个方向：&lt;/p>
+&lt;ol>
+&lt;li>机械硬盘升级为SSD。&lt;/li>
+&lt;li>大索引拆分成小索引。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>PS. 再附送一个潜在的查询问题可能导致的IO打满：通配符查询，参见&lt;a class="link" href="https://elasticsearch.cn/article/171" target="_blank" rel="noopener"
+>文章&lt;/a>。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="排查">
+&lt;a href="#%e6%8e%92%e6%9f%a5">#&lt;/a>
+排查
+&lt;/h2>&lt;p>详细的排查过程就不赘述了，无非是加监控，包括业务层面、ES层面、机器层面，然后横向、纵向的分析各种监控指标。&lt;/p>
+&lt;p>这里分享几个容易被忽略的指标/api&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>查看最大的索引的 _stats 中merge部分：&lt;/p>
+&lt;p>total_stopped_time_in_millis ：通常应该是0&lt;/p>
+&lt;p>total_size_in_bytes：总共merge了这么多数据，你会发现远大于索引大小。下文会介绍这一指标。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>观察线程状况，api详细参数可以查阅&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-hot-threads.html#cluster-nodes-hot-threads-api-query-params" target="_blank" rel="noopener"
+>官方文档&lt;/a>。我在定位问题时还不知道hot_threads这个api，如果提前知道的话可能就省下不少时间了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">GET _cat/thread_pool?v
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">GET /_nodes/hot_threads
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;h2 id="原理">
+&lt;a href="#%e5%8e%9f%e7%90%86">#&lt;/a>
+原理
+&lt;/h2>&lt;p>段合并的基本原理很简单，两个（多个）已提交的段写入一个新的段。&lt;/p>
+&lt;p>&lt;img src="https://www.elastic.co/guide/cn/elasticsearch/guide/current/images/elas_1110.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>这种读写除了尚在内存中的部分，就难免需要消耗磁盘IO了。&lt;/p>
+&lt;p>而从&lt;a class="link" href="http://blog.mikemccandless.com/2011/02/visualizing-lucenes-segment-merges.html" target="_blank" rel="noopener"
+>可视化Lucene段合并&lt;/a>一文中得知，这种类似于&lt;a class="link" href="https://en.wikipedia.org/wiki/Write_amplification" target="_blank" rel="noopener"
+>SSD写放大&lt;/a>的过程其实是一种浪费（文中称为tax），一个最终1G的索引可能由于merge而需要读写10G磁盘。&lt;/p>
+&lt;p>段合并算法优化的一个目标就是降低这种浪费，更高效地做段合并。&lt;/p>
+&lt;p>而减小我们索引的体积就可以轻松的带来显著的提升。&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/es-io.png"
+loading="lazy"
+alt="es-io"
+>&lt;/p></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/elasticsearch-2.3%E5%8D%87%E7%BA%A7%E8%87%B36.3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch-2.3%E5%8D%87%E7%BA%A7%E8%87%B36.3/</guid><description>&lt;h1 id="集群管理">
+&lt;a href="#%e9%9b%86%e7%be%a4%e7%ae%a1%e7%90%86">#&lt;/a>
+集群管理
+&lt;/h1>&lt;h3 id="节点分配">
+&lt;a href="#%e8%8a%82%e7%82%b9%e5%88%86%e9%85%8d">#&lt;/a>
+节点分配
+&lt;/h3>&lt;p>原集群 master*3 data*12 client*0&lt;/p>
+&lt;p>新集群 master*3 data*12 injest*0 coordinating*0&lt;/p>
+&lt;p>ingest 节点用于支持 pipeline 操作 对bulk和index文档进行预处理&lt;/p>
+&lt;p>coordinating 功能主要是分发请求,聚合各节点的处理结果,负载均衡,大规模集群可以设置一个给读,一个给写。但coordinating 数量也不宜过多,会拖慢选举主节点的时间,并且data节点其实也可以处理这些请求.&lt;/p>
+&lt;h3 id="节点设置">
+&lt;a href="#%e8%8a%82%e7%82%b9%e8%ae%be%e7%bd%ae">#&lt;/a>
+节点设置
+&lt;/h3>&lt;p>search.remote.connect: false
+node.ingest: false&lt;/p>
+&lt;h1 id="数据迁移">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e8%bf%81%e7%a7%bb">#&lt;/a>
+数据迁移
+&lt;/h1>&lt;h3 id="数据源">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e6%ba%90">#&lt;/a>
+数据源
+&lt;/h3>&lt;p>由于有数据源及同步方案,所以只需数据全量导入6.3版本的集群即可.&lt;/p>
+&lt;h3 id="索引管理">
+&lt;a href="#%e7%b4%a2%e5%bc%95%e7%ae%a1%e7%90%86">#&lt;/a>
+索引管理
+&lt;/h3>&lt;p>目前生产环境有300个索引需要同步,要检查同步脚本的创建索引,切别名等步骤.&lt;/p>
+&lt;h3 id="mapping设置">
+&lt;a href="#mapping%e8%ae%be%e7%bd%ae">#&lt;/a>
+mapping设置
+&lt;/h3>&lt;ol>
+&lt;li>type 只支持1种，自 ES7.0 起将不再支持 type&amp;mdash;&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/removal-of-types.html" target="_blank" rel="noopener"
+>官方说明&lt;/a>&lt;/li>
+&lt;li>对可以使用自增 id 的索引使用自增 id&lt;/li>
+&lt;li>对大多数字符串字段使用 keyword 类型&lt;/li>
+&lt;li>对不用于数值范围查找的数值类型改为keyword类型&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.jianshu.com/p/d53ef9aa8416" target="_blank" rel="noopener"
+>分词插件可能需要改动&lt;/a>&lt;/li>
+&lt;li>index: no 改为 index:false&lt;/li>
+&lt;li>index: not_analyzed 删掉&lt;/li>
+&lt;/ol>
+&lt;h3 id="提高迁移速度">
+&lt;a href="#%e6%8f%90%e9%ab%98%e8%bf%81%e7%a7%bb%e9%80%9f%e5%ba%a6">#&lt;/a>
+提高迁移速度
+&lt;/h3>&lt;ol>
+&lt;li>sudo swapoff -a&lt;/li>
+&lt;li>副本设置为0&lt;/li>
+&lt;li>refresh_interval 设置为 -1 （对线上生产集群上索引批量导入时，设置-1后，重新打开时可能会导致集群压力暴增）&lt;/li>
+&lt;li>导入数据&lt;/li>
+&lt;li>refresh_interval 设置为30&lt;/li>
+&lt;li>确认数据正确性&lt;/li>
+&lt;li>POST /_forcemerge max_num_segments=1（对于大索引可能非常耗时）&lt;/li>
+&lt;li>副本设置为1&lt;/li>
+&lt;/ol>
+&lt;h1 id="scala项目升级">
+&lt;a href="#scala%e9%a1%b9%e7%9b%ae%e5%8d%87%e7%ba%a7">#&lt;/a>
+scala项目升级
+&lt;/h1>&lt;ol>
+&lt;li>scala &amp;amp; play 升级, 尤其是play的升级会导致大量代码改动&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/sksamuel/elastic4s" target="_blank" rel="noopener"
+>elastic4s&lt;/a> 依赖升级，注意除了core包还需要http包 。&lt;/li>
+&lt;li>原本的获取client, 构建dsl,excute,解析response的大量代码要修改，尤其是构建dsl涉及大量业务，需要逐一比对修改。&lt;/li>
+&lt;/ol>
+&lt;h1 id="监控">
+&lt;a href="#%e7%9b%91%e6%8e%a7">#&lt;/a>
+监控
+&lt;/h1>&lt;p>Prometheus + Grafana 主要是获取ES信息的api随之升级，改动通常不大&lt;/p>
+&lt;p>另外推荐 xpack 的 monitor，收集了 segment 的数据，收集了每个索引的请求量，响应时间等信息，信息集成进了 kibana&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/elasticsearch%E5%9C%A8%E9%AB%98%E5%B9%B6%E5%8F%91%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9A%84%E5%BA%94%E7%94%A8/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch%E5%9C%A8%E9%AB%98%E5%B9%B6%E5%8F%91%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9A%84%E5%BA%94%E7%94%A8/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
+&lt;blockquote>
+&lt;p>You Know, for Search&lt;/p>
+&lt;/blockquote>
+&lt;p>我们团队就一直使用 ES 作为主力数据库， 从一开始做全文检索，到现在承担全部的商品列表页查询。近几个月将查询系统的 qps 从 1k 优化到了 10k+，其中 ES 的优化占了很重要一部分，准确的来说，应该是对 ES 特性的扬长避短起到了非常大的作用。&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/webpage.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="数组--嵌套结构">
+&lt;a href="#%e6%95%b0%e7%bb%84--%e5%b5%8c%e5%a5%97%e7%bb%93%e6%9e%84">#&lt;/a>
+数组 &amp;amp; 嵌套结构
+&lt;/h2>&lt;p>ES 没有 join，很多人直接就会认为 ES 无法处理一对多的情况，其实还有&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/array.html" target="_blank" rel="noopener"
+>数组&lt;/a>和&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/nested.html" target="_blank" rel="noopener"
+>嵌套结构&lt;/a>可以应付常见的业务场景。&lt;/p>
+&lt;p>比如一个商品拥有多种属性，都存放在一个数组字段中，使用 must 和 must_not 就可以灵活地进行查询筛选。&lt;/p>
+&lt;p>比如同款不同色的几件T恤，使用嵌套结构保存，搜索时只需要其中一件满足筛选条件，便可以全部带出来，在页面上以多个小色块展示，而无需占用多个展示位。并且还可以拿满足筛选条件的商品中的某属性最大值/最小值等进行排序，如官网给出的&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/search-request-sort.html" target="_blank" rel="noopener"
+>示例&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;bool&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;must&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;sort&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;parent.child.age&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;mode&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;min&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;order&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;asc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="聚合">
+&lt;a href="#%e8%81%9a%e5%90%88">#&lt;/a>
+聚合
+&lt;/h2>&lt;p>商品列表页面能用到聚合的场景非常多，比如聚合出分类下（可能多达数万个商品）的各子分类，各属性的数量，并且需要支持复杂的筛选条件，比如库存，价格范围等等，并且这种查询速度远比 RDS 的 join + group by + count 快。&lt;/p>
+&lt;p>又比如需要查出最近10天内有新商品的日期列表，那就可以用到 date_histogram 聚合函数。&lt;/p>
+&lt;h2 id="动态字段">
+&lt;a href="#%e5%8a%a8%e6%80%81%e5%ad%97%e6%ae%b5">#&lt;/a>
+动态字段
+&lt;/h2>&lt;p>动态字段的设计也为我们的业务提供了很大便利，由于与具体业务关联性太强，就不详细展开了。&lt;/p>
+&lt;p>ES能支持的动态字段数量非常的多，不过这里要留意的就是动态字段一个比较容易出问题的地方，就是瞬时写入大量的动态字段会导致集群索引的元数据大量变动，master 节点负载暴涨甚至挂掉。&lt;/p>
+&lt;h2 id="缺陷">
+&lt;a href="#%e7%bc%ba%e9%99%b7">#&lt;/a>
+缺陷
+&lt;/h2>&lt;ol>
+&lt;li>没有 join。ES 的查询速度非常的快，但是不能 join 毕竟还是有一些业务场景无法使用。当然话又说回来，在高并发量下，多表 join 能不能抗得住也是个问题。对于查询，我们一贯的原则还是：&lt;strong>把数据离线准备成便于查询的结构，线上实时查询尽可能的简单，一步到位&lt;/strong>。&lt;/li>
+&lt;li>由于要把数据离线准备好，这便带来了数据同步更新的问题，数据的时效性、准确性都需要保证，数组与嵌套结构的数据更新也不够方便高效，这些都会增加很多的工作量。&lt;/li>
+&lt;/ol></description></item></channel></rss>
