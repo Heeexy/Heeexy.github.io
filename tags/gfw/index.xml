@@ -1,258 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gfw on 网站标题</title><link>https://heeexy.com/tags/gfw/</link><description>Recent content in Gfw on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 23 Dec 2019 22:55:59 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gfw/index.xml" rel="self" type="application/rss+xml"/><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/posts/%E8%BD%AF%E8%B7%AF%E7%94%B1/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/posts/%E8%BD%AF%E8%B7%AF%E7%94%B1/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
-loading="lazy"
-alt="网络拓扑"
->&lt;/p>
-&lt;h1 id="教程踩过的坑">
-&lt;a href="#%e6%95%99%e7%a8%8b%e8%b8%a9%e8%bf%87%e7%9a%84%e5%9d%91" class="header-anchor">#&lt;/a>
-教程&amp;amp;踩过的坑
-&lt;/h1>&lt;h3 id="前置条件">
-&lt;a href="#%e5%89%8d%e7%bd%ae%e6%9d%a1%e4%bb%b6" class="header-anchor">#&lt;/a>
-前置条件
-&lt;/h3>&lt;ol>
-&lt;li>科学上网能力。SSR/V2ray等，最好自己搭过服务端，说明有基础能力。&lt;/li>
-&lt;li>鼠标&amp;amp;键盘&amp;amp;显示器&amp;amp;网线。为什么要单独拎出来，因为需要这些东西，说明你在操作时，可能至少需要有：
-&lt;ol>
-&lt;li>笔记本电脑，用来看教程，搜各种问题，远程连工控机&lt;/li>
-&lt;li>台式机，其实是用来拆鼠标&amp;amp;键盘&amp;amp;显示器给工控机使用&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>U盘。用于给工控机重新安装ESXi系统&lt;/li>
-&lt;li>为科学上网花钱的心理准备。因为至少需要购买一台工控机，要求高一点的还可以购买ROS正版授权，机场（For Netflix）&lt;/li>
-&lt;li>折腾的耐心。如果没有耐心又想要路由器科学上网，其实工控机+OpenWrt已经非常棒了。&lt;/li>
-&lt;/ol>
-&lt;h3 id="选购软路由">
-&lt;a href="#%e9%80%89%e8%b4%ad%e8%bd%af%e8%b7%af%e7%94%b1" class="header-anchor">#&lt;/a>
-选购软路由
-&lt;/h3>&lt;p>&lt;a class="link" href="https://www.youtube.com/watch?v=rGIUouvATqc" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=rGIUouvATqc&lt;/a>&lt;/p>
-&lt;p>建议预装个LEDE，等玩明白了再折腾虚拟机。&lt;/p>
-&lt;h4 id="安装exsi">
-&lt;a href="#%e5%ae%89%e8%a3%85exsi" class="header-anchor">#&lt;/a>
-安装EXSi
-&lt;/h4>&lt;p>官网 &lt;a class="link" href="https://my.vmware.com/en/web/vmware/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7" target="_blank" rel="noopener"
->https://my.vmware.com/en/web/vmware/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7&lt;/a>&lt;/p>
-&lt;p>教程&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.cnblogs.com/xiaoyou2018/p/11122144.html" target="_blank" rel="noopener"
->https://www.cnblogs.com/xiaoyou2018/p/11122144.html&lt;/a>&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.vediotalk.com/archives/2356" target="_blank" rel="noopener"
->https://www.vediotalk.com/archives/2356&lt;/a>&lt;/p>
-&lt;p>心得：&lt;/p>
-&lt;ol>
-&lt;li>小白需要记住有这么一个设置静态ip的操作，可能你最终部署的网络环境不是你当前操作安装的网络，这个静态ip地址等改了网络环境就需要改。&lt;/li>
-&lt;li>按照&lt;a class="link" href="http://www.oadun.com/2019/01/277.html" target="_blank" rel="noopener"
->教程&lt;/a>部署端口组。&lt;/li>
-&lt;/ol>
-&lt;h4 id="安装ros">
-&lt;a href="#%e5%ae%89%e8%a3%85ros" class="header-anchor">#&lt;/a>
-安装ROS
-&lt;/h4>&lt;p>官网&lt;/p>
-&lt;p>&lt;a class="link" href="https://mikrotik.com/download" target="_blank" rel="noopener"
->https://mikrotik.com/download&lt;/a>&lt;/p>
-&lt;p>教程&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.youtube.com/watch?v=mkJxDSMPlPU" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=mkJxDSMPlPU&lt;/a>&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.youtube.com/watch?v=h6K5FThk-T4" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=h6K5FThk-T4&lt;/a>&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.youtube.com/watch?v=jgSM3vXGJ3c" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=jgSM3vXGJ3c&lt;/a>&lt;/p>
-&lt;p>心得：&lt;/p>
-&lt;ol>
-&lt;li>官网下载的需要正版授权，否则仅能试用24h&lt;/li>
-&lt;li>洋葱的教程很好，可惜只有PPPOE拨号的方式，自动获取ip的上网方式可以参考Vedio Talk或其他人的教程&lt;/li>
-&lt;li>安装调试好记得设置虚拟机开机自启动！！！&lt;/li>
-&lt;li>ROS是整个系列里最核心也是最复杂的地方，稍微配置错一点，就无法上网。不过回想起整个过程，收获最大的也是这里，非常宝贵的网络实战经验！&lt;/li>
-&lt;/ol>
-&lt;h4 id="安装openwrt">
-&lt;a href="#%e5%ae%89%e8%a3%85openwrt" class="header-anchor">#&lt;/a>
-安装OpenWrt
-&lt;/h4>&lt;p>恩山论坛 &lt;a class="link" href="https://www.right.com.cn/forum/forum.php" target="_blank" rel="noopener"
->https://www.right.com.cn/forum/forum.php&lt;/a>&lt;/p>
-&lt;p>安装教程&lt;/p>
-&lt;p>&lt;a class="link" href="https://www.youtube.com/watch?v=n0aqV8rbKmE" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=n0aqV8rbKmE&lt;/a>&lt;/p>
-&lt;p>&lt;a class="link" href="http://www.oadun.com/2019/01/277.html" target="_blank" rel="noopener"
->http://www.oadun.com/2019/01/277.html&lt;/a>&lt;/p>
-&lt;p>心得：&lt;/p>
-&lt;ol>
-&lt;li>安装调试好记得设置虚拟机开机自启动！！！&lt;/li>
-&lt;/ol>
-&lt;h5 id="拓展延伸">
-&lt;a href="#%e6%8b%93%e5%b1%95%e5%bb%b6%e4%bc%b8" class="header-anchor">#&lt;/a>
-拓展延伸
-&lt;/h5>&lt;p>源码 &lt;a class="link" href="https://github.com/coolsnowwolf/lede" target="_blank" rel="noopener"
->https://github.com/coolsnowwolf/lede&lt;/a>&lt;/p>
-&lt;p>使用Github Actions 云编译 &lt;a class="link" href="https://www.youtube.com/watch?v=2Y8DN-ROYIs" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>&lt;blockquote>
-&lt;p>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。&lt;/p>
-&lt;/blockquote>
-&lt;blockquote>
-&lt;p>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了&amp;hellip;&amp;hellip;&lt;/p>
-&lt;/blockquote>
-&lt;h1 id="为什么用gce">
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8gce" class="header-anchor">#&lt;/a>
-为什么用GCE
-&lt;/h1>&lt;ol>
-&lt;li>
-&lt;p>&lt;strong>速度快&lt;/strong>. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力. Chrome可以愉快地把Google用作默认浏览器了&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;strong>免费一年&lt;/strong>. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h1 id="如何申请gce">
-&lt;a href="#%e5%a6%82%e4%bd%95%e7%94%b3%e8%af%b7gce" class="header-anchor">#&lt;/a>
-如何申请GCE
-&lt;/h1>&lt;p>​ 网上搜到教程很多,就不细述了&lt;/p>
-&lt;p>​ 有几个可能会卡时间的步骤包括&lt;/p>
-&lt;ul>
-&lt;li>
-&lt;p>选用静态IP&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Xshell生成的SSH的私钥可能要在后面加上&lt;/p>
-&lt;p>&lt;code> google-ssh {&amp;quot;userName&amp;quot;:&amp;quot;xxxxx@gmail.com&amp;quot;,&amp;quot;expireOn&amp;quot;:&amp;quot;2017-11-10T04:39:03+0000&amp;quot;}&lt;/code>&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;h1 id="如何部署ssr">
-&lt;a href="#%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2ssr" class="header-anchor">#&lt;/a>
-如何部署SSR
-&lt;/h1>&lt;h3 id="步骤">
-&lt;a href="#%e6%ad%a5%e9%aa%a4" class="header-anchor">#&lt;/a>
-步骤
-&lt;/h3>&lt;ol>
-&lt;li>获取root权限&lt;/li>
-&lt;/ol>
-&lt;pre tabindex="0">&lt;code>sudo su
-&lt;/code>&lt;/pre>&lt;ol start="2">
-&lt;li>安装SSR&lt;/li>
-&lt;/ol>
-&lt;pre tabindex="0">&lt;code>wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/shadowsocks_install/master/shadowsocksR.sh &amp;amp;&amp;amp; bash shadowsocksR.sh
-&lt;/code>&lt;/pre>&lt;p>​ 安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息&lt;/p>
-&lt;ol start="3">
-&lt;li>安装BBR&lt;/li>
-&lt;/ol>
-&lt;pre tabindex="0">&lt;code>wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
-&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>chmod +x bbr.sh
-&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>./bbr.sh
-&lt;/code>&lt;/pre>&lt;ol start="4">
-&lt;li>
-&lt;p>重置VM实例&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>sudo su&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>检查是否成功&lt;/p>
-&lt;pre tabindex="0">&lt;code>sysctl net.ipv4.tcp_available_congestion_control
-&lt;/code>&lt;/pre>&lt;p>看是不是出现&lt;/p>
-&lt;pre tabindex="0">&lt;code>net.ipv4.tcp_available_congestion_control = bbr cubic reno
-&lt;/code>&lt;/pre>&lt;p>类似有 bbr 的字样,有就表示BBR也装好了&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h4 id="常用命令">
-&lt;a href="#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4" class="header-anchor">#&lt;/a>
-常用命令
-&lt;/h4>&lt;p>/etc/init.d/shadowsocks restart 重启SSR&lt;/p>
-&lt;p>vi /etc/shadowsocks.json 修改配置文件&lt;/p>
-&lt;h1 id="ssr客户端">
-&lt;a href="#ssr%e5%ae%a2%e6%88%b7%e7%ab%af" class="header-anchor">#&lt;/a>
-SSR客户端
-&lt;/h1>&lt;p>下载网址 &lt;a class="link" href="https://github.com/shadowsocksrr/shadowsocks-rss" target="_blank" rel="noopener"
->github&lt;/a>&lt;/p>
-&lt;p>或者&lt;a class="link" href="http://ots7yt7am.bkt.clouddn.com/file/ShadowsocksR-4.7.0.7z" target="_blank" rel="noopener"
->这里直接下载&lt;/a>&lt;/p>
-&lt;p>配置和以前的SS也差不多, 有几点注意的是&lt;/p>
-&lt;ol>
-&lt;li>填写加密/协议/混淆, 默认的是chacha20/auth_sha1_v4/tls1.2_ticket_auth&lt;/li>
-&lt;li>在选项设置里将本地端口设置成你SwitchOmega配置的本地端口.比如我就用了10801而不是默认的1080&lt;/li>
-&lt;/ol>
-&lt;h1 id="其它ssr">
-&lt;a href="#%e5%85%b6%e5%ae%83ssr" class="header-anchor">#&lt;/a>
-其它SSR
-&lt;/h1>&lt;p>​ https://52world.top&lt;/p>
-&lt;p>​ 不知道在哪看来的这个SSR网站,有免费SSR,也可以充钱升级专业版. 目前还是能用的 , 可以收藏着防止哪天其它翻墙方式失效吧.&lt;/p>
-&lt;p>​ 毕竟翻墙第一定律就是:永远不要在一种翻墙方式上吊死!&lt;/p>
-&lt;hr>
-&lt;p>参考网站&lt;/p>
-&lt;ol>
-&lt;li>&lt;a class="link" href="https://suiyuanjian.com/124.html" target="_blank" rel="noopener"
->https://suiyuanjian.com/124.html&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="http://www.jianshu.com/p/6bd66829a1ce" target="_blank" rel="noopener"
->http://www.jianshu.com/p/6bd66829a1ce&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="http://suppore.cn/512.html" target="_blank" rel="noopener"
->http://suppore.cn/512.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Lantern配置</title><link>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</guid><description>&lt;blockquote>
-&lt;p>第一步:飞跃长城&lt;/p>
-&lt;/blockquote>
-&lt;h2 id="预备工作">
-&lt;a href="#%e9%a2%84%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-anchor">#&lt;/a>
-预备工作
-&lt;/h2>&lt;ol>
-&lt;li>
-&lt;p>下载安装 chrome&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>下载安装 &lt;a class="link" href="https://github.com/getlantern/forum/issues/833" target="_blank" rel="noopener"
->lantern&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>下载安装 &lt;a class="link" href="https://switchyomega.com/download.html" target="_blank" rel="noopener"
->switchyOmega&lt;/a>&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="配置代理">
-&lt;a href="#%e9%85%8d%e7%bd%ae%e4%bb%a3%e7%90%86" class="header-anchor">#&lt;/a>
-配置代理
-&lt;/h2>&lt;ol>
-&lt;li>
-&lt;p>启动lantern.exe, 如果已启动过,也可以从右下角托盘中找到lantern图标,右击,显示蓝灯,此时浏览器会显示蓝灯的页面&lt;/p>
-&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803142554.png"
-loading="lazy"
-alt="lantern图标"
->&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;strong>找到本机蓝灯的端口&lt;/strong>,按下图步骤找到标注出的127.0.0.1:56939&lt;/p>
-&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803143107.png"
-loading="lazy"
->&lt;/p>
-&lt;p>​&lt;/p>
-&lt;p>​&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>右击chrome右上方安装好的switchyOmega的插件图标,点击&lt;strong>选项&lt;/strong>&lt;/p>
-&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803141511.png"
-loading="lazy"
->&lt;/p>
-&lt;p>进入配置页面.在左侧菜单栏找到 新建情景模式,情景模式名称随意填写,比如就叫&lt;strong>蓝灯&lt;/strong>,创建.&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>编辑刚才创建的情景模式,如下图配置&lt;/p>
-&lt;p>代理协议http&lt;/p>
-&lt;p>代理服务器127.0.0.1&lt;/p>
-&lt;p>代理端口 (填写你自己在第2步找到的端口号,本例是56939)&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;pre>&lt;code> ![](http://ots7yt7am.bkt.clouddn.com/blog/20170803144056.png)
-&lt;/code>&lt;/pre>
-&lt;ol start="5">
-&lt;li>
-&lt;pre>&lt;code>屏幕左下角**应用选项** ,配置完成
-&lt;/code>&lt;/pre>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="成功翻墙">
-&lt;a href="#%e6%88%90%e5%8a%9f%e7%bf%bb%e5%a2%99" class="header-anchor">#&lt;/a>
-成功翻墙
-&lt;/h2>&lt;p>打开&lt;a class="link" href="https://www.google.com" target="_blank" rel="noopener"
->Google&lt;/a> 页面, 左击&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803141511.png"
-loading="lazy"
-> 选中情景模式为&lt;strong>蓝灯&lt;/strong> ,此时应该已经可以成功翻墙了!&lt;/p>
-&lt;p>蓝灯模式适用翻墙,浏览国内网站时可以改为直接连接.&lt;/p>
-&lt;blockquote>
-&lt;p>当然有方便的自动切换代理的功能啦!&lt;/p>
-&lt;p>但是你已经身在墙外了,自己搜搜吧!&lt;/p>
-&lt;/blockquote></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Gfw on 网站标题</title><link>https://heeexy.com/tags/gfw/</link><description>Recent content in Gfw on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 23 Dec 2019 22:55:59 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gfw/index.xml" rel="self" type="application/rss+xml"/><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/posts/%E8%BD%AF%E8%B7%AF%E7%94%B1/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/posts/%E8%BD%AF%E8%B7%AF%E7%94%B1/</guid><description>教程&amp;amp;踩过的坑 前置条件 科学上网能力。SSR/V2ray等，最好自己搭过服务端，说明有基础能力。 鼠标&amp;amp;键盘&amp;amp;显示器&amp;amp;网线。为什么要单独拎出来，因为需要这些东西，说明你在操作时，可能至少需要有： 笔记本电脑，用来看教程，搜各种问题，远程连工控机 台式机，其实是用来拆鼠标&amp;amp;键盘&amp;amp;显示器给工控机使用 U盘。用于给工控机重新安装ESXi系统 为科学上网花钱的心理准备。因为至少需要购买一台工控机，要求高一点的还可以购买ROS正版授权，机场（For Netflix） 折腾的耐心。如果没有耐心又想要路由器科学上网，其实工控机+OpenWrt已经非常棒了。 选购软路由 https://www.youtube.com/watch?v=rGIUouvATqc
+建议预装个LEDE，等玩明白了再折腾虚拟机。
+安装EXSi 官网 https://my.vmware.com/en/web/vmware/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7
+教程
+https://www.cnblogs.com/xiaoyou2018/p/11122144.html
+https://www.vediotalk.com/archives/2356
+心得：
+小白需要记住有这么一个设置静态ip的操作，可能你最终部署的网络环境不是你当前操作安装的网络，这个静态ip地址等改了网络环境就需要改。 按照教程部署端口组。 安装ROS 官网
+https://mikrotik.com/download
+教程
+https://www.youtube.com/watch?v=mkJxDSMPlPU
+https://www.youtube.com/watch?v=h6K5FThk-T4
+https://www.youtube.com/watch?v=jgSM3vXGJ3c
+心得：
+官网下载的需要正版授权，否则仅能试用24h 洋葱的教程很好，可惜只有PPPOE拨号的方式，自动获取ip的上网方式可以参考Vedio Talk或其他人的教程 安装调试好记得设置虚拟机开机自启动！！！ ROS是整个系列里最核心也是最复杂的地方，稍微配置错一点，就无法上网。不过回想起整个过程，收获最大的也是这里，非常宝贵的网络实战经验！ 安装OpenWrt 恩山论坛 https://www.right.com.cn/forum/forum.php
+安装教程
+https://www.youtube.com/watch?v=n0aqV8rbKmE
+http://www.oadun.com/2019/01/277.html
+心得：
+安装调试好记得设置虚拟机开机自启动！！！ 拓展延伸 源码 https://github.com/coolsnowwolf/lede
+使用Github Actions 云编译 https://www.youtube.com/watch?v=2Y8DN-ROYIs</description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。
+在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了&amp;hellip;&amp;hellip;
+为什么用GCE 速度快. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力. Chrome可以愉快地把Google用作默认浏览器了
+免费一年. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)
+如何申请GCE ​ 网上搜到教程很多,就不细述了
+​ 有几个可能会卡时间的步骤包括
+选用静态IP
+和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules
+Xshell生成的SSH的私钥可能要在后面加上
+google-ssh {&amp;quot;userName&amp;quot;:&amp;quot;xxxxx@gmail.com&amp;quot;,&amp;quot;expireOn&amp;quot;:&amp;quot;2017-11-10T04:39:03+0000&amp;quot;}
+如何部署SSR 步骤 获取root权限 sudo su 安装SSR wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/shadowsocks_install/master/shadowsocksR.sh &amp;amp;&amp;amp; bash shadowsocksR.sh ​ 安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息
+安装BBR wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh chmod +x bbr.sh ./bbr.sh 重置VM实例
+sudo su
+检查是否成功
+sysctl net.ipv4.tcp_available_congestion_control 看是不是出现
+net.ipv4.tcp_available_congestion_control = bbr cubic reno 类似有 bbr 的字样,有就表示BBR也装好了</description></item><item><title>Lantern配置</title><link>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</guid><description>第一步:飞跃长城
+预备工作 下载安装 chrome
+下载安装 lantern
+下载安装 switchyOmega
+配置代理 启动lantern.exe, 如果已启动过,也可以从右下角托盘中找到lantern图标,右击,显示蓝灯,此时浏览器会显示蓝灯的页面
+找到本机蓝灯的端口,按下图步骤找到标注出的127.0.0.1:56939
+​
+​
+右击chrome右上方安装好的switchyOmega的插件图标,点击选项
+进入配置页面.在左侧菜单栏找到 新建情景模式,情景模式名称随意填写,比如就叫蓝灯,创建.
+编辑刚才创建的情景模式,如下图配置
+代理协议http
+代理服务器127.0.0.1
+代理端口 (填写你自己在第2步找到的端口号,本例是56939)
+![](http://ots7yt7am.bkt.clouddn.com/blog/20170803144056.png) 屏幕左下角**应用选项** ,配置完成 成功翻墙 打开Google 页面, 左击 选中情景模式为蓝灯 ,此时应该已经可以成功翻墙了!
+蓝灯模式适用翻墙,浏览国内网站时可以改为直接连接.
+当然有方便的自动切换代理的功能啦!
+但是你已经身在墙外了,自己搜搜吧!</description></item></channel></rss>
