@@ -1,10 +1,87 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>设计模式 on 网站标题</title><link>https://heeexy.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><description>Recent content in 设计模式 on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Dec 2017 14:45:47 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/posts/mybatis%E6%97%A5%E5%BF%97--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E6%97%A5%E5%BF%97--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid><description>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。
-问题 1 ​ 市面上各家的打印机 slf4j、java.util.logging、log4j 甚至 System.out 都是各种不同的用法，这使用起来就太麻烦了。
-思路 ​ 不管市面上打印机有多少型号，我家 MyBatis 包里的类只用自家的统一接口，我家的类只管 log.debug()、log.error()&amp;hellip;
-​ 定义好了接口，就需要实现类 impl 来实现这些 debug()、error() 方法了 , 咱假装是自己来实现，其实去调用真正打印机 slf4、log4j 的方法，这样就把别人家的打印机和咱自家的接口关联起来啦。
-​ 这就是适配器模式。
-​ 我家的每个实现类其实就是一个适配器，每个适配器去适配一种打印机。比如 slf4jLoggerImpl 就完成了对 slf4j 打印机的适配，slf4jLoggerImpl .debug() 调用了slf4j.Logger.debug()。
-​ 这样市面上每多一种打印机，比如想用 log4j2 了，我就只需要加一种适配器 log4j2LoggerImpl 去适配它就可以了。
-代码 ​ 定义接口
-public interface Log { boolean isDebugEnabled(); void debug(String s); ... } ​ 在实现类里完成适配，比如适配 slf4j 的 Slf4jLoggerImpl
-import org.apache.ibatis.logging.Log; import org.slf4j.Logger; class Slf4jLoggerImpl implements Log { private final Logger log; //注意这个地方，入参为 org.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>设计模式 on 网站标题</title><link>https://heeexy.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><description>Recent content in 设计模式 on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 Dec 2017 14:45:47 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/posts/mybatis%E6%97%A5%E5%BF%97--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E6%97%A5%E5%BF%97--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid><description>&lt;p>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。&lt;/p>
+&lt;h2 id="问题-1">
+&lt;a href="#%e9%97%ae%e9%a2%98-1" class="header-anchor">#&lt;/a>
+问题 1
+&lt;/h2>&lt;p>​ 市面上各家的打印机 slf4j、java.util.logging、log4j 甚至 System.out 都是各种不同的用法，这使用起来就太麻烦了。&lt;/p>
+&lt;h4 id="思路">
+&lt;a href="#%e6%80%9d%e8%b7%af" class="header-anchor">#&lt;/a>
+思路
+&lt;/h4>&lt;p>​ 不管市面上打印机有多少型号，我家 MyBatis 包里的类只用自家的统一接口，我家的类只管 log.debug()、log.error()&amp;hellip;&lt;/p>
+&lt;p>​ 定义好了接口，就需要实现类 impl 来实现这些 debug()、error() 方法了 , 咱假装是自己来实现，其实去调用真正打印机 slf4、log4j 的方法，这样就把别人家的打印机和咱自家的接口关联起来啦。&lt;/p>
+&lt;p>​ 这就是&lt;strong>适配器模式&lt;/strong>。&lt;/p>
+&lt;p>​ 我家的每个实现类其实就是一个适配器，每个适配器去适配一种打印机。比如 slf4jLoggerImpl 就完成了对 slf4j 打印机的适配，slf4jLoggerImpl .debug() 调用了slf4j.Logger.debug()。&lt;/p>
+&lt;p>​ 这样市面上每多一种打印机，比如想用 log4j2 了，我就只需要加一种适配器 log4j2LoggerImpl 去适配它就可以了。&lt;/p>
+&lt;h4 id="代码">
+&lt;a href="#%e4%bb%a3%e7%a0%81" class="header-anchor">#&lt;/a>
+代码
+&lt;/h4>&lt;p>​ 定义接口&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> &lt;span style="color:#a6e22e">Log&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">boolean&lt;/span> &lt;span style="color:#a6e22e">isDebugEnabled&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">debug&lt;/span>(String s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>​ 在实现类里完成适配，比如适配 slf4j 的 &lt;code>Slf4jLoggerImpl&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> org.apache.ibatis.logging.Log;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> org.slf4j.Logger;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Slf4jLoggerImpl&lt;/span> &lt;span style="color:#66d9ef">implements&lt;/span> Log {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">final&lt;/span> Logger log;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//注意这个地方，入参为 org.slf4j.Logger &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//说明咱这个适配器要用起来，是需要传入一个真正的 slf4j 家的打印机进来的&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">Slf4jLoggerImpl&lt;/span>(Logger logger) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> log &lt;span style="color:#f92672">=&lt;/span> logger;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//看似外面调用咱 MyBatis 的 Log 的 debug()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//其实是调用 org.slf4j.Logger 的 debug() &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">debug&lt;/span>(String s) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> log.&lt;span style="color:#a6e22e">debug&lt;/span>(s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="问题-2">
+&lt;a href="#%e9%97%ae%e9%a2%98-2" class="header-anchor">#&lt;/a>
+问题 2
+&lt;/h2>&lt;p>​ 适配器咱是做好了，slf4j、log4j、stdout&amp;hellip;做了那么多适配器，可是怎么用啊？我真正要打印机的时候，怎么才能知道我该调用哪款适配器啊？难道每次取打印机的时候，都去查一遍咱的系统配了那款打印机（jar) 包么？而且以后多加了1种打印机，我还去每个地方都改一遍，都多加一道判断么？&lt;/p>
+&lt;h4 id="思路-1">
+&lt;a href="#%e6%80%9d%e8%b7%af-1" class="header-anchor">#&lt;/a>
+思路
+&lt;/h4>&lt;p>​ 这其实就是获取实例的时候的问题，咱获取实例太累了，不如来个统一的工厂吧，我每次想打印的时候，都去找工厂要一台打印机，你工厂按照我 Log 的接口给我一个实例就是了。我也不管你给的具体实现到底是 slf4j 家的，还是 log4j 的，甚至可能是 &lt;code>NoLoggingImpl&lt;/code> 每次调接口都不处理的这种空壳打印机。&lt;/p>
+&lt;p>​ 这样一来，有了统一的工厂，判断系统用哪种适配器的任务就可以在工厂完成了。&lt;/p>
+&lt;p>​ 而且以后就算新加了打印机，也只要改改工厂的代码，在工厂里多加一重判断就可以了。&lt;/p>
+&lt;p>​ 这就是&lt;strong>工厂模式&lt;/strong>。&lt;/p>
+&lt;h4 id="代码-1">
+&lt;a href="#%e4%bb%a3%e7%a0%81-1" class="header-anchor">#&lt;/a>
+代码
+&lt;/h4>&lt;p>​&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">final&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">LogFactory&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> Constructor&lt;span style="color:#f92672">&amp;lt;?&lt;/span> &lt;span style="color:#66d9ef">extends&lt;/span> Log&lt;span style="color:#f92672">&amp;gt;&lt;/span> logConstructor;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tryImplementation(&lt;span style="color:#66d9ef">new&lt;/span> Runnable() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">run&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> useSlf4jLogging();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tryImplementation(&lt;span style="color:#66d9ef">new&lt;/span> Runnable() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">run&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> useCommonsLogging();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">LogFactory&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// disable construction&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> Log &lt;span style="color:#a6e22e">getLog&lt;/span>(String logger) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> logConstructor.&lt;span style="color:#a6e22e">newInstance&lt;/span>(logger);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">catch&lt;/span> (Throwable t) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>​ LogFactory 提供了对外的 getLog(String logger) 方法，给需要 logger 的地方提供一个 Log 的实例。&lt;/p>
+&lt;p>​ 内部的实现依靠 &lt;code>logConstructor&lt;/code> 这个构造器通过反射来实例化一个 Log 的 Impl ，也就是之前的适配器，比如 Slf4jLoggerImpl 。&lt;/p>
+&lt;p>​ 判断采用哪种&lt;code>logConstructor&lt;/code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。&lt;/p></description></item></channel></rss>

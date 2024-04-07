@@ -1,4 +1,265 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>大数据 on 网站标题</title><link>https://heeexy.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link><description>Recent content in 大数据 on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://heeexy.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/index.xml" rel="self" type="application/rss+xml"/><item><title>MemSQL简介</title><link>https://heeexy.com/posts/memsql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/posts/memsql/</guid><description>为什么要看MemSQL 因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。
-初体验结果 MemSQL与我们期望的ms级别查询相差甚远，最简单的查询也通常是500ms返回，并不能应对线上的高并发实时查询系统。秒级查询已经有presto等各种大数据组件，对于我们团队已经没有理由再来深入使用MemSQL。
-MemSQL 其实有很多优点，有完善的文档，精致的页面管理工具，方便的安装，甚至一键导入大量数据来方便用户体验 （就差把sql的耗时贴出来了，要是贴出来就省了我调研的时间了），可惜在同一梯队还有太多免费、开源、有活跃社区的竞争对手。
-特点 MemSQL属于商业公司，免费4 units. (每8核32G 为1 unit)，不开源 自带portal界面管理，MemSQL Studio，自带安装工具 完全支持mysql语法，jdbc，增删改查 支持 in-memory rowstore &amp;amp;&amp;amp; on-disk columnstore 大吞吐量数据写入(loading TPC-H SF100 (approximately 100 GBs of row files) will take around four minutes) exactly-once aggregator节点运行sql，聚合结果；leaf节点存储&amp;amp;处理数据 数据导入 file , 指定分隔符 Streaming (Kafka , S3 , Azure Blob , Filesystem) 通过Pipelines MySQL (sql文件) 选择 shard key (类似ES的routing) Using a column or set of columns unique enough to minimize skew.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>大数据 on 网站标题</title><link>https://heeexy.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link><description>Recent content in 大数据 on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://heeexy.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/index.xml" rel="self" type="application/rss+xml"/><item><title>MemSQL简介</title><link>https://heeexy.com/posts/memsql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/posts/memsql/</guid><description>&lt;h2 id="为什么要看memsql">
+&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%9c%8bmemsql" class="header-anchor">#&lt;/a>
+为什么要看MemSQL
+&lt;/h2>&lt;p>因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。&lt;/p>
+&lt;h2 id="初体验结果">
+&lt;a href="#%e5%88%9d%e4%bd%93%e9%aa%8c%e7%bb%93%e6%9e%9c" class="header-anchor">#&lt;/a>
+初体验结果
+&lt;/h2>&lt;p>MemSQL与我们期望的ms级别查询相差甚远，最简单的查询也通常是500ms返回，并不能应对线上的高并发实时查询系统。秒级查询已经有presto等各种大数据组件，对于我们团队已经没有理由再来深入使用MemSQL。&lt;/p>
+&lt;p>MemSQL 其实有很多优点，有完善的文档，精致的页面管理工具，方便的安装，甚至一键导入大量数据来方便用户体验 （就差把sql的耗时贴出来了，要是贴出来就省了我调研的时间了），可惜在同一梯队还有太多免费、开源、有活跃社区的竞争对手。&lt;/p>
+&lt;h2 id="特点">
+&lt;a href="#%e7%89%b9%e7%82%b9" class="header-anchor">#&lt;/a>
+特点
+&lt;/h2>&lt;ul>
+&lt;li>MemSQL属于商业公司，免费4 units. (每8核32G 为1 unit)，不开源&lt;/li>
+&lt;li>自带portal界面管理，MemSQL Studio，自带安装工具&lt;/li>
+&lt;li>完全支持mysql语法，jdbc，增删改查&lt;/li>
+&lt;li>支持 in-memory rowstore &amp;amp;&amp;amp; on-disk columnstore&lt;/li>
+&lt;li>大吞吐量数据写入(loading TPC-H SF100 (approximately 100 GBs of row files) will take around four minutes)&lt;/li>
+&lt;li>exactly-once&lt;/li>
+&lt;li>aggregator节点运行sql，聚合结果；leaf节点存储&amp;amp;处理数据&lt;/li>
+&lt;/ul>
+&lt;h2 id="数据导入">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e5%af%bc%e5%85%a5" class="header-anchor">#&lt;/a>
+数据导入
+&lt;/h2>&lt;ol>
+&lt;li>file , 指定分隔符&lt;/li>
+&lt;li>Streaming (Kafka , S3 , Azure Blob , Filesystem) 通过Pipelines&lt;/li>
+&lt;li>MySQL (sql文件)&lt;/li>
+&lt;/ol>
+&lt;h2 id="选择-shard-key---类似es的routing">
+&lt;a href="#%e9%80%89%e6%8b%a9-shard-key---%e7%b1%bb%e4%bc%bces%e7%9a%84routing" class="header-anchor">#&lt;/a>
+选择 shard key (类似ES的routing)
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>Using a column or set of columns unique enough to minimize skew.&lt;/p>
+&lt;p>独特的key，使数据均匀分布&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Sharding on columns which you expect to filter or join on often. This allows the optimizer to minimize network traffic during the execution of the query (see [Distributed DML] for more details).&lt;/p>
+&lt;p>使用你经常要join或过滤的字段，减小网络传输。比如订单相关，使用user_id&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="查询调优">
+&lt;a href="#%e6%9f%a5%e8%af%a2%e8%b0%83%e4%bc%98" class="header-anchor">#&lt;/a>
+查询调优
+&lt;/h2>&lt;ol>
+&lt;li>加index 优化过滤 groupby sort&lt;/li>
+&lt;li>shard key : Gather partitions:all 优化为 Gather partitions:single&lt;/li>
+&lt;li>Reference Tables 小表，不常更新 ，每个节点都有复制&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="http://img.heeexy.com/memsql-profile.png"
+loading="lazy"
+alt="profile"
+>&lt;/p>
+&lt;h2 id="表结构优化">
+&lt;a href="#%e8%a1%a8%e7%bb%93%e6%9e%84%e4%bc%98%e5%8c%96" class="header-anchor">#&lt;/a>
+表结构优化
+&lt;/h2>&lt;h3 id="rowstore-vs-columnstore">
+&lt;a href="#rowstore-vs-columnstore" class="header-anchor">#&lt;/a>
+Rowstore vs. Columnstore
+&lt;/h3>&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/" target="_blank" rel="noopener"
+>https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/&lt;/a>&lt;/p>
+&lt;p>Rowstore : 查询指定列，并发更新。使用无锁索引，支持多索引。频繁更新的事务场景。unique constraints 。同样会往disk写一份 用于恢复。&lt;/p>
+&lt;p>Columnstore： 顺序扫描，单索引。适用场景：聚合仅很少列（10列内）,扫描大量行，很少频繁单行删改，更新应该是大批量的修改&lt;/p>
+&lt;h2 id="分布式sql">
+&lt;a href="#%e5%88%86%e5%b8%83%e5%bc%8fsql" class="header-anchor">#&lt;/a>
+分布式SQL
+&lt;/h2>&lt;h3 id="ddl">
+&lt;a href="#ddl" class="header-anchor">#&lt;/a>
+DDL
+&lt;/h3>&lt;ul>
+&lt;li>每一个并行的查询都在每个leaf的每个partition上分开执行。&lt;/li>
+&lt;li>默认每个leaf的partition数量=cpu数量&lt;/li>
+&lt;li>每个partition都是个单独的库&lt;/li>
+&lt;li>reference tables在每个aggregator和leaf都有一份复制，适合小表&lt;/li>
+&lt;li>shard key 决定数据落到哪一partition&lt;/li>
+&lt;li>主键和unique key 需要包含shard key ，例如：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sql" data-lang="sql">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">CREATE&lt;/span> &lt;span style="color:#66d9ef">TABLE&lt;/span> clicks (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> click_id BIGINT AUTO_INCREMENT,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> user_id INT,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> page_id INT,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SHARD &lt;span style="color:#66d9ef">KEY&lt;/span> (user_id),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">PRIMARY&lt;/span> &lt;span style="color:#66d9ef">KEY&lt;/span> (click_id, user_id)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> );
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="dml">
+&lt;a href="#dml" class="header-anchor">#&lt;/a>
+DML
+&lt;/h3>&lt;ul>
+&lt;li>分布式join 相同的shard key来join可以提升性能&lt;/li>
+&lt;li>分布式事务，等待每个partition都ready，再一起提交&lt;/li>
+&lt;li>引用表必须具有显式主键。 分布式表中的AUTO_INCREMENT列必须是BIGINT。 自动增量值在每个聚合器上单调递增，但在整个群集中不连续。 分片表不支持唯一键（除非唯一键是分片键的超集）。 分片表不支持修改分片键的UPDATE查询。 分片表不支持UPDATE &amp;hellip; LIMIT。&lt;/li>
+&lt;/ul>
+&lt;h2 id="遇到问题">
+&lt;a href="#%e9%81%87%e5%88%b0%e9%97%ae%e9%a2%98" class="header-anchor">#&lt;/a>
+遇到问题
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>mysql front连接不上&lt;/p>
+&lt;p>换用其它客户端可以，比如idea&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/" target="_blank" rel="noopener"
+>https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/&lt;/a> 导入csv文件提示找不到文件&lt;/p>
+&lt;p>docker cp /home/hxy/download/companylist.csv 62b8df2d8761://usr/share&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="性能体验">
+&lt;a href="#%e6%80%a7%e8%83%bd%e4%bd%93%e9%aa%8c" class="header-anchor">#&lt;/a>
+性能体验
+&lt;/h2>&lt;h3 id="测试机器">
+&lt;a href="#%e6%b5%8b%e8%af%95%e6%9c%ba%e5%99%a8" class="header-anchor">#&lt;/a>
+测试机器
+&lt;/h3>&lt;p>AWS 8c32g&lt;/p>
+&lt;h3 id="测试数据">
+&lt;a href="#%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae" class="header-anchor">#&lt;/a>
+测试数据
+&lt;/h3>&lt;p>官方S3的数据，我们使用 columnstore 和 rowstore 各测一次sql查询。&lt;/p>
+&lt;p>&lt;a class="link" href="https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/" target="_blank" rel="noopener"
+>https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/&lt;/a>&lt;/p>
+&lt;h4 id="columnstore数据">
+&lt;a href="#columnstore%e6%95%b0%e6%8d%ae" class="header-anchor">#&lt;/a>
+&lt;strong>columnstore数据&lt;/strong>
+&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/columnstore.png"
+loading="lazy"
+alt="columnstore.png"
+>&lt;/p>
+&lt;h4 id="rowstore-数据">
+&lt;a href="#rowstore-%e6%95%b0%e6%8d%ae" class="header-anchor">#&lt;/a>
+&lt;strong>rowstore&lt;/strong> &lt;strong>数据&lt;/strong>
+&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/rowstore.png"
+loading="lazy"
+alt="rowstore.png"
+>&lt;/p>
+&lt;p>由于150W行数据存disk 占1G，存memory需要占5G，发现机器内存不足，只导入了一张150W行和一张25行的表。&lt;/p>
+&lt;h4 id="执行sql耗时">
+&lt;a href="#%e6%89%a7%e8%a1%8csql%e8%80%97%e6%97%b6" class="header-anchor">#&lt;/a>
+执行sql耗时
+&lt;/h4>&lt;pre tabindex="0">&lt;code>select * from nation limit 20;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore&lt;/strong> 770ms&lt;/p>
+&lt;p>&lt;strong>rowstore&lt;/strong> 700ms&lt;/p>
+&lt;pre tabindex="0">&lt;code>select l_returnflag,
+l_linestatus,
+sum(l_quantity) as sum_qty,
+sum(l_extendedprice) as sum_base_price,
+sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+avg(l_quantity) as avg_qty,
+avg(l_extendedprice) as avg_price,
+avg(l_discount) as avg_disc,
+count(*) as count_order
+from lineitem
+where l_shipdate &amp;lt;= date(&amp;#39;1998-12-01&amp;#39; - interval &amp;#39;90&amp;#39; day)
+group by l_returnflag, l_linestatus
+order by l_returnflag, l_linestatus;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore 19s 5s 5s&lt;/strong>&lt;/p>
+&lt;pre tabindex="0">&lt;code>select
+l_orderkey,
+sum(l_extendedprice * (1 - l_discount)) as revenue,
+o_orderdate,
+o_shippriority
+from
+customer,
+orders,
+lineitem
+where
+c_mktsegment = &amp;#39;BUILDING&amp;#39;
+and c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate &amp;lt; date(&amp;#39;1995-03-15&amp;#39;)
+and l_shipdate &amp;gt; date(&amp;#39;1995-03-15&amp;#39;)
+group by
+l_orderkey,
+o_orderdate,
+o_shippriority
+order by
+revenue desc,
+o_orderdate
+limit 10;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore&lt;/strong> 10s 5s 5s&lt;/p>
+&lt;pre tabindex="0">&lt;code>select
+c_custkey,
+c_name,
+sum(l_extendedprice * (1 - l_discount)) as revenue,
+c_acctbal,
+n_name,
+c_address,
+c_phone,
+c_comment
+from
+customer,
+orders,
+lineitem,
+nation
+where
+c_custkey = o_custkey
+and l_orderkey = o_orderkey
+and o_orderdate &amp;gt;= date(&amp;#39;1993-10-01&amp;#39;)
+and o_orderdate &amp;lt; date(&amp;#39;1993-10-01&amp;#39;) + interval &amp;#39;3&amp;#39; month
+and l_returnflag = &amp;#39;R&amp;#39;
+and c_nationkey = n_nationkey
+group by
+c_custkey,
+c_name,
+c_acctbal,
+c_phone,
+n_name,
+c_address,
+c_comment
+order by
+revenue desc
+limit 20;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore&lt;/strong> 12s 9s 9s&lt;/p>
+&lt;pre tabindex="0">&lt;code>select
+nation,
+o_year,
+sum(amount) as sum_profit
+from
+(
+select
+n_name as nation,
+extract(year from o_orderdate) as o_year,
+l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+from
+part,
+supplier,
+lineitem,
+partsupp,
+orders,
+nation
+where
+s_suppkey = l_suppkey
+and ps_suppkey = l_suppkey
+and ps_partkey = l_partkey
+and p_partkey = l_partkey
+and o_orderkey = l_orderkey
+and s_nationkey = n_nationkey
+and p_name like &amp;#39;%green%&amp;#39;
+) as profit
+group by
+nation,
+o_year
+order by
+nation,
+o_year desc;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 19s 19s&lt;/p>
+&lt;pre tabindex="0">&lt;code>select *
+from customer c
+left join orders o on c.c_custkey = o.o_custkey
+left join nation n on c.c_nationkey = n.n_nationkey
+where c.c_custkey = &amp;#39;8367&amp;#39;
+limit 10;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 4s 4s&lt;/p>
+&lt;pre tabindex="0">&lt;code>select *
+from customer c
+left join orders o on c.c_custkey = o.o_custkey and o_custkey = &amp;#39;2141&amp;#39;
+left join nation n on c.c_nationkey = n.n_nationkey
+where c.c_custkey = &amp;#39;2141&amp;#39;
+limit 10;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>columnstore 2s 1s 1s&lt;/strong>&lt;/p>
+&lt;pre tabindex="0">&lt;code>select *
+from customer c
+where c.c_custkey = &amp;#39;2141&amp;#39;
+limit 10;
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>rowstore&lt;/strong> 500ms&lt;/p></description></item></channel></rss>

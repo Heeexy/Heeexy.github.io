@@ -1,28 +1,483 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JSONObject on 网站标题</title><link>https://heeexy.com/tags/jsonobject/</link><description>Recent content in JSONObject on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 04 Jan 2018 21:22:33 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/jsonobject/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/posts/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/posts/typehandlerregistry/</guid><description>问题 上一篇我们讲到，对于未知数据类型的解析，UnknownTypeHandler 把部分任务交给了 TypeHandlerRegistry ,甚至可能仅仅只丢了一个 javaType 过来就要求返回一个合适的解析器回去 。TypeHandlerRegistry 到底里面做了啥可以找到合适的解析器呢？
-功能 从类的名字我们就知道这个类的功能大概就是个注册表，而且很可能是全局共用的，记录各种 javaType,jdbcType,TypeHandler 的映射关系。实际这个类的核心也就是维护了几个 map 。
-核心字段 JDBC_TYPE_HANDLER_MAP private final Map&amp;lt;JdbcType, TypeHandler&amp;lt;?&amp;gt;&amp;gt; JDBC_TYPE_HANDLER_MAP = new EnumMap&amp;lt;JdbcType, TypeHandler&amp;lt;?&amp;gt;&amp;gt;(JdbcType.class); 这个很直观，就是注册 jdbcType 和解析器的对应关系。
-TYPE_HANDLER_MAP private final Map&amp;lt;Type, Map&amp;lt;JdbcType, TypeHandler&amp;lt;?&amp;gt;&amp;gt;&amp;gt; TYPE_HANDLER_MAP = new ConcurrentHashMap&amp;lt;Type, Map&amp;lt;JdbcType, TypeHandler&amp;lt;?&amp;gt;&amp;gt;&amp;gt;(); 书上原文是：“记录了 java 类型向指定的 JdbcType 转换时，需要使用的 TypeHandler 对象。例如：Java 类型中的 String 转换成数据库的 char 、varchar 等多种类型，所以存在一对多关系”。
-Type 是 java.lang.reflect 包下的接口，Class 类实现了此接口。所以此 map 的 key 值是 javaType ,比如 String.class 。
-UNKNOWN_TYPE_HANDLER 就是上一篇文章学习过的 UnknownTypeHandler 的实例，主要用在 Object.</description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/posts/mybatis%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2/</guid><description>问题 前面说到，我们可以用 JSONObject 替代习惯使用的 JavaBean ，而之所以能用 JSONObject 主要就是因为它实现了 Map&amp;lt;String,Object&amp;gt; 。
-实际使用我们就会发现，MyBatis 使用JSONObject 封装返回结果的时候很“智能”，数据库里字段是 varchar 类型，JSONObject 中返回值就是 String 类型，数据库字段是 int/float 类型，JSONObject 中返回值就是对应的数值类型。甚至通过 debug 发现数据库中保存了datetime 类型的数据，JSONObject 中保存的是 java.sql.timestamp 类型，而timestamp 类型继承了常见的 java.util.Date 。
-为什么 MyBatis 可以用得这么爽呢？我们实现可完全没声明需要此字段的 javaType 呢。而且用得爽了，类型转换会不会导致程序性能大打折扣呢？
-今天我们就从深入源码，探究一番 MyBatis 到底是怎样做到对未明确声明的字段处理返回类型的。
-TypeHandler MyBatis 类型转换的核心就是这个接口，定义的方法可以看做就两种 setParameter 和 getResult ,很好理解，我们传参和接收 sql 结果时就调用这个。
-public interface TypeHandler&amp;lt;T&amp;gt; { void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException; T getResult(ResultSet rs, String columnName) throws SQLException; T getResult(ResultSet rs, int columnIndex) throws SQLException; T getResult(CallableStatement cs, int columnIndex) throws SQLException; } 抽象类 BaseTypeHandler 部分实现了 TypeHandler ,主要完成了对空值的处理。 非空值的处理全部交给了子类完成。</description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/posts/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/posts/one2many/</guid><description>问题 在上一文介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。
-比如要查询一个角色下的多个用户，resultMap如下定义
-&amp;lt;resultMap id=&amp;#34;roleMap&amp;#34; type=&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&amp;gt; &amp;lt;id column=&amp;#34;roleId&amp;#34; property=&amp;#34;roleId&amp;#34;/&amp;gt; &amp;lt;result column=&amp;#34;roleName&amp;#34; property=&amp;#34;roleName&amp;#34;/&amp;gt; &amp;lt;collection property=&amp;#34;users&amp;#34; ofType=&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&amp;gt; &amp;lt;id column=&amp;#34;userId&amp;#34; property=&amp;#34;userId&amp;#34;/&amp;gt; &amp;lt;result column=&amp;#34;nickname&amp;#34; property=&amp;#34;nickname&amp;#34;/&amp;gt; &amp;lt;/collection&amp;gt; &amp;lt;/resultMap&amp;gt; 期望查出来的users 属性对应着一个数组,
-然而实际查出来只是一个对象，只有一条数据。
-解决方案 只需要建一个实体类继承 JSONObject ,里面有你要的集合类型的成员变量，就足够了。
-比如我建的 One2Many 类：
-public class One2Many extends JSONObject { private List&amp;lt;JSONObject&amp;gt; users; } 然后xml改为
-&amp;lt;resultMap id=&amp;#34;roleMap&amp;#34; type=&amp;#34;com.heeexy.example.util.model.One2Many&amp;#34;&amp;gt; &amp;lt;id column=&amp;#34;roleId&amp;#34; property=&amp;#34;roleId&amp;#34;/&amp;gt; &amp;lt;result column=&amp;#34;roleName&amp;#34; property=&amp;#34;roleName&amp;#34;/&amp;gt; &amp;lt;collection property=&amp;#34;users&amp;#34; ofType=&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&amp;gt; &amp;lt;id column=&amp;#34;userId&amp;#34; property=&amp;#34;userId&amp;#34;/&amp;gt; &amp;lt;result column=&amp;#34;nickname&amp;#34; property=&amp;#34;nickname&amp;#34;/&amp;gt; &amp;lt;/collection&amp;gt; &amp;lt;/resultMap&amp;gt; 是不是非常简单？
-更棒的是，这个 One2Many 类是可以复用的，里面再添加其它的成员变量就 OK 了。而且 Dao 层不需要改动，外面正常的还是用 JSONObject 就可以了。</description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/posts/mybatis%E4%B8%AD%E4%BD%BF%E7%94%A8jsonobject%E6%9B%BF%E4%BB%A3javabean/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E4%B8%AD%E4%BD%BF%E7%94%A8jsonobject%E6%9B%BF%E4%BB%A3javabean/</guid><description>问题背景 项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？
-其实是因为 User 实体类定义了太多字段，转为 JSON 的时候都被包括进去了。稍微多几个还能忍，但通常 User/Order 这些实体类字段特别多，对调试开发实在非常不友好。
-因此本次任务就是：确保每个接口返回字段都与接口文档上一模一样，去除冗余字段。
-解决过程就省略了，直接抛出我最后的解决方案吧：就是 MyBatis 的返回值几乎完全抛弃实体类，全部使用com.alibaba.fastjson.JSONObject 。
-使用 JSONObject 先最简化直观的看一下 JSONObject 的使用吧。
-Controller:
-@GetMapping(&amp;#34;/list&amp;#34;) public JSONObject listUser(@RequestBody JSONObject requestJson){ return userService.listUser(requestJson); } Service:
-JSONObject listUser(JSONObject jsonObject); ServiceImpl:
-@Override public JSONObject listUser(JSONObject jsonObject) { //fillPageParam是自定义的封装分页参数 CommonUtil.fillPageParam(jsonObject); int count = userDao.countUser(jsonObject); List&amp;lt;JSONObject&amp;gt; list = userDao.listUser(jsonObject); //自定义successPage封装分页结果 return CommonUtil.successPage(jsonObject, list, count); } Dao:
-public interface UserDao { int countUser(JSONObject jsonObject); List&amp;lt;JSONObject&amp;gt; listUser(JSONObject jsonObject); } UserMapper.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JSONObject on 网站标题</title><link>https://heeexy.com/tags/jsonobject/</link><description>Recent content in JSONObject on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 04 Jan 2018 21:22:33 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/jsonobject/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/posts/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/posts/typehandlerregistry/</guid><description>&lt;h1 id="问题">
+&lt;a href="#%e9%97%ae%e9%a2%98" class="header-anchor">#&lt;/a>
+问题
+&lt;/h1>&lt;p>上一篇我们讲到，对于未知数据类型的解析，UnknownTypeHandler 把部分任务交给了 TypeHandlerRegistry ,甚至可能仅仅只丢了一个 javaType 过来就要求返回一个合适的解析器回去 。TypeHandlerRegistry 到底里面做了啥可以找到合适的解析器呢？&lt;/p>
+&lt;h1 id="功能">
+&lt;a href="#%e5%8a%9f%e8%83%bd" class="header-anchor">#&lt;/a>
+功能
+&lt;/h1>&lt;p>从类的名字我们就知道这个类的功能大概就是个注册表，而且很可能是全局共用的，记录各种 javaType,jdbcType,TypeHandler 的映射关系。实际这个类的核心也就是维护了几个 map 。&lt;/p>
+&lt;h1 id="核心字段">
+&lt;a href="#%e6%a0%b8%e5%bf%83%e5%ad%97%e6%ae%b5" class="header-anchor">#&lt;/a>
+核心字段
+&lt;/h1>&lt;h3 id="jdbc_type_handler_map">
+&lt;a href="#jdbc_type_handler_map" class="header-anchor">#&lt;/a>
+JDBC_TYPE_HANDLER_MAP
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">final&lt;/span> Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span> JDBC_TYPE_HANDLER_MAP &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> EnumMap&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span>(JdbcType.&lt;span style="color:#a6e22e">class&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这个很直观，就是注册 jdbcType 和解析器的对应关系。&lt;/p>
+&lt;h3 id="type_handler_map">
+&lt;a href="#type_handler_map" class="header-anchor">#&lt;/a>
+TYPE_HANDLER_MAP
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">final&lt;/span> Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>Type, Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&amp;gt;&lt;/span> TYPE_HANDLER_MAP &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ConcurrentHashMap&lt;span style="color:#f92672">&amp;lt;&lt;/span>Type, Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&amp;gt;&lt;/span>();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>书上原文是：“记录了 java 类型向指定的 JdbcType 转换时，需要使用的 TypeHandler 对象。例如：Java 类型中的 String 转换成数据库的 char 、varchar 等多种类型，所以存在一对多关系”。&lt;/p>
+&lt;p>Type 是 java.lang.reflect 包下的接口，Class 类实现了此接口。所以此 map 的 key 值是 javaType ,比如 String.class 。&lt;/p>
+&lt;h3 id="unknown_type_handler">
+&lt;a href="#unknown_type_handler" class="header-anchor">#&lt;/a>
+UNKNOWN_TYPE_HANDLER
+&lt;/h3>&lt;p>就是上一篇文章学习过的 UnknownTypeHandler 的实例，主要用在 Object.class 和 JdbcType.OTHER 上。&lt;/p>
+&lt;h3 id="all_type_handlers_map">
+&lt;a href="#all_type_handlers_map" class="header-anchor">#&lt;/a>
+ALL_TYPE_HANDLERS_MAP
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">final&lt;/span> Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>Class&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span>, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span> ALL_TYPE_HANDLERS_MAP &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> HashMap&lt;span style="color:#f92672">&amp;lt;&lt;/span>Class&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span>, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span>();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>key 是解析器的 class ,value 是解析器自身。&lt;/p>
+&lt;p>记录了全部的解析器的类型及该类型相对应的 TypeHandler 对象。&lt;/p>
+&lt;h3 id="null_type_handler_map">
+&lt;a href="#null_type_handler_map" class="header-anchor">#&lt;/a>
+NULL_TYPE_HANDLER_MAP
+&lt;/h3>&lt;p>仅仅是一个空 TypeHandler 集合的标识。因为 TYPE_HANDLER_MAP 是ConcurrentHashMap, 不能塞 null 值，因此在需要的地方以此空标识作为 value 替代null塞入。&lt;/p>
+&lt;h1 id="注册">
+&lt;a href="#%e6%b3%a8%e5%86%8c" class="header-anchor">#&lt;/a>
+注册
+&lt;/h1>&lt;p>在构造方法中，就调用了大量的 register(&amp;hellip;) 的方法，注册了很多映射关系。&lt;/p>
+&lt;p>register 有很多重载方法，除了简单的向 JDBC_TYPE_HANDLER_MAP 注册之外，全都最终指向了下面的重载方法。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">register&lt;/span>(Type javaType, JdbcType jdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> handler) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (javaType &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span> map &lt;span style="color:#f92672">=&lt;/span> TYPE_HANDLER_MAP.&lt;span style="color:#a6e22e">get&lt;/span>(javaType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (map &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> map &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> HashMap&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TYPE_HANDLER_MAP.&lt;span style="color:#a6e22e">put&lt;/span>(javaType, map);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> map.&lt;span style="color:#a6e22e">put&lt;/span>(jdbcType, handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALL_TYPE_HANDLERS_MAP.&lt;span style="color:#a6e22e">put&lt;/span>(handler.&lt;span style="color:#a6e22e">getClass&lt;/span>(), handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>方法并不复杂，我们只需要理解的是这里为两个 map 中都塞入了值，一个是 key 为 javaType 的 map , 也就是 String 与 char/varchar 的一对多的关系。另一个则是记录全部 handler 的map。&lt;/p>
+&lt;p>这里有一点需要特别留意的就是，比如 String 类，除了映射 char/varchar 之外，还&lt;strong>映射 null&lt;/strong> ，对应的解析器也是 StringTypeHandler 。&lt;/p>
+&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/registerString.png"
+loading="lazy"
+>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//这一行就是javaType为String.class jdbcType 为null 的解析器注册&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>register(String.&lt;span style="color:#a6e22e">class&lt;/span>, &lt;span style="color:#66d9ef">new&lt;/span> StringTypeHandler());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//这是普通的注册&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>register(String.&lt;span style="color:#a6e22e">class&lt;/span>, JdbcType.&lt;span style="color:#a6e22e">CHAR&lt;/span>, &lt;span style="color:#66d9ef">new&lt;/span> StringTypeHandler());
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="查找-typehandler">
+&lt;a href="#%e6%9f%a5%e6%89%be-typehandler" class="header-anchor">#&lt;/a>
+查找 TypeHandler
+&lt;/h1>&lt;p>终于到了查找 TypeHandler 的部分了，看了这么久，是不是差点晕得都忘了我们的这个注册表最核心的功能在这呢？&lt;/p>
+&lt;p>根据 jdbcType 和 typeHandler 的class 查找解析器的功能都很简单，就是上面的 JDBC_TYPE_HANDLER_MAP 和 ALL_TYPE_HANDLERS_MAP 中取值。&lt;/p>
+&lt;p>关键的在于根据 javaType 寻找解析器。而且我们的在上一篇也讲到了 PreparedStatement 在赋值的时候，我们没有提供 jdbcType ( null ), 仅仅只有 javaType 。&lt;/p>
+&lt;p>getTypeHandler 其实就是从 TYPE_HANDLER_MAP 取值.我们入参类型为 String 为例来看看其查找解析器的过程 。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> TypeHandler&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(Type type, JdbcType jdbcType) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//首先根据 String.class 查找其一对多的解析器集合.&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Map&lt;span style="color:#f92672">&amp;lt;&lt;/span>JdbcType, TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&amp;gt;&lt;/span> jdbcHandlerMap &lt;span style="color:#f92672">=&lt;/span> getJdbcHandlerMap(type);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> handler &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (jdbcHandlerMap &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//然后根据其指定的 jdbcType 来找对应的解析器。而此处我们的 jdbcType 是null&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//但是在注册的时候我们留意过，对于 null ,同样也进行了注册&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//就相当于是给了个默认的解析器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> jdbcHandlerMap.&lt;span style="color:#a6e22e">get&lt;/span>(jdbcType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (handler &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> jdbcHandlerMap.&lt;span style="color:#a6e22e">get&lt;/span>(&lt;span style="color:#66d9ef">null&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (handler &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> pickSoleHandler(jdbcHandlerMap);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> (TypeHandler&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span>) handler;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="总结">
+&lt;a href="#%e6%80%bb%e7%bb%93" class="header-anchor">#&lt;/a>
+总结
+&lt;/h1>&lt;p>目前我们已经接触过了两种方式对明确指明的 javaType 的转换。主要可以分为两大类：&lt;/p>
+&lt;h3 id="objecttypehandler">
+&lt;a href="#objecttypehandler" class="header-anchor">#&lt;/a>
+ObjectTypeHandler
+&lt;/h3>&lt;p>这个主要依靠 JDBC 底层的方法来查找合适的 javaType ，大量的 switch-case 语句。主要用在将返回值的封装到 JSONObject 中。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">switch&lt;/span> (field.&lt;span style="color:#a6e22e">getSQLType&lt;/span>()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">case&lt;/span> Types.&lt;span style="color:#a6e22e">TINYINT&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>field.&lt;span style="color:#a6e22e">isUnsigned&lt;/span>()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> Integer.&lt;span style="color:#a6e22e">valueOf&lt;/span>(getByte(columnIndex));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> Integer.&lt;span style="color:#a6e22e">valueOf&lt;/span>(getInt(columnIndex));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">case&lt;/span> Types.&lt;span style="color:#a6e22e">SMALLINT&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> Integer.&lt;span style="color:#a6e22e">valueOf&lt;/span>(getInt(columnIndex));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="typehandlerregistry">
+&lt;a href="#typehandlerregistry" class="header-anchor">#&lt;/a>
+TypeHandlerRegistry
+&lt;/h3>&lt;p>注册表功能，将常规的数十种关系映射在初始化时就都注册好，也就是提前存入 map 中，需要的时候去 map 中取。&lt;/p>
+&lt;p>尤其是将 javaType 和 TypeHandler 关联起来，并对一些类型注册了默认的解析器，即 jdbcType 未指明时所要采用的解析器。&lt;/p>
+&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/posts/mybatis%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2/</guid><description>&lt;h1 id="问题">
+&lt;a href="#%e9%97%ae%e9%a2%98" class="header-anchor">#&lt;/a>
+问题
+&lt;/h1>&lt;p>前面说到，我们可以用 JSONObject 替代习惯使用的 JavaBean ，而之所以能用 JSONObject 主要就是因为它实现了 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> 。&lt;/p>
+&lt;p>实际使用我们就会发现，MyBatis 使用JSONObject 封装返回结果的时候很“智能”，数据库里字段是 varchar 类型，JSONObject 中返回值就是 String 类型，数据库字段是 int/float 类型，JSONObject 中返回值就是对应的数值类型。甚至通过 debug 发现数据库中保存了datetime 类型的数据，JSONObject 中保存的是 &lt;code>java.sql.timestamp&lt;/code> 类型，而&lt;code>timestamp&lt;/code> 类型继承了常见的 &lt;code>java.util.Date&lt;/code> 。&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/DataType.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>为什么 MyBatis 可以用得这么爽呢？我们实现可完全没声明需要此字段的 javaType 呢。而且用得爽了，类型转换会不会导致程序性能大打折扣呢？&lt;/p>
+&lt;p>今天我们就从深入源码，探究一番 MyBatis 到底是怎样做到对未明确声明的字段处理返回类型的。&lt;/p>
+&lt;h1 id="typehandler">
+&lt;a href="#typehandler" class="header-anchor">#&lt;/a>
+TypeHandler
+&lt;/h1>&lt;p>MyBatis 类型转换的核心就是这个接口，定义的方法可以看做就两种 setParameter 和 getResult ,很好理解，我们传参和接收 sql 结果时就调用这个。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> &lt;span style="color:#a6e22e">TypeHandler&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setParameter&lt;/span>(PreparedStatement ps, &lt;span style="color:#66d9ef">int&lt;/span> i, T parameter, JdbcType jdbcType) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T &lt;span style="color:#a6e22e">getResult&lt;/span>(ResultSet rs, String columnName) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T &lt;span style="color:#a6e22e">getResult&lt;/span>(ResultSet rs, &lt;span style="color:#66d9ef">int&lt;/span> columnIndex) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T &lt;span style="color:#a6e22e">getResult&lt;/span>(CallableStatement cs, &lt;span style="color:#66d9ef">int&lt;/span> columnIndex) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>抽象类 BaseTypeHandler 部分实现了 TypeHandler ,主要完成了对空值的处理。 非空值的处理全部交给了子类完成。&lt;/p>
+&lt;p>BaseTypeHandler 子类非常多，对应了数据库的各种数据类型，实现都很简单，比如&lt;code>SqlTimestampTypeHandler&lt;/code> 处理 Timestamp 类型。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setNonNullParameter&lt;/span>(PreparedStatement ps, &lt;span style="color:#66d9ef">int&lt;/span> i, Timestamp parameter, JdbcType jdbcType)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ps.&lt;span style="color:#a6e22e">setTimestamp&lt;/span>(i, parameter);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> Timestamp &lt;span style="color:#a6e22e">getNullableResult&lt;/span>(ResultSet rs, String columnName)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> rs.&lt;span style="color:#a6e22e">getTimestamp&lt;/span>(columnName);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>都是直接调用了 PreparedStatement 和 ResultSet 处理相应类型字段的方法。&lt;/p>
+&lt;p>很明显，一旦指明了我们需要 MyBatis 给我们返回的此字段类型，MyBatis 肯定就去找到对应的 TypeHandler 实现类去处理。而我们没有指定返回类型的是怎么处理的呢？或者说，对于 Object 类型是怎么处理的呢？&lt;/p>
+&lt;h1 id="objecttypehandler">
+&lt;a href="#objecttypehandler" class="header-anchor">#&lt;/a>
+ObjectTypeHandler
+&lt;/h1>&lt;p>我们先来看看这个类，看名字就会猜可能估计未知类型全靠它了吧。提前预告下，并不是哦，getNullableResult 还算经常使用，入参赋值就没见用了，毕竟入参的 JavaType 我们通过反射还是可以找到的。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setNonNullParameter&lt;/span>(PreparedStatement ps, &lt;span style="color:#66d9ef">int&lt;/span> i, Object parameter, JdbcType jdbcType)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ps.&lt;span style="color:#a6e22e">setObject&lt;/span>(i, parameter);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> Object &lt;span style="color:#a6e22e">getNullableResult&lt;/span>(ResultSet rs, String columnName)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> rs.&lt;span style="color:#a6e22e">getObject&lt;/span>(columnName);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>一看这实现，居然还是调用的 JDBC 底层的对应方法。事实上 &lt;code>com.mysql.jdbc&lt;/code> 在处理&lt;code>Object&lt;/code> 类型是也是通过大量的 if-else 或 switch-case 来找到本数据真正的类型的。入参绑定依据 parameterObj instanceof 各种类型，返回结果类型依据 field.getSQLType 的各种类型。&lt;/p>
+&lt;h1 id="unknowntypehandler">
+&lt;a href="#unknowntypehandler" class="header-anchor">#&lt;/a>
+UnknownTypeHandler
+&lt;/h1>&lt;p>事实上，MyBatis 在很多我们没有指明参数类型的情况下，都是使用 UnknownTypeHandler 来解决类型转换的。UnknownTypeHandler 中的核心&lt;code>resolveTypeHandler&lt;/code> 方法，就是查找对应数据的类型解析器（TypeHandler) ， 再用这个合适的 typeHandler 进行解析。&lt;/p>
+&lt;p>&lt;code>resolveTypeHandler&lt;/code> 方法的重载有3种，主要的两种就是一种处理入参的，一种处理返回结果的。&lt;/p>
+&lt;h3 id="入参类型解析">
+&lt;a href="#%e5%85%a5%e5%8f%82%e7%b1%bb%e5%9e%8b%e8%a7%a3%e6%9e%90" class="header-anchor">#&lt;/a>
+入参类型解析
+&lt;/h3>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> TypeHandler&lt;span style="color:#f92672">&amp;lt;?&lt;/span> &lt;span style="color:#66d9ef">extends&lt;/span> Object&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">resolveTypeHandler&lt;/span>(Object parameter, JdbcType jdbcType) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TypeHandler&lt;span style="color:#f92672">&amp;lt;?&lt;/span> &lt;span style="color:#66d9ef">extends&lt;/span> Object&lt;span style="color:#f92672">&amp;gt;&lt;/span> handler;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (parameter &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> OBJECT_TYPE_HANDLER;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> typeHandlerRegistry.&lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(parameter.&lt;span style="color:#a6e22e">getClass&lt;/span>(), jdbcType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// check if handler is null (issue #270)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (handler &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span> &lt;span style="color:#f92672">||&lt;/span> handler &lt;span style="color:#66d9ef">instanceof&lt;/span> UnknownTypeHandler) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> OBJECT_TYPE_HANDLER;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> handler;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在入参为 null 或者实在找不到解析器的情况下，就会返回我们上面讲的 ObjectTypeHandler 。&lt;/p>
+&lt;p>而这里面关键的方法就是&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>typeHandlerRegistry.&lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(parameter.&lt;span style="color:#a6e22e">getClass&lt;/span>(), jdbcType);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>typeHandlerRegistry 可以理解为全局共用的各种类型与解析器关系的注册表，后面的文章还会继续深入讲解，我们首先注意这个方法的入参，第一个参数拿到了参数的 class , 第二个参数拿到了 jdbcType 。这不就相当于javaType 和 jdbcType 都有了吗？那即使还没研究 typeHandlerRegistry 到底干了啥，但是条件给的这么充分了，注册表的任务也太轻松了吧！&lt;/p>
+&lt;p>等等，我们的 DAO 层给入参是 JSONObject 类型,里面 username 字段是 String 类型，money 字段是 float 类型，这些都能通过 getClass() 获取到确实没毛病。但是 jdbcType 是哪来的呢？我们现在可是在处理 PreparedStatement 呢！&lt;/p>
+&lt;p>通过 debug 我们发现，这里的 jdbcType 我们没有指明的情况下，确实都是 null 。说明 typeHandlerRegistry 里仅仅是通过 javaType 来寻找解析器的。所以 typeHandlerRegistry 还是有很多门道等着我们去探索哦。&lt;/p>
+&lt;h3 id="返回结果类型解析">
+&lt;a href="#%e8%bf%94%e5%9b%9e%e7%bb%93%e6%9e%9c%e7%b1%bb%e5%9e%8b%e8%a7%a3%e6%9e%90" class="header-anchor">#&lt;/a>
+返回结果类型解析
+&lt;/h3>&lt;p>对 ResultSet 的解析有两种方式，首先查看此结果字段&amp;ndash;比如nickname&amp;ndash;在 field 中的序号，如果没序号，则直接返回 ObjectTypeHandler 。如果有序号，则进入下面的方法。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> resolveTypeHandler(ResultSetMetaData rsmd, Integer columnIndex) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TypeHandler&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> handler &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//通过下面两个方法获取到jdbcType和javaType&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> JdbcType jdbcType &lt;span style="color:#f92672">=&lt;/span> safeGetJdbcTypeForColumn(rsmd, columnIndex);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Class&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> javaType &lt;span style="color:#f92672">=&lt;/span> safeGetClassForColumn(rsmd, columnIndex);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//后面的任务就还是交给了typeHandlerRegistry&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (javaType &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> jdbcType &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> typeHandlerRegistry.&lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(javaType, jdbcType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (javaType &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> typeHandlerRegistry.&lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(javaType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (jdbcType &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler &lt;span style="color:#f92672">=&lt;/span> typeHandlerRegistry.&lt;span style="color:#a6e22e">getTypeHandler&lt;/span>(jdbcType);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> handler;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中的关键方法还是从 rsmd 中获取 jdbcType 和 javaType ，然后再通过 typeHandlerRegistry 去查找对应的 handler 。&lt;/p>
+&lt;p>debug 发现几乎每次从 rsmd 中获取 jdbcType 和 javaType 都获取到了，看来玄机都在&lt;code>safeGetJdbcTypeForColumn&lt;/code> 和 &lt;code>safeGetClassForColumn&lt;/code> 中了。&lt;/p>
+&lt;p>两个方法的关键代码分别如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">return&lt;/span> JdbcType.&lt;span style="color:#a6e22e">forCode&lt;/span>(rsmd.&lt;span style="color:#a6e22e">getColumnType&lt;/span>(columnIndex));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">return&lt;/span> Resources.&lt;span style="color:#a6e22e">classForName&lt;/span>(rsmd.&lt;span style="color:#a6e22e">getColumnClassName&lt;/span>(columnIndex));
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="jdbctype">
+&lt;a href="#jdbctype" class="header-anchor">#&lt;/a>
+JdbcType
+&lt;/h4>&lt;p>&lt;code>com.mysql.jdbc.ResultSetMetaData&lt;/code> 实现了 &lt;code>java.sql.ResultSetMetaData &lt;/code> 接口，此处我们调用了其中的&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">getColumnType&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> column) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> getField(column).&lt;span style="color:#a6e22e">getSQLType&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>序号的作用就体现出来了，根据序号找到此 field ,再找其 SQLType ，根据 SQLType 去JdbcType 类 (enum类型) 内查找对应的 jdbcType。&lt;/p>
+&lt;p>JdbcType 类内维护了一个 map 类型静态变量 codeLookup ，类加载时为 codeLookup 添加了39个元素，key 值其实就是 SQLType ， int 类型，value 就是本 jdbcType 。&lt;/p>
+&lt;p>因此根据 SQLType 在此处就直接能毫不费力地找出对应的 jdbcType。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (JdbcType type : JdbcType.&lt;span style="color:#a6e22e">values&lt;/span>()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> codeLookup.&lt;span style="color:#a6e22e">put&lt;/span>(type.&lt;span style="color:#a6e22e">TYPE_CODE&lt;/span>, type);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="javatype">
+&lt;a href="#javatype" class="header-anchor">#&lt;/a>
+javaType
+&lt;/h4>&lt;p>同样需要先找到 SQLType ，以及field 内的另外几个属性值，例如 isUnsigned 等一起进入 getClassNameForJavaType 方法找到对应类名。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> String &lt;span style="color:#a6e22e">getClassNameForJavaType&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> javaType, &lt;span style="color:#66d9ef">boolean&lt;/span> isUnsigned, &lt;span style="color:#66d9ef">int&lt;/span> mysqlTypeIfKnown, &lt;span style="color:#66d9ef">boolean&lt;/span> isBinaryOrBlob, &lt;span style="color:#66d9ef">boolean&lt;/span> isOpaqueBinary,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">boolean&lt;/span> treatYearAsDate) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> (javaType) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> Types.&lt;span style="color:#a6e22e">BIT&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> Types.&lt;span style="color:#a6e22e">BOOLEAN&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;java.lang.Boolean&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> Types.&lt;span style="color:#a6e22e">TINYINT&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (isUnsigned) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;java.lang.Integer&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;java.lang.Integer&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//......大量 case&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;java.lang.Object&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>而这里的大量的 swtich-case 终于算是解除了我们一部分的疑惑了！底层终归还是通过 swtich-case 这种最原始的操作来把 jdbcType 映射到 java 类里去的！&lt;/p>
+&lt;h4 id="奇怪的现象">
+&lt;a href="#%e5%a5%87%e6%80%aa%e7%9a%84%e7%8e%b0%e8%b1%a1" class="header-anchor">#&lt;/a>
+奇怪的现象
+&lt;/h4>&lt;p>上面说到，如果没序号，则直接返回 ObjectTypeHandler。&lt;/p>
+&lt;p>序号是&lt;code>getColumnType(int column)&lt;/code> 用于找到到对应的 field 的关键属性。&lt;/p>
+&lt;p>那么为什么有可能会没有序号呢？&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/debug-fields.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>通过 debug 我们发现，明明 fields 内有 8 个元素，每个字段的原始名和别名都清清楚楚，到 columnIndexLookup 里居然只剩下 6 个？ 很显然，问题出在了&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>String name &lt;span style="color:#f92672">=&lt;/span> rsmd.&lt;span style="color:#a6e22e">getColumnName&lt;/span>(i);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>中间有几次取出了重复的 name 。为什么会有重复的 name 呢，我们进入&lt;code>getColumnName&lt;/code> 一探究竟。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> String &lt;span style="color:#a6e22e">getColumnName&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> column) &lt;span style="color:#66d9ef">throws&lt;/span> SQLException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">useOldAliasBehavior&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//如果设置了使用别名的属性，就获取此field的别名。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> getField(column).&lt;span style="color:#a6e22e">getName&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//获取此field的name属性，而不是别名。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> String name &lt;span style="color:#f92672">=&lt;/span> getField(column).&lt;span style="color:#a6e22e">getNameNoAliases&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (name &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> name.&lt;span style="color:#a6e22e">length&lt;/span>() &lt;span style="color:#f92672">==&lt;/span> 0) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//如果连原始字段名都找不到，就还是获取别名&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> getField(column).&lt;span style="color:#a6e22e">getName&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>实际debug发现，我们每次都是通过 getNameNoAliases 找到 name 的。再底层的代码就不需要贴了，看到这里我们就明白了。这里的 name 其实是每个字段的数据库内的字段名，而不是我们定义的别名，所以才会出现重复的情况，比如 user 表有 id 字段，address 表同样会有 id 字段。&lt;/p>
+&lt;h1 id="总结">
+&lt;a href="#%e6%80%bb%e7%bb%93" class="header-anchor">#&lt;/a>
+总结
+&lt;/h1>&lt;p>今天我们分析完了类型转换器，发现对于未知的数据类型，有一部分是通过ObjectTypeHandler 解析，其底层的用了&lt;code>com.mysql.jdbc.ResultSetImpl.getObject&lt;/code> 内的依据 Field.SQLType 的 swtich-case 。&lt;/p>
+&lt;p>另一部分则是通过&lt;code>UnknownTypeHandler&lt;/code> 去查找合适的解析器来解析。&lt;/p>
+&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/posts/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/posts/one2many/</guid><description>&lt;h1 id="问题">
+&lt;a href="#%e9%97%ae%e9%a2%98" class="header-anchor">#&lt;/a>
+问题
+&lt;/h1>&lt;p>在&lt;a class="link" href="https://heeexy.com/2017/12/30/JSONObject-in-MyBatis/" >上一文&lt;/a>介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。&lt;/p>
+&lt;p>比如要查询一个角色下的多个用户，resultMap如下定义&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;resultMap&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleMap&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">type=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;id&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleId&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleId&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;result&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleName&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleName&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;collection&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;users&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">ofType=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;id&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;userId&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;userId&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;result&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;nickname&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;nickname&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/collection&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/resultMap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>期望查出来的&lt;code>users&lt;/code> 属性对应着一个数组,&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/rightJson.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>然而实际查出来只是一个对象，只有一条数据。&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/wrongJson.png"
+loading="lazy"
+>&lt;/p>
+&lt;h1 id="解决方案">
+&lt;a href="#%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" class="header-anchor">#&lt;/a>
+解决方案
+&lt;/h1>&lt;p>只需要建一个实体类继承 JSONObject ,里面有你要的集合类型的成员变量，就足够了。&lt;/p>
+&lt;p>比如我建的 One2Many 类：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">One2Many&lt;/span> &lt;span style="color:#66d9ef">extends&lt;/span> JSONObject {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> List&lt;span style="color:#f92672">&amp;lt;&lt;/span>JSONObject&lt;span style="color:#f92672">&amp;gt;&lt;/span> users;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后xml改为&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;resultMap&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleMap&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">type=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.heeexy.example.util.model.One2Many&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;id&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleId&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleId&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;result&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleName&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;roleName&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;collection&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;users&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">ofType=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;id&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;userId&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;userId&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;result&lt;/span> &lt;span style="color:#a6e22e">column=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;nickname&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">property=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;nickname&amp;#34;&lt;/span>&lt;span style="color:#f92672">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/collection&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/resultMap&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>是不是非常简单？&lt;/p>
+&lt;p>更棒的是，这个 One2Many 类是可以复用的，里面再添加其它的成员变量就 OK 了。而且 Dao 层不需要改动，外面正常的还是用 JSONObject 就可以了。&lt;/p>
+&lt;h1 id="原理">
+&lt;a href="#%e5%8e%9f%e7%90%86" class="header-anchor">#&lt;/a>
+原理
+&lt;/h1>&lt;p>MyBatis 在处理嵌套结果的时候，会判断这个属性的类型，如果是集合，就会初始化一个集合来接收这个属性，否则就只是一个普通的 Object 了。&lt;/p>
+&lt;p>什么，不满意这个答案？那就拿出源码来吧！&lt;/p>
+&lt;p>首先我们直接看到最底层判断这个属性是不是集合的这段源码：&lt;/p>
+&lt;p>DefaultResultSetHandler.instantiateCollectionPropertyIfAppropriate&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> Object &lt;span style="color:#a6e22e">instantiateCollectionPropertyIfAppropriate&lt;/span>(ResultMapping resultMapping, MetaObject metaObject) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">final&lt;/span> String propertyName &lt;span style="color:#f92672">=&lt;/span> resultMapping.&lt;span style="color:#a6e22e">getProperty&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//先去拿在metaObject已经存好的这个属性值，我们这里以users属性为例&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Object propertyValue &lt;span style="color:#f92672">=&lt;/span> metaObject.&lt;span style="color:#a6e22e">getValue&lt;/span>(propertyName);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (propertyValue &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//在这里拿你的users的java类型，由于我们使用的是JSONObject,这里的类型都会返回Object，如果是One2Many,这里就会拿到List类型&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Class&lt;span style="color:#f92672">&amp;lt;?&amp;gt;&lt;/span> type &lt;span style="color:#f92672">=&lt;/span> resultMapping.&lt;span style="color:#a6e22e">getJavaType&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (type &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> type &lt;span style="color:#f92672">=&lt;/span> metaObject.&lt;span style="color:#a6e22e">getSetterType&lt;/span>(propertyName);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//判断属性类型是不是集合，如果是结合才会初始化一个集合的值返回到下一步，否则都会返回null&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (objectFactory.&lt;span style="color:#a6e22e">isCollection&lt;/span>(type)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> propertyValue &lt;span style="color:#f92672">=&lt;/span> objectFactory.&lt;span style="color:#a6e22e">create&lt;/span>(type);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> metaObject.&lt;span style="color:#a6e22e">setValue&lt;/span>(propertyName, propertyValue);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> propertyValue;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">catch&lt;/span> (Exception e) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ExecutorException(&lt;span style="color:#e6db74">&amp;#34;Error instantiating collection property for result &amp;#39;&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> resultMapping.&lt;span style="color:#a6e22e">getProperty&lt;/span>() &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#39;. Cause: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> e, e);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (objectFactory.&lt;span style="color:#a6e22e">isCollection&lt;/span>(propertyValue.&lt;span style="color:#a6e22e">getClass&lt;/span>())) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//propertyValue不为空的情况，即我们的JSONObject里已经塞入了users属性，即使是这样，MyBatis还是要求你塞入的users属性必须是集合，才返回到下一步，否则还是会返回null到下一步。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> propertyValue;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>从上面这段代码我们就知道 MyBatis 确实有做这个判断，你定义的 users 属性到底是不是集合类型，&lt;/p>
+&lt;ol>
+&lt;li>如果是并且没有初始化好的话，就帮你初始化一个集合到下一步，&lt;/li>
+&lt;li>如果已经初始化好了（通常这时候就是已经塞入了几个 user 对象了），就直接返回这个 users 的值到下一步&lt;/li>
+&lt;li>如果不是集合类型，就返回 null 到下一步。&lt;/li>
+&lt;/ol>
+&lt;p>那么下一步到底是干啥呢？正常情况下应该就是继续往 users 集合里添加元素吧。&lt;/p>
+&lt;p>DefaultResultSetHandler.linkObjects&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">linkObjects&lt;/span>(MetaObject metaObject, ResultMapping resultMapping, Object rowValue) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">final&lt;/span> Object collectionProperty &lt;span style="color:#f92672">=&lt;/span> instantiateCollectionPropertyIfAppropriate(resultMapping, metaObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (collectionProperty &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//如果上一步返回来的不是null,那就向这个集合里添加元素&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">final&lt;/span> MetaObject targetMetaObject &lt;span style="color:#f92672">=&lt;/span> configuration.&lt;span style="color:#a6e22e">newMetaObject&lt;/span>(collectionProperty);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> targetMetaObject.&lt;span style="color:#a6e22e">add&lt;/span>(rowValue);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//上一步返回了null,那就直接把这个属性赋上本值，就是这种情况导致了上面的第二张图片的情况，我们的users变成了一个对象，而不是想要的数组。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> metaObject.&lt;span style="color:#a6e22e">setValue&lt;/span>(resultMapping.&lt;span style="color:#a6e22e">getProperty&lt;/span>(), rowValue);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/posts/mybatis%E4%B8%AD%E4%BD%BF%E7%94%A8jsonobject%E6%9B%BF%E4%BB%A3javabean/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/posts/mybatis%E4%B8%AD%E4%BD%BF%E7%94%A8jsonobject%E6%9B%BF%E4%BB%A3javabean/</guid><description>&lt;h1 id="问题背景">
+&lt;a href="#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af" class="header-anchor">#&lt;/a>
+问题背景
+&lt;/h1>&lt;p>项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？&lt;/p>
+&lt;p>其实是因为 User 实体类定义了太多字段，转为 JSON 的时候都被包括进去了。稍微多几个还能忍，但通常 User/Order 这些实体类字段特别多，对调试开发实在非常不友好。&lt;/p>
+&lt;p>因此本次任务就是：确保每个接口返回字段都与接口文档上一模一样，去除冗余字段。&lt;/p>
+&lt;p>解决过程就省略了，直接抛出我最后的解决方案吧：就是 MyBatis 的返回值几乎完全抛弃实体类，全部使用&lt;code>com.alibaba.fastjson.JSONObject&lt;/code> 。&lt;/p>
+&lt;h1 id="使用-jsonobject">
+&lt;a href="#%e4%bd%bf%e7%94%a8-jsonobject" class="header-anchor">#&lt;/a>
+使用 JSONObject
+&lt;/h1>&lt;p>先最简化直观的看一下 JSONObject 的使用吧。&lt;/p>
+&lt;p>Controller:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@GetMapping&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;/list&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> JSONObject &lt;span style="color:#a6e22e">listUser&lt;/span>(&lt;span style="color:#a6e22e">@RequestBody&lt;/span> JSONObject requestJson){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> userService.&lt;span style="color:#a6e22e">listUser&lt;/span>(requestJson);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Service:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>JSONObject &lt;span style="color:#a6e22e">listUser&lt;/span>(JSONObject jsonObject);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ServiceImpl:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> JSONObject &lt;span style="color:#a6e22e">listUser&lt;/span>(JSONObject jsonObject) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//fillPageParam是自定义的封装分页参数&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CommonUtil.&lt;span style="color:#a6e22e">fillPageParam&lt;/span>(jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> count &lt;span style="color:#f92672">=&lt;/span> userDao.&lt;span style="color:#a6e22e">countUser&lt;/span>(jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> List&lt;span style="color:#f92672">&amp;lt;&lt;/span>JSONObject&lt;span style="color:#f92672">&amp;gt;&lt;/span> list &lt;span style="color:#f92672">=&lt;/span> userDao.&lt;span style="color:#a6e22e">listUser&lt;/span>(jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//自定义successPage封装分页结果&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> CommonUtil.&lt;span style="color:#a6e22e">successPage&lt;/span>(jsonObject, list, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Dao:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> &lt;span style="color:#a6e22e">UserDao&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">countUser&lt;/span>(JSONObject jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> List&lt;span style="color:#f92672">&amp;lt;&lt;/span>JSONObject&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">listUser&lt;/span>(JSONObject jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>UserMapper.xml , 这里的 resultType 直接就是 JSONObject ,如果是一对多的情况，就要多加一步，请移步看&lt;a class="link" href="https://heeexy.com/2017/12/31/One2Many" >这篇文章&lt;/a>。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;select&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;countUser&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">resultType=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Integer&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SELECT count(0)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> FROM sys_user u
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WHERE age=#{age}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/select&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;select&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;users&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">resultType=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SELECT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> id userId,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nickname nickname,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> avatar avatar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> FROM sys_user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WHERE age=#{age}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LIMIT #{offSet}, #{pageRow}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;/select&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="为什么可以使用jsonobject">
+&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%8f%af%e4%bb%a5%e4%bd%bf%e7%94%a8jsonobject" class="header-anchor">#&lt;/a>
+为什么可以使用JSONObject
+&lt;/h1>&lt;p>因为 JSONObject 实现了 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> , MyBatis 那边完全是把它当成 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> 处理的，相信不少人都直接用过 map 来接收MyBatis 返回结果。&lt;/p>
+&lt;blockquote>
+&lt;p>fastjson 是这样的，Gson 并不是，所以 Gson 的 JsonObject 是不可以的。&lt;/p>
+&lt;/blockquote>
+&lt;p>有兴趣了解更深入的原理的话，请参考我此系列的其它文章。&lt;/p>
+&lt;h1 id="优劣对比">
+&lt;a href="#%e4%bc%98%e5%8a%a3%e5%af%b9%e6%af%94" class="header-anchor">#&lt;/a>
+优劣对比
+&lt;/h1>&lt;h4 id="便捷性">
+&lt;a href="#%e4%be%bf%e6%8d%b7%e6%80%a7" class="header-anchor">#&lt;/a>
+便捷性
+&lt;/h4>&lt;p>JSONObject 便捷到可以说是无脑，接收参数、 sql 传参、封装 sql 结果、返回到前端，全程使用。&lt;/p>
+&lt;p>JavaBean 则接口层接收参数转为实体类，返回给前端再转为 json，新增一个业务通常还需要多建一个实体类。&lt;/p>
+&lt;h4 id="工具方法拓展">
+&lt;a href="#%e5%b7%a5%e5%85%b7%e6%96%b9%e6%b3%95%e6%8b%93%e5%b1%95" class="header-anchor">#&lt;/a>
+工具方法拓展
+&lt;/h4>&lt;p>JSONObject 可以方便地封装出通用的工具方法，比如封装分页信息，比如封装处理结果的成功和失败信息，特别是校验参数字段非空，不同的接口通常需要校验的字段不同，如下面这个简单的方法就可以校验各字段是否都非空。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">hasAllRequired&lt;/span>(&lt;span style="color:#66d9ef">final&lt;/span> JSONObject jsonObject, String requiredColumns) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>StringTools.&lt;span style="color:#a6e22e">isNullOrEmpty&lt;/span>(requiredColumns)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> String&lt;span style="color:#f92672">[]&lt;/span> columns &lt;span style="color:#f92672">=&lt;/span> requiredColumns.&lt;span style="color:#a6e22e">split&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;,&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> String missCol &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (String column : columns) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Object val &lt;span style="color:#f92672">=&lt;/span> jsonObject.&lt;span style="color:#a6e22e">get&lt;/span>(column.&lt;span style="color:#a6e22e">trim&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (StringTools.&lt;span style="color:#a6e22e">isNullOrEmpty&lt;/span>(val)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> missCol &lt;span style="color:#f92672">+=&lt;/span> column &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; &amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>StringTools.&lt;span style="color:#a6e22e">isNullOrEmpty&lt;/span>(missCol)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jsonObject.&lt;span style="color:#a6e22e">clear&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jsonObject.&lt;span style="color:#a6e22e">put&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;returnCode&amp;#34;&lt;/span>, ErrorEnum.&lt;span style="color:#a6e22e">E_90003&lt;/span>.&lt;span style="color:#a6e22e">getErrorCode&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jsonObject.&lt;span style="color:#a6e22e">put&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;returnMsg&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;缺少必填参数:&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> missCol.&lt;span style="color:#a6e22e">trim&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> CommonJsonException(jsonObject);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>JavaBean 在处理分页上通常要引各自写的 PageBean 工具类 , 使用过程通常不会比上面ServiceImpl里的分页简单。&lt;/p>
+&lt;p>JavaBean 的参数校验都不用说，更头痛更复杂了，不知道有没有人有用起来很爽的方法。&lt;/p>
+&lt;h4 id="返回字段">
+&lt;a href="#%e8%bf%94%e5%9b%9e%e5%ad%97%e6%ae%b5" class="header-anchor">#&lt;/a>
+返回字段
+&lt;/h4>&lt;p>JSONObject 想返回几个字段就几个字段，而 JavaBean 如果只想返回某几个字段的话，就需要单独建个实体类。&lt;/p>
+&lt;p>字段有改动的话，JSONObject 灵活性就更强了，直接在 mapper.xml 里改下就完事。&lt;/p>
+&lt;h4 id="业务层">
+&lt;a href="#%e4%b8%9a%e5%8a%a1%e5%b1%82" class="header-anchor">#&lt;/a>
+业务层
+&lt;/h4>&lt;p>不可否认的是，JSONObject 在业务层进行处理时，失去了 JavaBean 的编译提示，也失去了 IDE 的快捷补全，更有可能出现取错值的情况。&lt;/p>
+&lt;p>比如 jsonObject.getString(&amp;ldquo;pasword&amp;rdquo;) ,输入错了单词都可能没注意，最终取出来 null 。&lt;/p>
+&lt;h4 id="可读性">
+&lt;a href="#%e5%8f%af%e8%af%bb%e6%80%a7" class="header-anchor">#&lt;/a>
+可读性
+&lt;/h4>&lt;p>通常大家可能认为 JavaBean 有更好的可读性，我觉得只要变量名取得好，JSONObject 也是没有什么问题的。毕竟类名是固定死的，变量名和参数名才能更好地反映此处业务的处理。&lt;/p>
+&lt;p>尤其是如今前后端分离的项目，前后端开发人员一般对照着文档确认字段含义。&lt;/p>
+&lt;h2 id="总结">
+&lt;a href="#%e6%80%bb%e7%bb%93" class="header-anchor">#&lt;/a>
+总结
+&lt;/h2>&lt;p>JSONObject 开发非常方便，具有更强的灵活性，适用于中小型项目，简单业务的开发，也适用于&lt;strong>文档至上&lt;/strong>的前后端分离开发与微服务项目。&lt;/p>
+&lt;p>更具体的用法，可以参考 &lt;a class="link" href="https://github.com/Heeexy/SpringBoot-Shiro-Vue" target="_blank" rel="noopener"
+>Github 项目&lt;/a>。&lt;/p></description></item></channel></rss>

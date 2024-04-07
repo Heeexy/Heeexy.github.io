@@ -1,18 +1,72 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Lantern on 网站标题</title><link>https://heeexy.com/tags/lantern/</link><description>Recent content in Lantern on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Aug 2017 13:45:14 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/lantern/index.xml" rel="self" type="application/rss+xml"/><item><title>Lantern配置</title><link>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</guid><description>第一步:飞跃长城
-预备工作 下载安装 chrome
-下载安装 lantern
-下载安装 switchyOmega
-配置代理 启动lantern.exe, 如果已启动过,也可以从右下角托盘中找到lantern图标,右击,显示蓝灯,此时浏览器会显示蓝灯的页面
-找到本机蓝灯的端口,按下图步骤找到标注出的127.0.0.1:56939
-​
-​
-右击chrome右上方安装好的switchyOmega的插件图标,点击选项
-进入配置页面.在左侧菜单栏找到 新建情景模式,情景模式名称随意填写,比如就叫蓝灯,创建.
-编辑刚才创建的情景模式,如下图配置
-代理协议http
-代理服务器127.0.0.1
-代理端口 (填写你自己在第2步找到的端口号,本例是56939)
-![](http://ots7yt7am.bkt.clouddn.com/blog/20170803144056.png) 屏幕左下角**应用选项** ,配置完成 成功翻墙 打开Google 页面, 左击 选中情景模式为蓝灯 ,此时应该已经可以成功翻墙了!
-蓝灯模式适用翻墙,浏览国内网站时可以改为直接连接.
-当然有方便的自动切换代理的功能啦!
-但是你已经身在墙外了,自己搜搜吧!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Lantern on 网站标题</title><link>https://heeexy.com/tags/lantern/</link><description>Recent content in Lantern on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Aug 2017 13:45:14 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/lantern/index.xml" rel="self" type="application/rss+xml"/><item><title>Lantern配置</title><link>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/posts/lantern%E9%85%8D%E7%BD%AE/</guid><description>&lt;blockquote>
+&lt;p>第一步:飞跃长城&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="预备工作">
+&lt;a href="#%e9%a2%84%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-anchor">#&lt;/a>
+预备工作
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>下载安装 chrome&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>下载安装 &lt;a class="link" href="https://github.com/getlantern/forum/issues/833" target="_blank" rel="noopener"
+>lantern&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>下载安装 &lt;a class="link" href="https://switchyomega.com/download.html" target="_blank" rel="noopener"
+>switchyOmega&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="配置代理">
+&lt;a href="#%e9%85%8d%e7%bd%ae%e4%bb%a3%e7%90%86" class="header-anchor">#&lt;/a>
+配置代理
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>启动lantern.exe, 如果已启动过,也可以从右下角托盘中找到lantern图标,右击,显示蓝灯,此时浏览器会显示蓝灯的页面&lt;/p>
+&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803142554.png"
+loading="lazy"
+alt="lantern图标"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>找到本机蓝灯的端口&lt;/strong>,按下图步骤找到标注出的127.0.0.1:56939&lt;/p>
+&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803143107.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>​&lt;/p>
+&lt;p>​&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>右击chrome右上方安装好的switchyOmega的插件图标,点击&lt;strong>选项&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803141511.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>进入配置页面.在左侧菜单栏找到 新建情景模式,情景模式名称随意填写,比如就叫&lt;strong>蓝灯&lt;/strong>,创建.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>编辑刚才创建的情景模式,如下图配置&lt;/p>
+&lt;p>代理协议http&lt;/p>
+&lt;p>代理服务器127.0.0.1&lt;/p>
+&lt;p>代理端口 (填写你自己在第2步找到的端口号,本例是56939)&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> ![](http://ots7yt7am.bkt.clouddn.com/blog/20170803144056.png)
+&lt;/code>&lt;/pre>
+&lt;ol start="5">
+&lt;li>
+&lt;pre>&lt;code>屏幕左下角**应用选项** ,配置完成
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="成功翻墙">
+&lt;a href="#%e6%88%90%e5%8a%9f%e7%bf%bb%e5%a2%99" class="header-anchor">#&lt;/a>
+成功翻墙
+&lt;/h2>&lt;p>打开&lt;a class="link" href="https://www.google.com" target="_blank" rel="noopener"
+>Google&lt;/a> 页面, 左击&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/20170803141511.png"
+loading="lazy"
+> 选中情景模式为&lt;strong>蓝灯&lt;/strong> ,此时应该已经可以成功翻墙了!&lt;/p>
+&lt;p>蓝灯模式适用翻墙,浏览国内网站时可以改为直接连接.&lt;/p>
+&lt;blockquote>
+&lt;p>当然有方便的自动切换代理的功能啦!&lt;/p>
+&lt;p>但是你已经身在墙外了,自己搜搜吧!&lt;/p>
+&lt;/blockquote></description></item></channel></rss>

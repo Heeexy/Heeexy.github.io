@@ -1,18 +1,103 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>GCE on 网站标题</title><link>https://heeexy.com/tags/gce/</link><description>Recent content in GCE on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 13 Nov 2017 14:02:44 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gce/index.xml" rel="self" type="application/rss+xml"/><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了&amp;hellip;&amp;hellip;
-为什么用GCE 速度快. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力. Chrome可以愉快地把Google用作默认浏览器了
-免费一年. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)
-​
-如何申请GCE ​ 网上搜到教程很多,就不细述了
-​ 有几个可能会卡时间的步骤包括
-选用静态IP
-和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules
-Xshell生成的SSH的私钥可能要在后面加上
-google-ssh {&amp;quot;userName&amp;quot;:&amp;quot;xxxxx@gmail.com&amp;quot;,&amp;quot;expireOn&amp;quot;:&amp;quot;2017-11-10T04:39:03+0000&amp;quot;}
-​
-如何部署SSR 步骤 获取root权限 sudo su 安装SSR wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/shadowsocks_install/master/shadowsocksR.sh &amp;amp;&amp;amp; bash shadowsocksR.sh ​ 安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息
-安装BBR wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh chmod +x bbr.sh ./bbr.sh 重置VM实例
-sudo su
-检查是否成功
-sysctl net.ipv4.tcp_available_congestion_control 看是不是出现
-net.ipv4.tcp_available_congestion_control = bbr cubic reno 类似有 bbr 的字样,有就表示BBR也装好了
-常用命令 /etc/init.d/shadowsocks restart 重启SSR</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GCE on 网站标题</title><link>https://heeexy.com/tags/gce/</link><description>Recent content in GCE on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 13 Nov 2017 14:02:44 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gce/index.xml" rel="self" type="application/rss+xml"/><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/posts/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>&lt;blockquote>
+&lt;p>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>在全国喜迎大会胜利召开的时候,墙出不去了,经常看到大家有这么一种想法 : 等会开完就好了&amp;hellip;&amp;hellip;&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="为什么用gce">
+&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8gce" class="header-anchor">#&lt;/a>
+为什么用GCE
+&lt;/h1>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>速度快&lt;/strong>. 有台湾服务器,南京电信ping 稳定在40-60 ,youtube4K无压力. Chrome可以愉快地把Google用作默认浏览器了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>免费一年&lt;/strong>. 只是需要提供一张外币信用卡,但是不会扣款,更不会在一年到期后自动扣款!(被AWS坑了几美元去)&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="如何申请gce">
+&lt;a href="#%e5%a6%82%e4%bd%95%e7%94%b3%e8%af%b7gce" class="header-anchor">#&lt;/a>
+如何申请GCE
+&lt;/h1>&lt;p>​ 网上搜到教程很多,就不细述了&lt;/p>
+&lt;p>​ 有几个可能会卡时间的步骤包括&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>选用静态IP&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>和AWS一样, 放开你要分配给SSR的端口 ,如果找不到这个菜单可以搜索Firewall rules&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Xshell生成的SSH的私钥可能要在后面加上&lt;/p>
+&lt;p>&lt;code> google-ssh {&amp;quot;userName&amp;quot;:&amp;quot;xxxxx@gmail.com&amp;quot;,&amp;quot;expireOn&amp;quot;:&amp;quot;2017-11-10T04:39:03+0000&amp;quot;}&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="如何部署ssr">
+&lt;a href="#%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2ssr" class="header-anchor">#&lt;/a>
+如何部署SSR
+&lt;/h1>&lt;h3 id="步骤">
+&lt;a href="#%e6%ad%a5%e9%aa%a4" class="header-anchor">#&lt;/a>
+步骤
+&lt;/h3>&lt;ol>
+&lt;li>获取root权限&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code>sudo su
+&lt;/code>&lt;/pre>&lt;ol start="2">
+&lt;li>安装SSR&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code>wget -N --no-check-certificate https://raw.githubusercontent.com/91yun/shadowsocks_install/master/shadowsocksR.sh &amp;amp;&amp;amp; bash shadowsocksR.sh
+&lt;/code>&lt;/pre>&lt;p>​ 安装完成的时候会有一串成功的提示信息, 可以复制记下你的ip/端口/密码/加密方式等信息&lt;/p>
+&lt;ol start="3">
+&lt;li>安装BBR&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code>wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>chmod +x bbr.sh
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>./bbr.sh
+&lt;/code>&lt;/pre>&lt;ol start="4">
+&lt;li>
+&lt;p>重置VM实例&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>sudo su&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>检查是否成功&lt;/p>
+&lt;pre tabindex="0">&lt;code>sysctl net.ipv4.tcp_available_congestion_control
+&lt;/code>&lt;/pre>&lt;p>看是不是出现&lt;/p>
+&lt;pre tabindex="0">&lt;code>net.ipv4.tcp_available_congestion_control = bbr cubic reno
+&lt;/code>&lt;/pre>&lt;p>类似有 bbr 的字样,有就表示BBR也装好了&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="常用命令">
+&lt;a href="#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4" class="header-anchor">#&lt;/a>
+常用命令
+&lt;/h4>&lt;p>/etc/init.d/shadowsocks restart 重启SSR&lt;/p>
+&lt;p>vi /etc/shadowsocks.json 修改配置文件&lt;/p>
+&lt;h1 id="ssr客户端">
+&lt;a href="#ssr%e5%ae%a2%e6%88%b7%e7%ab%af" class="header-anchor">#&lt;/a>
+SSR客户端
+&lt;/h1>&lt;p>下载网址 &lt;a class="link" href="https://github.com/shadowsocksrr/shadowsocks-rss" target="_blank" rel="noopener"
+>github&lt;/a>&lt;/p>
+&lt;p>或者&lt;a class="link" href="http://ots7yt7am.bkt.clouddn.com/file/ShadowsocksR-4.7.0.7z" target="_blank" rel="noopener"
+>这里直接下载&lt;/a>&lt;/p>
+&lt;p>配置和以前的SS也差不多, 有几点注意的是&lt;/p>
+&lt;ol>
+&lt;li>填写加密/协议/混淆, 默认的是chacha20/auth_sha1_v4/tls1.2_ticket_auth&lt;/li>
+&lt;li>在选项设置里将本地端口设置成你SwitchOmega配置的本地端口.比如我就用了10801而不是默认的1080&lt;/li>
+&lt;/ol>
+&lt;h1 id="其它ssr">
+&lt;a href="#%e5%85%b6%e5%ae%83ssr" class="header-anchor">#&lt;/a>
+其它SSR
+&lt;/h1>&lt;p>​ https://52world.top&lt;/p>
+&lt;p>​ 不知道在哪看来的这个SSR网站,有免费SSR,也可以充钱升级专业版. 目前还是能用的 , 可以收藏着防止哪天其它翻墙方式失效吧.&lt;/p>
+&lt;p>​ 毕竟翻墙第一定律就是:永远不要在一种翻墙方式上吊死!&lt;/p>
+&lt;hr>
+&lt;p>参考网站&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://suiyuanjian.com/124.html" target="_blank" rel="noopener"
+>https://suiyuanjian.com/124.html&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.jianshu.com/p/6bd66829a1ce" target="_blank" rel="noopener"
+>http://www.jianshu.com/p/6bd66829a1ce&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://suppore.cn/512.html" target="_blank" rel="noopener"
+>http://suppore.cn/512.html&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

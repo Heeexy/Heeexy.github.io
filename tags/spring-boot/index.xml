@@ -1,15 +1,89 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring Boot on 网站标题</title><link>https://heeexy.com/tags/spring-boot/</link><description>Recent content in Spring Boot on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 29 Oct 2017 00:27:05 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/spring-boot/index.xml" rel="self" type="application/rss+xml"/><item><title>前后端分离实践小结</title><link>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</guid><description>背景 ​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.
-分离原因 最关键一点,受不了jsp/freemarker里一塌糊涂的代码,分离之后,代码按规范写,简洁,好管理 原本我们后端就一直在给Android/iOS提供接口,本次分离,可以方便以后H5端的项目重构,实现Android+iOS+H5的统一,一套接口可以供三端同时使用,大量节省工作量,也可以更好地保证公司产品质量的统一性. 方便后端专心处理数据,前端实现页面效果.而不是前端仅仅画页面写css,后端还需要复制粘贴过来,套数据,修改已有页面时,前端更是不方便插手. 技术选型 ​ 组员后端技术都是SSM,前端都只是略接触过AngularJS/Vue.
-​ 我之前接触了一下Spring Boot,感觉配置很清爽,搭框架轻松,业务写起来快,可以让组员无缝切过来,无需费时学习,因此后端框架选定Spring Boot.而登录控制与权限管理一直是公司以前几个项目的弱项,因此本次决定引入shiro,而组员无一对shiro熟悉的,研究shiro的任务自然由我承担.
-​ 前端框架是本次前后端分离的重点,由于我们组无人熟悉前端的新框架,所以这次势必每个人都需要学习许多新的前端知识.我拿公司的H5项目的几个页面进行过搭建vue框架重构练手,认为vue文档清晰,资料丰富,相关开源方案够多,我们这次可以放心学习,使用.(当然最主要的还是因为坑全都得由我来填,得挑个熟悉的)
-目前进展 ​ 后端:Spring Boot框架搭建完成,shiro可以进行权限管理,自定义拦截器,常用工具类完成,对常用的增删改查,返回结果,异常处理都可以快速搞定.
-​ 前端:数据交互封装完毕,路由熟悉,前端权限管理初步熟悉,选用饿了么开源的Element框架,常用的增删改查的页面元素及工具方法都已让大家掌握.
-​ 本周一开始教组员使用Intellij IDEA,教前端快速铺页面的方法,介绍前后端我封装的各种小轮子.经过一周时间,全部都已熟悉这套新的前后端框架,每个人都可以独立快速地推出常用页面.
-接口端小技巧 ​ 因为后端全部返回统一json格式的接口,所以我设计了一些小的工具方法,方便快速推出新接口,节省重复代码.
-使用JSONObject而不是实体类
-​ 因为后端业务不算复杂,所以舍弃了实体类的语义性,转而使用阿里的fastjson的JSONObject接收MyBatis返回的结果.比如一个简单的查询只需要
-&amp;lt;select id=&amp;#34;getSimple&amp;#34; resultType=&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&amp;gt; SELECT s.order_id shopOrderId, s.operation operation, date_format(s.create_time, &amp;#39;%Y.%m.%d %H:%i:%s&amp;#39;) createTime FROM shop_order_log s WHERE s.user_delete_status = &amp;#34;1&amp;#34; &amp;lt;/select&amp;gt; 就可以将三个字段shopOrderId,operation,createTime放入json内,字段名称更加灵活,也免去了大量的建实体类,写resultMap的代码.
-​ 更好的一点是,不使用实体类,可以在返回结果中避免掉很多空的需不要的字段.
-​ 还有,因为所有的接口层都返回JSONObject,所以编写工具方法,快速返回成功/失败结果也很简单,我写了多个工具方法,包括入参转json,入参非空校验,返回成功/失败结果,分页,这里就不一一贴出代码了.
-自定义Exception
-public class CommonJsonException extends RuntimeException { private JSONObject resultJson; /** * 调用时可以在任何代码处直接throws这个Exception, * 都会统一被拦截,并封装好json返回给前台 * * @param errorEnum 以错误的ErrorEnum做参数 */ public CommonJsonException(ErrorEnum errorEnum) { JSONObject jsonObject = new JSONObject(); CommonUtil.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spring Boot on 网站标题</title><link>https://heeexy.com/tags/spring-boot/</link><description>Recent content in Spring Boot on 网站标题</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 29 Oct 2017 00:27:05 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/spring-boot/index.xml" rel="self" type="application/rss+xml"/><item><title>前后端分离实践小结</title><link>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/posts/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5/</guid><description>&lt;h2 id="背景">
+&lt;a href="#%e8%83%8c%e6%99%af" class="header-anchor">#&lt;/a>
+背景
+&lt;/h2>&lt;p>​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.&lt;/p>
+&lt;h2 id="分离原因">
+&lt;a href="#%e5%88%86%e7%a6%bb%e5%8e%9f%e5%9b%a0" class="header-anchor">#&lt;/a>
+分离原因
+&lt;/h2>&lt;ol>
+&lt;li>最关键一点,受不了jsp/freemarker里一塌糊涂的代码,分离之后,代码按规范写,简洁,好管理&lt;/li>
+&lt;li>原本我们后端就一直在给Android/iOS提供接口,本次分离,可以方便以后H5端的项目重构,实现Android+iOS+H5的统一,一套接口可以供三端同时使用,大量节省工作量,也可以更好地保证公司产品质量的统一性.&lt;/li>
+&lt;li>方便后端专心处理数据,前端实现页面效果.而不是前端仅仅画页面写css,后端还需要复制粘贴过来,套数据,修改已有页面时,前端更是不方便插手.&lt;/li>
+&lt;/ol>
+&lt;h2 id="技术选型">
+&lt;a href="#%e6%8a%80%e6%9c%af%e9%80%89%e5%9e%8b" class="header-anchor">#&lt;/a>
+技术选型
+&lt;/h2>&lt;p>​ 组员后端技术都是SSM,前端都只是略接触过AngularJS/Vue.&lt;/p>
+&lt;p>​ 我之前接触了一下Spring Boot,感觉配置很清爽,搭框架轻松,业务写起来快,可以让组员无缝切过来,无需费时学习,因此后端框架选定Spring Boot.而登录控制与权限管理一直是公司以前几个项目的弱项,因此本次决定引入shiro,而组员无一对shiro熟悉的,研究shiro的任务自然由我承担.&lt;/p>
+&lt;p>​ 前端框架是本次前后端分离的重点,由于我们组无人熟悉前端的新框架,所以这次势必每个人都需要学习许多新的前端知识.我拿公司的H5项目的几个页面进行过搭建vue框架重构练手,认为vue文档清晰,资料丰富,相关开源方案够多,我们这次可以放心学习,使用.(当然最主要的还是因为坑全都得由我来填,得挑个熟悉的)&lt;/p>
+&lt;h2 id="目前进展">
+&lt;a href="#%e7%9b%ae%e5%89%8d%e8%bf%9b%e5%b1%95" class="header-anchor">#&lt;/a>
+目前进展
+&lt;/h2>&lt;p>​ 后端:Spring Boot框架搭建完成,shiro可以进行权限管理,自定义拦截器,常用工具类完成,对常用的增删改查,返回结果,异常处理都可以快速搞定.&lt;/p>
+&lt;p>​ 前端:数据交互封装完毕,路由熟悉,前端权限管理初步熟悉,选用饿了么开源的Element框架,常用的增删改查的页面元素及工具方法都已让大家掌握.&lt;/p>
+&lt;p>​ 本周一开始教组员使用Intellij IDEA,教前端快速铺页面的方法,介绍前后端我封装的各种小轮子.经过一周时间,全部都已熟悉这套新的前后端框架,每个人都可以独立快速地推出常用页面.&lt;/p>
+&lt;h2 id="接口端小技巧">
+&lt;a href="#%e6%8e%a5%e5%8f%a3%e7%ab%af%e5%b0%8f%e6%8a%80%e5%b7%a7" class="header-anchor">#&lt;/a>
+接口端小技巧
+&lt;/h2>&lt;p>​ 因为后端全部返回统一json格式的接口,所以我设计了一些小的工具方法,方便快速推出新接口,节省重复代码.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>使用JSONObject而不是实体类&lt;/p>
+&lt;p>​ 因为后端业务不算复杂,所以舍弃了实体类的语义性,转而使用阿里的fastjson的JSONObject接收MyBatis返回的结果.比如一个简单的查询只需要&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;select&lt;/span> &lt;span style="color:#a6e22e">id=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;getSimple&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">resultType=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;com.alibaba.fastjson.JSONObject&amp;#34;&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SELECT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s.order_id shopOrderId,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s.operation operation,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> date_format(s.create_time, &amp;#39;%Y.%m.%d %H:%i:%s&amp;#39;) createTime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> FROM shop_order_log s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WHERE s.user_delete_status = &amp;#34;1&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;/select&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>就可以将三个字段shopOrderId,operation,createTime放入json内,字段名称更加灵活,也免去了大量的建实体类,写resultMap的代码.&lt;/p>
+&lt;p>​ 更好的一点是,不使用实体类,可以在返回结果中避免掉很多空的需不要的字段.&lt;/p>
+&lt;p>​ 还有,因为所有的接口层都返回JSONObject,所以编写工具方法,快速返回成功/失败结果也很简单,我写了多个工具方法,包括入参转json,入参非空校验,返回成功/失败结果,分页,这里就不一一贴出代码了.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>自定义Exception&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">CommonJsonException&lt;/span> &lt;span style="color:#66d9ef">extends&lt;/span> RuntimeException {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> JSONObject resultJson;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">* 调用时可以在任何代码处直接throws这个Exception,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">* 都会统一被拦截,并封装好json返回给前台
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">* @param errorEnum 以错误的ErrorEnum做参数
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">CommonJsonException&lt;/span>(ErrorEnum errorEnum) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> JSONObject jsonObject &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> JSONObject();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CommonUtil.&lt;span style="color:#a6e22e">returnJson&lt;/span>(jsonObject, errorEnum);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">resultJson&lt;/span> &lt;span style="color:#f92672">=&lt;/span> jsonObject;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">CommonJsonException&lt;/span>(JSONObject resultJson) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">resultJson&lt;/span> &lt;span style="color:#f92672">=&lt;/span> resultJson;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> JSONObject &lt;span style="color:#a6e22e">getResultJson&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> resultJson;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@ControllerAdvice&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@ResponseBody&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">GlobalExceptionHandler&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@ExceptionHandler&lt;/span>(CommonJsonException.&lt;span style="color:#a6e22e">class&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> JSONObject &lt;span style="color:#a6e22e">CommonJsonExceptionHandler&lt;/span>(CommonJsonException commonJsonException) &lt;span style="color:#66d9ef">throws&lt;/span> Exception {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> commonJsonException.&lt;span style="color:#a6e22e">getResultJson&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>在需要返回给前端错误代码编号时,比如校验参数非空,校验手机号失败,可以直接抛出此异常,经错误拦截器拦截到此异常后,可以直接返回错误码给前端,节省大量的判断/返回的代码.这一点也是前阵子从Spring源码中学到的.&lt;/p>
+&lt;h2 id="存在的问题">
+&lt;a href="#%e5%ad%98%e5%9c%a8%e7%9a%84%e9%97%ae%e9%a2%98" class="header-anchor">#&lt;/a>
+存在的问题
+&lt;/h2>&lt;ol>
+&lt;li>近期主要问题基本都是待我去研究深入的技术,比如shiro的动态权限与vue-router的异步路由的结合,vue组件的通信,vuex的状态管理&lt;/li>
+&lt;li>其次是组员需要对vue更加熟悉,我这次要求了大家抛弃jQuery,用数据绑定的思想去写前端.目前大家的前端水平也还只是可以快速复制粘贴出页面,对于复杂的页面和组件,甚至对我们前端项目的目录结构与各部分功能,都不算掌握.&lt;/li>
+&lt;li>目前我们所谓的前后端分离其实还只是初步的业务和代码上的分离,以后如果要重构H5项目,可能还需要开NodeJS项目来解决和Android/iOS一样的接口加密问题,统一session管理问题,以及更多的前后端分离可能给我们带来的问题.&lt;/li>
+&lt;/ol></description></item></channel></rss>
