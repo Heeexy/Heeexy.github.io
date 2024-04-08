@@ -1,4 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 街上的动物园</title><link>https://heeexy.com/post/</link><description>Recent content in Posts on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 13 Nov 2022 21:17:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E6%9E%9C%E6%96%AD%E7%94%B5%E6%88%91%E4%BB%AC%E9%9C%80%E4%B8%8D%E9%9C%80%E8%A6%81%E6%85%8C/</link><pubDate>Sun, 13 Nov 2022 21:17:00 +0000</pubDate><guid>https://heeexy.com/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E6%9E%9C%E6%96%AD%E7%94%B5%E6%88%91%E4%BB%AC%E9%9C%80%E4%B8%8D%E9%9C%80%E8%A6%81%E6%85%8C/</guid><description>&lt;h1 id="序">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 街上的动物园</title><link>https://heeexy.com/post/</link><description>Recent content in Posts on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Mon, 08 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>------------------------------✂️ 分割线 ✂️------------------------------</title><link>https://heeexy.com/p/dividing-line/</link><pubDate>Mon, 08 Apr 2024 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/dividing-line/</guid><description>&lt;h2 id="之前">
+&lt;a href="#%e4%b9%8b%e5%89%8d">#&lt;/a>
+之前
+&lt;/h2>&lt;p>之前的博客存在以下几个问题：&lt;/p>
+&lt;h3 id="图片全部丢失">
+&lt;a href="#%e5%9b%be%e7%89%87%e5%85%a8%e9%83%a8%e4%b8%a2%e5%a4%b1">#&lt;/a>
+图片全部丢失
+&lt;/h3>&lt;p>由于我备份意识不强，VPS 被封之后，图片尽数丢失。
+这已经是第二次出现这种问题，上次是被七牛云背刺。&lt;/p>
+&lt;h3 id="博文长期不更新">
+&lt;a href="#%e5%8d%9a%e6%96%87%e9%95%bf%e6%9c%9f%e4%b8%8d%e6%9b%b4%e6%96%b0">#&lt;/a>
+博文长期不更新
+&lt;/h3>&lt;p>纵然可以找很多理由，但总归只有一个字：懒。&lt;/p>
+&lt;h2 id="之后">
+&lt;a href="#%e4%b9%8b%e5%90%8e">#&lt;/a>
+之后
+&lt;/h2>&lt;h3 id="图片">
+&lt;a href="#%e5%9b%be%e7%89%87">#&lt;/a>
+图片
+&lt;/h3>&lt;p>使用 Local+iCloud+VPS 三重保险机制
+&lt;img src="https://img.heeexy.com/m1/blog-image-sync.png"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="博文">
+&lt;a href="#%e5%8d%9a%e6%96%87">#&lt;/a>
+博文
+&lt;/h3>&lt;p>依然没有更新频率的保证。&lt;/p>
+&lt;p>博客这东西，可以不写，但不可以没有，这是专属自己的一片天地。&lt;/p>
+&lt;p>近期已经把 ChatGPT 融入了自己的工作中，可以只需写个提纲，让 GPT 帮我生成一篇高质量文章，也可以把自己写好的内容丢给 GPT 帮我修正润色。让人不免怀疑自己，还费劲写些电子垃圾是何必?&lt;/p>
+&lt;p>仔细一想也大可不必，既然博客主要为自己服务，那还是要关注博客对自己的提升，是否帮助到了自己总结学习、工作的经验。&lt;/p></description></item><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/database-crash-safe/</guid><description>&lt;h1 id="序">
 &lt;a href="#%e5%ba%8f">#&lt;/a>
 序
 &lt;/h1>&lt;p>生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？&lt;/p>
@@ -120,7 +149,7 @@ loading="lazy"
 alt="Untitled"
 >&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Redisson分布式锁报错问题排查</title><link>https://heeexy.com/p/redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link><pubDate>Thu, 16 Jul 2020 23:47:00 +0000</pubDate><guid>https://heeexy.com/p/redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid><description>&lt;h2 id="故障">
+&lt;/ol></description></item><item><title>Redisson分布式锁报错问题排查</title><link>https://heeexy.com/p/redisson-illegalmonitorstateexception/</link><pubDate>Thu, 16 Jul 2020 23:47:00 +0000</pubDate><guid>https://heeexy.com/p/redisson-illegalmonitorstateexception/</guid><description>&lt;h2 id="故障">
 &lt;a href="#%e6%95%85%e9%9a%9c">#&lt;/a>
 故障
 &lt;/h2>&lt;p>业务线测试同学反馈压测时，有以下报错日志：&lt;/p>
@@ -372,7 +401,7 @@ alt="Untitled"
 &lt;p>多次错过了正确答案。&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;p>其实也主要是因为不是自己的项目，在改代码、发布、压测、日志、监控这些方面都缺乏掌控，因此难免走了一些弯路。&lt;/p></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/p/%E6%97%A5%E5%BF%97es%E9%9B%86%E7%BE%A4%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88--%E6%AE%B5%E5%90%88%E5%B9%B6/</guid><description>&lt;h2 id="先抛结论">
+&lt;p>其实也主要是因为不是自己的项目，在改代码、发布、压测、日志、监控这些方面都缺乏掌控，因此难免走了一些弯路。&lt;/p></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/elasticsearch-segment-merge/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch-segment-merge/</guid><description>&lt;h2 id="先抛结论">
 &lt;a href="#%e5%85%88%e6%8a%9b%e7%bb%93%e8%ae%ba">#&lt;/a>
 先抛结论
 &lt;/h2>&lt;p>如果日志型ES集群system load 过高，I/O打满，尤其是在&lt;strong>读写低谷时间段 read 异常高&lt;/strong>，可以考虑排查段合并的问题。&lt;/p>
@@ -427,7 +456,7 @@ loading="lazy"
 &lt;p>&lt;img src="http://img.heeexy.com/es-io.png"
 loading="lazy"
 alt="es-io"
->&lt;/p></description></item><item><title>QPS从1k到2w，我做了什么</title><link>https://heeexy.com/p/qps%E4%BB%8E1k%E5%88%B02w%E6%88%91%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/</link><pubDate>Mon, 17 Feb 2020 21:15:00 +0000</pubDate><guid>https://heeexy.com/p/qps%E4%BB%8E1k%E5%88%B02w%E6%88%91%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/</guid><description>&lt;p>这两年有幸参与了商品列表系统的两次黑五挑战，QPS从最开始的1k都顶不住，到1w，再到2w，加上支持大量的AB实验，排序千人千面，功能越来越复杂，系统越来越庞大，可能这样的机会都不会常有，在此简单记录一下做系统优化的实践心得。&lt;/p>
+>&lt;/p></description></item><item><title>QPS从1k到2w，我做了什么</title><link>https://heeexy.com/p/optimization-experience/</link><pubDate>Mon, 17 Feb 2020 21:15:00 +0000</pubDate><guid>https://heeexy.com/p/optimization-experience/</guid><description>&lt;p>这两年有幸参与了商品列表系统的两次黑五挑战，QPS从最开始的1k都顶不住，到1w，再到2w，加上支持大量的AB实验，排序千人千面，功能越来越复杂，系统越来越庞大，可能这样的机会都不会常有，在此简单记录一下做系统优化的实践心得。&lt;/p>
 &lt;h1 id="要素">
 &lt;a href="#%e8%a6%81%e7%b4%a0">#&lt;/a>
 要素
@@ -480,7 +509,7 @@ alt="es-io"
 &lt;p>当接口都很快，DB（Elasticsearch）开始顶不住，我们尝试了加机器、扩副本、调堆内存大小等手段，最终还是通过将商品详情的查询移出ES，由单独的服务通过查Redis来提供，减轻了ES大半的压力。&lt;/p>
 &lt;p>。。。&lt;/p>
 &lt;p>以上的手段未必适合其它项目，但系统的优化就是这样，从来就没有标准答案。&lt;/p>
-&lt;p>我们能做的就只有深入业务，利用好每一种工具，然后充满信心地迎接下一个挑战。&lt;/p></description></item><item><title>JDBC为什么不需要Class.forName()</title><link>https://heeexy.com/p/jdbc%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81class.forname/</link><pubDate>Mon, 03 Feb 2020 19:57:00 +0000</pubDate><guid>https://heeexy.com/p/jdbc%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81class.forname/</guid><description>&lt;h3 id="drivermanager">
+&lt;p>我们能做的就只有深入业务，利用好每一种工具，然后充满信心地迎接下一个挑战。&lt;/p></description></item><item><title>JDBC为什么不需要Class.forName()</title><link>https://heeexy.com/p/classloader/</link><pubDate>Mon, 03 Feb 2020 19:57:00 +0000</pubDate><guid>https://heeexy.com/p/classloader/</guid><description>&lt;h3 id="drivermanager">
 &lt;a href="#drivermanager">#&lt;/a>
 DriverManager
 &lt;/h3>&lt;p>在初学JDBC时，总是记得开头就要来这么一句&lt;/p>
@@ -821,7 +850,7 @@ JarLoader
 &lt;/div>&lt;p>&lt;img src="http://img.heeexy.com/JarLoader.png"
 loading="lazy"
 >&lt;/p>
-&lt;p>至此，我们已经找到了全部遍历的地方，URLClassLoader加载了全部jar包之后，在开始迭代时，URLClassPath 遍历每个jar包，JarLoader查找每个jar包中是否有目标文件META-INF/services/java.sql.Driver。&lt;/p></description></item><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/wifi%E9%87%8C%E9%83%BD%E6%98%AF%E8%87%AA%E7%94%B1%E7%9A%84%E9%A6%99%E5%91%B3----%E8%BD%AF%E8%B7%AF%E7%94%B1/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/p/wifi%E9%87%8C%E9%83%BD%E6%98%AF%E8%87%AA%E7%94%B1%E7%9A%84%E9%A6%99%E5%91%B3----%E8%BD%AF%E8%B7%AF%E7%94%B1/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
+&lt;p>至此，我们已经找到了全部遍历的地方，URLClassLoader加载了全部jar包之后，在开始迭代时，URLClassPath 遍历每个jar包，JarLoader查找每个jar包中是否有目标文件META-INF/services/java.sql.Driver。&lt;/p></description></item><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/router/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/p/router/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
 loading="lazy"
 alt="网络拓扑"
 >&lt;/p>
@@ -905,7 +934,631 @@ alt="网络拓扑"
 &lt;/h5>&lt;p>源码 &lt;a class="link" href="https://github.com/coolsnowwolf/lede" target="_blank" rel="noopener"
 >https://github.com/coolsnowwolf/lede&lt;/a>&lt;/p>
 &lt;p>使用Github Actions 云编译 &lt;a class="link" href="https://www.youtube.com/watch?v=2Y8DN-ROYIs" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/%E4%BD%BF%E7%94%A8mybatis%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88dao%E5%B1%82%E4%B8%8D%E9%9C%80%E8%A6%81@repository/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0000</pubDate><guid>https://heeexy.com/p/%E4%BD%BF%E7%94%A8mybatis%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88dao%E5%B1%82%E4%B8%8D%E9%9C%80%E8%A6%81@repository/</guid><description>&lt;h1 id="问题">
+>https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>MemSQL简介</title><link>https://heeexy.com/p/memsql/</link><pubDate>Tue, 18 Jun 2019 22:25:00 +0000</pubDate><guid>https://heeexy.com/p/memsql/</guid><description>&lt;h2 id="为什么要看memsql">
+&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%9c%8bmemsql">#&lt;/a>
+为什么要看MemSQL
+&lt;/h2>&lt;p>因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。&lt;/p>
+&lt;h2 id="初体验结果">
+&lt;a href="#%e5%88%9d%e4%bd%93%e9%aa%8c%e7%bb%93%e6%9e%9c">#&lt;/a>
+初体验结果
+&lt;/h2>&lt;p>MemSQL与我们期望的ms级别查询相差甚远，最简单的查询也通常是500ms返回，并不能应对线上的高并发实时查询系统。秒级查询已经有presto等各种大数据组件，对于我们团队已经没有理由再来深入使用MemSQL。&lt;/p>
+&lt;p>MemSQL 其实有很多优点，有完善的文档，精致的页面管理工具，方便的安装，甚至一键导入大量数据来方便用户体验 （就差把sql的耗时贴出来了，要是贴出来就省了我调研的时间了），可惜在同一梯队还有太多免费、开源、有活跃社区的竞争对手。&lt;/p>
+&lt;h2 id="特点">
+&lt;a href="#%e7%89%b9%e7%82%b9">#&lt;/a>
+特点
+&lt;/h2>&lt;ul>
+&lt;li>MemSQL属于商业公司，免费4 units. (每8核32G 为1 unit)，不开源&lt;/li>
+&lt;li>自带portal界面管理，MemSQL Studio，自带安装工具&lt;/li>
+&lt;li>完全支持mysql语法，jdbc，增删改查&lt;/li>
+&lt;li>支持 in-memory rowstore &amp;amp;&amp;amp; on-disk columnstore&lt;/li>
+&lt;li>大吞吐量数据写入(loading TPC-H SF100 (approximately 100 GBs of row files) will take around four minutes)&lt;/li>
+&lt;li>exactly-once&lt;/li>
+&lt;li>aggregator节点运行sql，聚合结果；leaf节点存储&amp;amp;处理数据&lt;/li>
+&lt;/ul>
+&lt;h2 id="数据导入">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e5%af%bc%e5%85%a5">#&lt;/a>
+数据导入
+&lt;/h2>&lt;ol>
+&lt;li>file , 指定分隔符&lt;/li>
+&lt;li>Streaming (Kafka , S3 , Azure Blob , Filesystem) 通过Pipelines&lt;/li>
+&lt;li>MySQL (sql文件)&lt;/li>
+&lt;/ol>
+&lt;h2 id="选择-shard-key---类似es的routing">
+&lt;a href="#%e9%80%89%e6%8b%a9-shard-key---%e7%b1%bb%e4%bc%bces%e7%9a%84routing">#&lt;/a>
+选择 shard key (类似ES的routing)
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>Using a column or set of columns unique enough to minimize skew.&lt;/p>
+&lt;p>独特的key，使数据均匀分布&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Sharding on columns which you expect to filter or join on often. This allows the optimizer to minimize network traffic during the execution of the query (see [Distributed DML] for more details).&lt;/p>
+&lt;p>使用你经常要join或过滤的字段，减小网络传输。比如订单相关，使用user_id&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="查询调优">
+&lt;a href="#%e6%9f%a5%e8%af%a2%e8%b0%83%e4%bc%98">#&lt;/a>
+查询调优
+&lt;/h2>&lt;ol>
+&lt;li>加index 优化过滤 groupby sort&lt;/li>
+&lt;li>shard key : Gather partitions:all 优化为 Gather partitions:single&lt;/li>
+&lt;li>Reference Tables 小表，不常更新 ，每个节点都有复制&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="http://img.heeexy.com/memsql-profile.png"
+loading="lazy"
+alt="profile"
+>&lt;/p>
+&lt;h2 id="表结构优化">
+&lt;a href="#%e8%a1%a8%e7%bb%93%e6%9e%84%e4%bc%98%e5%8c%96">#&lt;/a>
+表结构优化
+&lt;/h2>&lt;h3 id="rowstore-vs-columnstore">
+&lt;a href="#rowstore-vs-columnstore">#&lt;/a>
+Rowstore vs. Columnstore
+&lt;/h3>&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/" target="_blank" rel="noopener"
+>https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/&lt;/a>&lt;/p>
+&lt;p>Rowstore : 查询指定列，并发更新。使用无锁索引，支持多索引。频繁更新的事务场景。unique constraints 。同样会往disk写一份 用于恢复。&lt;/p>
+&lt;p>Columnstore： 顺序扫描，单索引。适用场景：聚合仅很少列（10列内）,扫描大量行，很少频繁单行删改，更新应该是大批量的修改&lt;/p>
+&lt;h2 id="分布式sql">
+&lt;a href="#%e5%88%86%e5%b8%83%e5%bc%8fsql">#&lt;/a>
+分布式SQL
+&lt;/h2>&lt;h3 id="ddl">
+&lt;a href="#ddl">#&lt;/a>
+DDL
+&lt;/h3>&lt;ul>
+&lt;li>每一个并行的查询都在每个leaf的每个partition上分开执行。&lt;/li>
+&lt;li>默认每个leaf的partition数量=cpu数量&lt;/li>
+&lt;li>每个partition都是个单独的库&lt;/li>
+&lt;li>reference tables在每个aggregator和leaf都有一份复制，适合小表&lt;/li>
+&lt;li>shard key 决定数据落到哪一partition&lt;/li>
+&lt;li>主键和unique key 需要包含shard key ，例如：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sql" data-lang="sql">&lt;span class="line">&lt;span class="cl">&lt;span class="k">CREATE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">TABLE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">clicks&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">click_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">BIGINT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AUTO_INCREMENT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">INT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">page_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">INT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">SHARD&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">KEY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">PRIMARY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">KEY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">click_id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="dml">
+&lt;a href="#dml">#&lt;/a>
+DML
+&lt;/h3>&lt;ul>
+&lt;li>分布式join 相同的shard key来join可以提升性能&lt;/li>
+&lt;li>分布式事务，等待每个partition都ready，再一起提交&lt;/li>
+&lt;li>引用表必须具有显式主键。 分布式表中的AUTO_INCREMENT列必须是BIGINT。 自动增量值在每个聚合器上单调递增，但在整个群集中不连续。 分片表不支持唯一键（除非唯一键是分片键的超集）。 分片表不支持修改分片键的UPDATE查询。 分片表不支持UPDATE &amp;hellip; LIMIT。&lt;/li>
+&lt;/ul>
+&lt;h2 id="遇到问题">
+&lt;a href="#%e9%81%87%e5%88%b0%e9%97%ae%e9%a2%98">#&lt;/a>
+遇到问题
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>mysql front连接不上&lt;/p>
+&lt;p>换用其它客户端可以，比如idea&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/" target="_blank" rel="noopener"
+>https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/&lt;/a> 导入csv文件提示找不到文件&lt;/p>
+&lt;p>docker cp /home/hxy/download/companylist.csv 62b8df2d8761://usr/share&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="性能体验">
+&lt;a href="#%e6%80%a7%e8%83%bd%e4%bd%93%e9%aa%8c">#&lt;/a>
+性能体验
+&lt;/h2>&lt;h3 id="测试机器">
+&lt;a href="#%e6%b5%8b%e8%af%95%e6%9c%ba%e5%99%a8">#&lt;/a>
+测试机器
+&lt;/h3>&lt;p>AWS 8c32g&lt;/p>
+&lt;h3 id="测试数据">
+&lt;a href="#%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae">#&lt;/a>
+测试数据
+&lt;/h3>&lt;p>官方S3的数据，我们使用 columnstore 和 rowstore 各测一次sql查询。&lt;/p>
+&lt;p>&lt;a class="link" href="https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/" target="_blank" rel="noopener"
+>https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/&lt;/a>&lt;/p>
+&lt;h4 id="columnstore数据">
+&lt;a href="#columnstore%e6%95%b0%e6%8d%ae">#&lt;/a>
+&lt;strong>columnstore数据&lt;/strong>
+&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/columnstore.png"
+loading="lazy"
+alt="columnstore.png"
+>&lt;/p>
+&lt;h4 id="rowstore-数据">
+&lt;a href="#rowstore-%e6%95%b0%e6%8d%ae">#&lt;/a>
+&lt;strong>rowstore&lt;/strong> &lt;strong>数据&lt;/strong>
+&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/rowstore.png"
+loading="lazy"
+alt="rowstore.png"
+>&lt;/p>
+&lt;p>由于150W行数据存disk 占1G，存memory需要占5G，发现机器内存不足，只导入了一张150W行和一张25行的表。&lt;/p>
+&lt;h4 id="执行sql耗时">
+&lt;a href="#%e6%89%a7%e8%a1%8csql%e8%80%97%e6%97%b6">#&lt;/a>
+执行sql耗时
+&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select * from nation limit 20;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 770ms&lt;/p>
+&lt;p>&lt;strong>rowstore&lt;/strong> 700ms&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select l_returnflag,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_linestatus,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_quantity) as sum_qty,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice) as sum_base_price,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_quantity) as avg_qty,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_extendedprice) as avg_price,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_discount) as avg_disc,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">count(*) as count_order
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from lineitem
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where l_shipdate &amp;lt;= date(&amp;#39;1998-12-01&amp;#39; - interval &amp;#39;90&amp;#39; day)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by l_returnflag, l_linestatus
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by l_returnflag, l_linestatus;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore 19s 5s 5s&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_orderkey,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as revenue,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_shippriority
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customer,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_mktsegment = &amp;#39;BUILDING&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and c_custkey = o_custkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_orderkey = o_orderkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;lt; date(&amp;#39;1995-03-15&amp;#39;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_shipdate &amp;gt; date(&amp;#39;1995-03-15&amp;#39;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_orderkey,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_shippriority
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">revenue desc,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 10s 5s 5s&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_name,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as revenue,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_acctbal,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_address,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_phone,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_comment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customer,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey = o_custkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_orderkey = o_orderkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;gt;= date(&amp;#39;1993-10-01&amp;#39;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;lt; date(&amp;#39;1993-10-01&amp;#39;) + interval &amp;#39;3&amp;#39; month
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_returnflag = &amp;#39;R&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and c_nationkey = n_nationkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_name,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_acctbal,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_phone,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_address,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_comment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">revenue desc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 20;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 12s 9s 9s&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(amount) as sum_profit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">select
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name as nation,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">extract(year from o_orderdate) as o_year,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">part,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">supplier,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">partsupp,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">s_suppkey = l_suppkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and ps_suppkey = l_suppkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and ps_partkey = l_partkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and p_partkey = l_partkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderkey = l_orderkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and s_nationkey = n_nationkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and p_name like &amp;#39;%green%&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">) as profit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year desc;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 19s 19s&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join orders o on c.c_custkey = o.o_custkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join nation n on c.c_nationkey = n.n_nationkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;8367&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 4s 4s&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join orders o on c.c_custkey = o.o_custkey and o_custkey = &amp;#39;2141&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join nation n on c.c_nationkey = n.n_nationkey
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;2141&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>columnstore 2s 1s 1s&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;2141&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>rowstore&lt;/strong> 500ms&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/es-for-search/</link><pubDate>Sun, 02 Dec 2018 16:08:38 +0000</pubDate><guid>https://heeexy.com/p/es-for-search/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
+&lt;blockquote>
+&lt;p>You Know, for Search&lt;/p>
+&lt;/blockquote>
+&lt;p>我们团队就一直使用 ES 作为主力数据库， 从一开始做全文检索，到现在承担全部的商品列表页查询。近几个月将查询系统的 qps 从 1k 优化到了 10k+，其中 ES 的优化占了很重要一部分，准确的来说，应该是对 ES 特性的扬长避短起到了非常大的作用。&lt;/p>
+&lt;p>&lt;img src="http://img.heeexy.com/webpage.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="数组--嵌套结构">
+&lt;a href="#%e6%95%b0%e7%bb%84--%e5%b5%8c%e5%a5%97%e7%bb%93%e6%9e%84">#&lt;/a>
+数组 &amp;amp; 嵌套结构
+&lt;/h2>&lt;p>ES 没有 join，很多人直接就会认为 ES 无法处理一对多的情况，其实还有&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/array.html" target="_blank" rel="noopener"
+>数组&lt;/a>和&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/nested.html" target="_blank" rel="noopener"
+>嵌套结构&lt;/a>可以应付常见的业务场景。&lt;/p>
+&lt;p>比如一个商品拥有多种属性，都存放在一个数组字段中，使用 must 和 must_not 就可以灵活地进行查询筛选。&lt;/p>
+&lt;p>比如同款不同色的几件T恤，使用嵌套结构保存，搜索时只需要其中一件满足筛选条件，便可以全部带出来，在页面上以多个小色块展示，而无需占用多个展示位。并且还可以拿满足筛选条件的商品中的某属性最大值/最小值等进行排序，如官网给出的&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/search-request-sort.html" target="_blank" rel="noopener"
+>示例&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;bool&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;must&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;sort&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;parent.child.age&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;mode&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;min&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;order&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;asc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="聚合">
+&lt;a href="#%e8%81%9a%e5%90%88">#&lt;/a>
+聚合
+&lt;/h2>&lt;p>商品列表页面能用到聚合的场景非常多，比如聚合出分类下（可能多达数万个商品）的各子分类，各属性的数量，并且需要支持复杂的筛选条件，比如库存，价格范围等等，并且这种查询速度远比 RDS 的 join + group by + count 快。&lt;/p>
+&lt;p>又比如需要查出最近10天内有新商品的日期列表，那就可以用到 date_histogram 聚合函数。&lt;/p>
+&lt;h2 id="动态字段">
+&lt;a href="#%e5%8a%a8%e6%80%81%e5%ad%97%e6%ae%b5">#&lt;/a>
+动态字段
+&lt;/h2>&lt;p>动态字段的设计也为我们的业务提供了很大便利，由于与具体业务关联性太强，就不详细展开了。&lt;/p>
+&lt;p>ES能支持的动态字段数量非常的多，不过这里要留意的就是动态字段一个比较容易出问题的地方，就是瞬时写入大量的动态字段会导致集群索引的元数据大量变动，master 节点负载暴涨甚至挂掉。&lt;/p>
+&lt;h2 id="缺陷">
+&lt;a href="#%e7%bc%ba%e9%99%b7">#&lt;/a>
+缺陷
+&lt;/h2>&lt;ol>
+&lt;li>没有 join。ES 的查询速度非常的快，但是不能 join 毕竟还是有一些业务场景无法使用。当然话又说回来，在高并发量下，多表 join 能不能抗得住也是个问题。对于查询，我们一贯的原则还是：&lt;strong>把数据离线准备成便于查询的结构，线上实时查询尽可能的简单，一步到位&lt;/strong>。&lt;/li>
+&lt;li>由于要把数据离线准备好，这便带来了数据同步更新的问题，数据的时效性、准确性都需要保证，数组与嵌套结构的数据更新也不够方便高效，这些都会增加很多的工作量。&lt;/li>
+&lt;/ol></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/upgrade-elasticsearch/</link><pubDate>Sat, 01 Sep 2018 11:29:00 +0000</pubDate><guid>https://heeexy.com/p/upgrade-elasticsearch/</guid><description>&lt;h1 id="集群管理">
+&lt;a href="#%e9%9b%86%e7%be%a4%e7%ae%a1%e7%90%86">#&lt;/a>
+集群管理
+&lt;/h1>&lt;h3 id="节点分配">
+&lt;a href="#%e8%8a%82%e7%82%b9%e5%88%86%e9%85%8d">#&lt;/a>
+节点分配
+&lt;/h3>&lt;p>原集群 master*3 data*12 client*0&lt;/p>
+&lt;p>新集群 master*3 data*12 injest*0 coordinating*0&lt;/p>
+&lt;p>ingest 节点用于支持 pipeline 操作 对bulk和index文档进行预处理&lt;/p>
+&lt;p>coordinating 功能主要是分发请求,聚合各节点的处理结果,负载均衡,大规模集群可以设置一个给读,一个给写。但coordinating 数量也不宜过多,会拖慢选举主节点的时间,并且data节点其实也可以处理这些请求.&lt;/p>
+&lt;h3 id="节点设置">
+&lt;a href="#%e8%8a%82%e7%82%b9%e8%ae%be%e7%bd%ae">#&lt;/a>
+节点设置
+&lt;/h3>&lt;p>search.remote.connect: false
+node.ingest: false&lt;/p>
+&lt;h1 id="数据迁移">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e8%bf%81%e7%a7%bb">#&lt;/a>
+数据迁移
+&lt;/h1>&lt;h3 id="数据源">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e6%ba%90">#&lt;/a>
+数据源
+&lt;/h3>&lt;p>由于有数据源及同步方案,所以只需数据全量导入6.3版本的集群即可.&lt;/p>
+&lt;h3 id="索引管理">
+&lt;a href="#%e7%b4%a2%e5%bc%95%e7%ae%a1%e7%90%86">#&lt;/a>
+索引管理
+&lt;/h3>&lt;p>目前生产环境有300个索引需要同步,要检查同步脚本的创建索引,切别名等步骤.&lt;/p>
+&lt;h3 id="mapping设置">
+&lt;a href="#mapping%e8%ae%be%e7%bd%ae">#&lt;/a>
+mapping设置
+&lt;/h3>&lt;ol>
+&lt;li>type 只支持1种，自 ES7.0 起将不再支持 type&amp;mdash;&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/removal-of-types.html" target="_blank" rel="noopener"
+>官方说明&lt;/a>&lt;/li>
+&lt;li>对可以使用自增 id 的索引使用自增 id&lt;/li>
+&lt;li>对大多数字符串字段使用 keyword 类型&lt;/li>
+&lt;li>对不用于数值范围查找的数值类型改为keyword类型&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.jianshu.com/p/d53ef9aa8416" target="_blank" rel="noopener"
+>分词插件可能需要改动&lt;/a>&lt;/li>
+&lt;li>index: no 改为 index:false&lt;/li>
+&lt;li>index: not_analyzed 删掉&lt;/li>
+&lt;/ol>
+&lt;h3 id="提高迁移速度">
+&lt;a href="#%e6%8f%90%e9%ab%98%e8%bf%81%e7%a7%bb%e9%80%9f%e5%ba%a6">#&lt;/a>
+提高迁移速度
+&lt;/h3>&lt;ol>
+&lt;li>sudo swapoff -a&lt;/li>
+&lt;li>副本设置为0&lt;/li>
+&lt;li>refresh_interval 设置为 -1 （对线上生产集群上索引批量导入时，设置-1后，重新打开时可能会导致集群压力暴增）&lt;/li>
+&lt;li>导入数据&lt;/li>
+&lt;li>refresh_interval 设置为30&lt;/li>
+&lt;li>确认数据正确性&lt;/li>
+&lt;li>POST /_forcemerge max_num_segments=1（对于大索引可能非常耗时）&lt;/li>
+&lt;li>副本设置为1&lt;/li>
+&lt;/ol>
+&lt;h1 id="scala项目升级">
+&lt;a href="#scala%e9%a1%b9%e7%9b%ae%e5%8d%87%e7%ba%a7">#&lt;/a>
+scala项目升级
+&lt;/h1>&lt;ol>
+&lt;li>scala &amp;amp; play 升级, 尤其是play的升级会导致大量代码改动&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/sksamuel/elastic4s" target="_blank" rel="noopener"
+>elastic4s&lt;/a> 依赖升级，注意除了core包还需要http包 。&lt;/li>
+&lt;li>原本的获取client, 构建dsl,excute,解析response的大量代码要修改，尤其是构建dsl涉及大量业务，需要逐一比对修改。&lt;/li>
+&lt;/ol>
+&lt;h1 id="监控">
+&lt;a href="#%e7%9b%91%e6%8e%a7">#&lt;/a>
+监控
+&lt;/h1>&lt;p>Prometheus + Grafana 主要是获取ES信息的api随之升级，改动通常不大&lt;/p>
+&lt;p>另外推荐 xpack 的 monitor，收集了 segment 的数据，收集了每个索引的请求量，响应时间等信息，信息集成进了 kibana&lt;/p></description></item><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/mybatis-classpathmapperscanner/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0000</pubDate><guid>https://heeexy.com/p/mybatis-classpathmapperscanner/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>Service层注入Dao时， Intellij 总会以红色波浪线提示我们&lt;/p>
@@ -1067,7 +1720,7 @@ doScan() 扫描资源，转换为 BeanDefinition
 &lt;/h1>&lt;p>&lt;a class="link" href="https://blog.csdn.net/java280580332/article/details/72123890" target="_blank" rel="noopener"
 >https://blog.csdn.net/java280580332/article/details/72123890&lt;/a>&lt;/p>
 &lt;p>&lt;a class="link" href="https://blog.csdn.net/mingtian625/article/details/47684271" target="_blank" rel="noopener"
->https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>近期阅读源码的总结与转变</title><link>https://heeexy.com/p/%E8%BF%91%E6%9C%9F%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E8%BD%AC%E5%8F%98/</link><pubDate>Sun, 28 Jan 2018 19:11:29 +0000</pubDate><guid>https://heeexy.com/p/%E8%BF%91%E6%9C%9F%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E8%BD%AC%E5%8F%98/</guid><description>&lt;h2 id="阅读源码">
+>https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>近期阅读源码的总结与转变</title><link>https://heeexy.com/p/recent-summary/</link><pubDate>Sun, 28 Jan 2018 19:11:29 +0000</pubDate><guid>https://heeexy.com/p/recent-summary/</guid><description>&lt;h2 id="阅读源码">
 &lt;a href="#%e9%98%85%e8%af%bb%e6%ba%90%e7%a0%81">#&lt;/a>
 阅读源码
 &lt;/h2>&lt;h3 id="初读-spring">
@@ -1103,7 +1756,7 @@ MyBatis
 &lt;h3 id="学习">
 &lt;a href="#%e5%ad%a6%e4%b9%a0">#&lt;/a>
 学习
-&lt;/h3>&lt;p>博客的更新频率将会降低，一方面是要自己先学透，提示博文质量，另一方面也是其实后面一段时间将会将重心放在找工作上。毕竟对于技术面试和以前的考试差不多，精读源码实在是性价比有点低，全面复习准备面试题效果更好。虽然我是不喜欢准备面试题的，但没有办法，下一份工作很关键，只有找到稳定的，能追求技术的团队，才能提供安心的钻研技术的环境。&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/%E6%9E%81%E7%AE%80-spring-%E6%A1%86%E6%9E%B6--%E6%B5%85%E6%9E%90%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0000</pubDate><guid>https://heeexy.com/p/%E6%9E%81%E7%AE%80-spring-%E6%A1%86%E6%9E%B6--%E6%B5%85%E6%9E%90%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</guid><description>&lt;blockquote>
+&lt;/h3>&lt;p>博客的更新频率将会降低，一方面是要自己先学透，提示博文质量，另一方面也是其实后面一段时间将会将重心放在找工作上。毕竟对于技术面试和以前的考试差不多，精读源码实在是性价比有点低，全面复习准备面试题效果更好。虽然我是不喜欢准备面试题的，但没有办法，下一份工作很关键，只有找到稳定的，能追求技术的团队，才能提供安心的钻研技术的环境。&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/ioc/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0000</pubDate><guid>https://heeexy.com/p/ioc/</guid><description>&lt;blockquote>
 &lt;p>从网上看到一篇博文 &lt;a class="link" href="https://diaozxin007.github.io/2018/01/08/spring-ioc/" target="_blank" rel="noopener"
 >徒手撸框架&amp;ndash;实现IoC&lt;/a> ，写得很棒，作者抛开了 Spring 源码中复杂的校验，拓展等功能，实现了一个极简的 IoC 框架，让 Spring 源码初学者可以清楚的看到 IOC 的实现流程。&lt;/p>
 &lt;p>本文就借其框架，略加改造，再次介绍一下 Spring 是如何处理循环依赖的。&lt;/p>
@@ -1226,7 +1879,7 @@ Q &amp;amp; A
 心得
 &lt;/h3>&lt;p>上面只贴了 getBean 的代码，仅仅修改了原作者不到 10 行代码，其实在修改原框架，实现我们要的功能时不止这么多，包括调整对 json 的解析，对 bean 的填充等。&lt;/p>
 &lt;p>感受到 Spring 框架真的是很复杂很全面，这复杂程度靠说是说不清楚的，也不是翻一遍书看看源码就能明白的。而且看源码其实还是似懂非懂，中间的细节迷迷糊糊就可能跳过去了。&lt;/p>
-&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.8-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean--%E6%89%BE%E5%87%BA%E6%89%80%E6%9C%89%E5%8C%B9%E9%85%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-beanname/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.8-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean--%E6%89%BE%E5%87%BA%E6%89%80%E6%9C%89%E5%8C%B9%E9%85%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-beanname/</guid><description>&lt;blockquote>
+&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/beannamesfortypeincludingancestors/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0000</pubDate><guid>https://heeexy.com/p/beannamesfortypeincludingancestors/</guid><description>&lt;blockquote>
 &lt;p>&lt;a class="link" href="https://heeexy.com/2018/01/23/findAutowireCandidates/" >前文&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="源码解析">
@@ -1561,7 +2214,7 @@ isTypeMatch
 &lt;/div>
 &lt;/div>&lt;p>总结：&lt;/p>
 &lt;p>目前很遗憾 isTypeMatch 往下还有很复杂的逻辑暂时不能看懂，但是从外层的逻辑大致知道寻找所有匹配的beanName 的方法非常的“复杂粗暴”。遍历 beanDefinitionNames 已定义的所有 bean，即使是一个小型的项目也有近200个 bean 需要遍历，并且这数百个 beanName 还要遍历非常多次。&lt;/p>
-&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.7-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.7-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean/</guid><description>&lt;h2 id="前言">
+&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/findautowirecandidates/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0000</pubDate><guid>https://heeexy.com/p/findautowirecandidates/</guid><description>&lt;h2 id="前言">
 &lt;a href="#%e5%89%8d%e8%a8%80">#&lt;/a>
 前言
 &lt;/h2>&lt;p>Spring 装配 bean 有两种类型：&lt;code>autowireByName&lt;/code> 和 &lt;code>autowireByType&lt;/code> 。&lt;/p>
@@ -1739,7 +2392,7 @@ isTypeMatch
 &lt;li>&lt;a class="link" href="https://heeexy.com/2018/01/24/beanNamesForTypeIncludingAncestors/" >如何查找出所有符合类型的 beanName&lt;/a>&lt;/li>
 &lt;li>什么是符合装配候选&lt;/li>
 &lt;li>什么是回退匹配&lt;/li>
-&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.6-beanwrapper-%E5%AF%B9%E6%AF%94-mybatis/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.6-beanwrapper-%E5%AF%B9%E6%AF%94-mybatis/</guid><description>&lt;h2 id="spring-vs-mybatis">
+&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/beanwrapper/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0000</pubDate><guid>https://heeexy.com/p/beanwrapper/</guid><description>&lt;h2 id="spring-vs-mybatis">
 &lt;a href="#spring-vs-mybatis">#&lt;/a>
 Spring vs MyBatis
 &lt;/h2>&lt;p>Spring 和 MyBatis 中都有 BeanWrapper , Spring 中为接口， 实现类为 BeanWrapperImpl , 为了方便后面区分，本文用 SB 指代 Spring 的 BeanWrapperImpl ，用 MB 指代 MyBatis 中的 BeanWrapper。&lt;/p>
@@ -1801,7 +2454,7 @@ Spring vs MyBatis
 &lt;p>MB 属于&lt;code>BaseWrapper&lt;/code> 的子类之一，同级别的还有 MapWrapper ，上级还有 CollectionWrapper 。&lt;/p>
 &lt;p>而 SB 就已经是在创建 Bean 时直接使用到的接口了。&lt;/p>
 &lt;p>像&lt;strong>解析嵌套参数名&lt;/strong> (比如 user.name / address.city.mailcode)，&lt;strong>类型转换&lt;/strong>这些事情，SB 都能处理完。而 MB 都是先要使用其它工具类处理，比如依靠 PropertyTokenizer 。&lt;/p>
-&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.5-createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.5-createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
+&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0000</pubDate><guid>https://heeexy.com/p/createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
 &lt;p>并且不管这个bean是单例还是 prototype 还是其它 scope ,最终都是会走到此处，只是前后的一些验证、处理有区别。比如单例的就要先去缓存中获取，prototype 就不需要。&lt;/p>
 &lt;p>源码阅读到这里，我们已经习惯了一层一层剥。createBean 依然还是没有直接地把 bean 创建出来（当然我所期望的看到创建 bean 就是看到它的反射源码为止）。&lt;/p>
 &lt;p>createBean 的大致步骤为:&lt;/p>
@@ -1915,7 +2568,7 @@ setter 循环依赖
 &lt;p>testA 先创建，并且暴露一个工厂出去，进行 setter 注入 testB.&lt;/p>
 &lt;p>testB 创建，并且暴露一个工厂，进行 setter 注入 testA.&lt;/p>
 &lt;p>在这里想用 testA 时，&lt;strong>由于发现提前暴露的工厂，从而在此处走了另一条路&lt;/strong>，使用此工厂来创建 testA ,在此处解决了循环问题。&lt;/p>
-&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/mybatis-%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2%E4%BA%8Ctypehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/p/mybatis-%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2%E4%BA%8Ctypehandlerregistry/</guid><description>&lt;h1 id="问题">
+&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/p/typehandlerregistry/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>上一篇我们讲到，对于未知数据类型的解析，UnknownTypeHandler 把部分任务交给了 TypeHandlerRegistry ,甚至可能仅仅只丢了一个 javaType 过来就要求返回一个合适的解析器回去 。TypeHandlerRegistry 到底里面做了啥可以找到合适的解析器呢？&lt;/p>
@@ -2112,7 +2765,7 @@ ObjectTypeHandler
 TypeHandlerRegistry
 &lt;/h3>&lt;p>注册表功能，将常规的数十种关系映射在初始化时就都注册好，也就是提前存入 map 中，需要的时候去 map 中取。&lt;/p>
 &lt;p>尤其是将 javaType 和 TypeHandler 关联起来，并对一些类型注册了默认的解析器，即 jdbcType 未指明时所要采用的解析器。&lt;/p>
-&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/mybatis-%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2%E4%B8%80typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/p/mybatis-%E5%AF%B9%E6%9C%AA%E7%9F%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E6%8D%A2%E4%B8%80typehandler/</guid><description>&lt;h1 id="问题">
+&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/p/typehandler/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>前面说到，我们可以用 JSONObject 替代习惯使用的 JavaBean ，而之所以能用 JSONObject 主要就是因为它实现了 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> 。&lt;/p>
@@ -2458,7 +3111,7 @@ loading="lazy"
 总结
 &lt;/h1>&lt;p>今天我们分析完了类型转换器，发现对于未知的数据类型，有一部分是通过ObjectTypeHandler 解析，其底层的用了&lt;code>com.mysql.jdbc.ResultSetImpl.getObject&lt;/code> 内的依据 Field.SQLType 的 swtich-case 。&lt;/p>
 &lt;p>另一部分则是通过&lt;code>UnknownTypeHandler&lt;/code> 去查找合适的解析器来解析。&lt;/p>
-&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/mybatis-%E4%B8%AD%E4%BD%BF%E7%94%A8-jsonobject-%E5%A4%84%E7%90%86%E4%B8%80%E5%AF%B9%E5%A4%9A%E7%BB%93%E6%9E%9C/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/p/mybatis-%E4%B8%AD%E4%BD%BF%E7%94%A8-jsonobject-%E5%A4%84%E7%90%86%E4%B8%80%E5%AF%B9%E5%A4%9A%E7%BB%93%E6%9E%9C/</guid><description>&lt;h1 id="问题">
+&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/p/one2many/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>在&lt;a class="link" href="https://heeexy.com/2017/12/30/JSONObject-in-MyBatis/" >上一文&lt;/a>介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。&lt;/p>
@@ -2636,7 +3289,7 @@ loading="lazy"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/mybatis-%E4%B8%AD%E4%BD%BF%E7%94%A8-jsonobject-%E6%9B%BF%E4%BB%A3-javabean/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/p/mybatis-%E4%B8%AD%E4%BD%BF%E7%94%A8-jsonobject-%E6%9B%BF%E4%BB%A3-javabean/</guid><description>&lt;h1 id="问题背景">
+&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/jsonobject-in-mybatis/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/p/jsonobject-in-mybatis/</guid><description>&lt;h1 id="问题背景">
 &lt;a href="#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af">#&lt;/a>
 问题背景
 &lt;/h1>&lt;p>项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？&lt;/p>
@@ -2830,7 +3483,7 @@ loading="lazy"
 总结
 &lt;/h2>&lt;p>JSONObject 开发非常方便，具有更强的灵活性，适用于中小型项目，简单业务的开发，也适用于&lt;strong>文档至上&lt;/strong>的前后端分离开发与微服务项目。&lt;/p>
 &lt;p>更具体的用法，可以参考 &lt;a class="link" href="https://github.com/Heeexy/SpringBoot-Shiro-Vue" target="_blank" rel="noopener"
->Github 项目&lt;/a>。&lt;/p></description></item><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/p/mybatis-%E7%9A%84%E6%97%A5%E5%BF%97%E8%AE%BE%E8%AE%A1--%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0000</pubDate><guid>https://heeexy.com/p/mybatis-%E7%9A%84%E6%97%A5%E5%BF%97%E8%AE%BE%E8%AE%A1--%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid><description>&lt;p>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。&lt;/p>
+>Github 项目&lt;/a>。&lt;/p></description></item><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/p/mybatis_design_patterns/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0000</pubDate><guid>https://heeexy.com/p/mybatis_design_patterns/</guid><description>&lt;p>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。&lt;/p>
 &lt;h2 id="问题-1">
 &lt;a href="#%e9%97%ae%e9%a2%98-1">#&lt;/a>
 问题 1
@@ -2985,7 +3638,7 @@ loading="lazy"
 &lt;/div>
 &lt;/div>&lt;p>​ LogFactory 提供了对外的 getLog(String logger) 方法，给需要 logger 的地方提供一个 Log 的实例。&lt;/p>
 &lt;p>​ 内部的实现依靠 &lt;code>logConstructor&lt;/code> 这个构造器通过反射来实例化一个 Log 的 Impl ，也就是之前的适配器，比如 Slf4jLoggerImpl 。&lt;/p>
-&lt;p>​ 判断采用哪种&lt;code>logConstructor&lt;/code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/p/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>&lt;blockquote>
+&lt;p>​ 判断采用哪种&lt;code>logConstructor&lt;/code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/setup-ssr-in-gce/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/p/setup-ssr-in-gce/</guid><description>&lt;blockquote>
 &lt;p>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
@@ -3136,7 +3789,7 @@ SSR客户端
 >http://www.jianshu.com/p/6bd66829a1ce&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="http://suppore.cn/512.html" target="_blank" rel="noopener"
 >http://suppore.cn/512.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/p/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E5%AE%9E%E8%B7%B5%E5%B0%8F%E7%BB%93/</guid><description>&lt;h2 id="背景">
+&lt;/ol></description></item><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/end-to-end/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/p/end-to-end/</guid><description>&lt;h2 id="背景">
 &lt;a href="#%e8%83%8c%e6%99%af">#&lt;/a>
 背景
 &lt;/h2>&lt;p>​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.&lt;/p>
@@ -3276,7 +3929,7 @@ SSR客户端
 &lt;li>近期主要问题基本都是待我去研究深入的技术,比如shiro的动态权限与vue-router的异步路由的结合,vue组件的通信,vuex的状态管理&lt;/li>
 &lt;li>其次是组员需要对vue更加熟悉,我这次要求了大家抛弃jQuery,用数据绑定的思想去写前端.目前大家的前端水平也还只是可以快速复制粘贴出页面,对于复杂的页面和组件,甚至对我们前端项目的目录结构与各部分功能,都不算掌握.&lt;/li>
 &lt;li>目前我们所谓的前后端分离其实还只是初步的业务和代码上的分离,以后如果要重构H5项目,可能还需要开NodeJS项目来解决和Android/iOS一样的接口加密问题,统一session管理问题,以及更多的前后端分离可能给我们带来的问题.&lt;/li>
-&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/%E6%90%AD%E5%BB%BAspringboot-shiro-vue%E6%A1%86%E6%9E%B6%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0000</pubDate><guid>https://heeexy.com/p/%E6%90%AD%E5%BB%BAspringboot-shiro-vue%E6%A1%86%E6%9E%B6%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
+&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/build-springboot-shiro-vue/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0000</pubDate><guid>https://heeexy.com/p/build-springboot-shiro-vue/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
 &lt;h3 id="跨域">
 &lt;a href="#%e8%b7%a8%e5%9f%9f">#&lt;/a>
 跨域
@@ -3554,7 +4207,7 @@ Access-Control-Allow-Origin
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">res.setHeader(&amp;#34;Access-Control-Allow-Origin&amp;#34;, ((HttpServletRequest) request).getHeader(&amp;#34;Origin&amp;#34;));
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.4-%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8B/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.4-%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8B/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
+&lt;/div></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
 &lt;a href="#%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;blockquote>
@@ -3715,7 +4368,7 @@ Access-Control-Allow-Origin
 &lt;p>2.1 在各种 map 里记录它的 创建、销毁等信息&lt;/p>
 &lt;p>2.2 通过&lt;code>createBean&lt;/code> 方法去具体创建这个实例。&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.3-%E7%BC%93%E5%AD%98%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8Bbean%E5%8F%8A%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.3-%E7%BC%93%E5%AD%98%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8Bbean%E5%8F%8A%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
+&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
 &lt;a href="#%e7%bc%93%e5%ad%98%e4%b8%ad%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 缓存中获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;p>&lt;code>DefaultSingletonBeanRegistry&lt;/code> 中实现此方法&lt;/p>
@@ -3826,7 +4479,7 @@ loading="lazy"
 &lt;p>​ 它的关键是 &lt;code>doGetObjectFromFactoryBean&lt;/code> ,方法名前面多加了个do&amp;hellip;&lt;/p>
 &lt;pre>&lt;code>在这个方法里面,我们终于看到想要看到的 `object = factory.getObject();` ,虽然早已知道必须要走到这,但是到这一步`getObject()` 还是绕了很多路,包括到这里居然还使用了`java.security.AccessController` 权限验证...
 &lt;/code>&lt;/pre>
-&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.2-factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.2-factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0000</pubDate><guid>https://heeexy.com/p/factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
 &lt;/span>&lt;span class="lnt"> 2
@@ -3959,7 +4612,7 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>疑问: 具体哪些地方用&lt;code>FactoryBean&lt;/code> 带来了真正的便利呢?&lt;/p>
 &lt;p>答:&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.1-bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%88%9D%E6%8E%A2/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.1-bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%88%9D%E6%8E%A2/</guid><description>&lt;h3 id="本文要看啥">
+&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/load_bean/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0000</pubDate><guid>https://heeexy.com/p/load_bean/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥?
 &lt;/h3>&lt;p>​ 前面已经了解了bean从配置文件到解析成BDHolder到注册的流程,我们已经将bean的信息封装好,塞入了map中,这个map可能在不同的实现里面,前面重点学的就是DefaultListableBeanFactory里的beanDefinitionMap.&lt;/p>
@@ -4288,7 +4941,7 @@ loading="lazy"
 &lt;p>类型转换&lt;/p>
 &lt;p>有可能有这种情况,返回的bean,是个String,但是requiredType传入的是Integer类型,那么这时候本步骤就会起作用了. Spring中提供了各种各样的转换器,用户也可以自己扩展转换器来满足需求&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.6-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.6-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90/</guid><description>&lt;h2 id="自定义标签的使用">
+&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/custom_element/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0000</pubDate><guid>https://heeexy.com/p/custom_element/</guid><description>&lt;h2 id="自定义标签的使用">
 &lt;a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e6%a0%87%e7%ad%be%e7%9a%84%e4%bd%bf%e7%94%a8">#&lt;/a>
 自定义标签的使用
 &lt;/h2>&lt;p>主要内容都在书上,p80&lt;/p>
@@ -4453,7 +5106,7 @@ loading="lazy"
 &lt;/div>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/findParserForElement.png"
 loading="lazy"
 >&lt;/p>
-&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.5-%E5%85%B6%E5%AE%83%E6%A0%87%E7%AD%BE%E8%A7%A3%E6%9E%90/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.5-%E5%85%B6%E5%AE%83%E6%A0%87%E7%AD%BE%E8%A7%A3%E6%9E%90/</guid><description>&lt;h2 id="本文要看啥">
+&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/other_default_elements/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0000</pubDate><guid>https://heeexy.com/p/other_default_elements/</guid><description>&lt;h2 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h2>&lt;p>之前我们看解析默认标签,从最核心的bean开始看的&lt;/p>
@@ -4969,7 +5622,7 @@ impory标签的解析
 &lt;/div>&lt;p>ReentrantLock 貌似是安全了, 但是为什么这里也用了置换数组啊???&lt;/p>
 &lt;p>​&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0000</pubDate><guid>https://heeexy.com/p/simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
+&lt;/ol></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/spring_simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0000</pubDate><guid>https://heeexy.com/p/spring_simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
 &lt;p>唯一成员变量为&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -5399,7 +6052,7 @@ impory标签的解析
 &lt;p>遍历map,每个键值对都解析一遍,&lt;/p>
 &lt;p>如果这对能解析出新的一对合法别名&amp;ndash;本名键值对,那么就把之前的那对删掉,注册新的这个解析后的一对,&lt;/p>
 &lt;p>此外检验下解析后的别名是不是被占用,如果占用了还指向错了值,就抛异常,&lt;/p>
-&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.4-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E6%B3%A8%E5%86%8Cbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.4-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E6%B3%A8%E5%86%8Cbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/registerbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0000</pubDate><guid>https://heeexy.com/p/registerbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -5771,7 +6424,7 @@ impory标签的解析
 &lt;/div>&lt;p>到这还要温习一遍的话,可以去看Spring的&lt;a class="link" href="https://heeexy.com/2017/09/11/spring_note_1/" >第一篇笔记&lt;/a>了&lt;/p>
 &lt;p>哈哈,这么点东西,读了一个礼拜,读了后面的忘了前面的,还是在读读记记的情况下,&lt;/p>
 &lt;p>要是没有这个笔记,这时候估计已经迷路得要放弃了,不容易啊&lt;/p>
-&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.3-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E8%A7%A3%E6%9E%90bean%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E5%85%83%E7%B4%A0/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.3-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E8%A7%A3%E6%9E%90bean%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E5%85%83%E7%B4%A0/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring_note_3/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -5910,7 +6563,7 @@ impory标签的解析
 &lt;/div>&lt;p>具体的用handler解析node会在后面详细学习,这个就先到这吧!&lt;/p>
 &lt;blockquote>
 &lt;p>前面几篇文章都长得没法看了&amp;hellip;吸取教训 篇幅尽量不要太长了.&lt;/p>
-&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/constructorargumentvalues-%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E5%80%BC%E4%BF%9D%E5%AD%98%E5%99%A8/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0000</pubDate><guid>https://heeexy.com/p/constructorargumentvalues-%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E5%80%BC%E4%BF%9D%E5%AD%98%E5%99%A8/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;span class="lnt">2
@@ -6258,7 +6911,7 @@ impory标签的解析
 &lt;/ol>
 &lt;blockquote>
 &lt;p>这个地方盯着看了几个小时,不知道作者写这么复杂是何居心,调用的时候也准备做这么复杂么?拿构造器参数的时候就不能把requiredName和requiredType都带过来??? 还搞些双引号&amp;quot;&amp;ldquo;这种怪事情???&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.2-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8Bbean%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90%E5%8F%8A%E6%B3%A8%E5%86%8C/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.2-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8Bbean%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90%E5%8F%8A%E6%B3%A8%E5%86%8C/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
+&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring_note_2/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0000</pubDate><guid>https://heeexy.com/p/spring_note_2/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
 loading="lazy"
 >&lt;/p>
 &lt;h2 id="1解析beandefinition">
@@ -6716,7 +7369,7 @@ bd设好resource和source,作为结果成功返回.
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BeanDefinitionHolder&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">beanDefinition&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">beanName&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aliasesArray&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.1-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.1-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/</guid><description>&lt;blockquote>
+&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring_note_1/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_1/</guid><description>&lt;blockquote>
 &lt;p>以通过BeanFactory获取bean为例学习,实际项目中更多是使用ApplicationContext&lt;/p>
 &lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/springGetBean.png"
 loading="lazy"
@@ -7034,7 +7687,7 @@ loading="lazy"
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;tx:annotation-driven/&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>好,书的第二章到此为止,第三章将继续深入默认标签的解析&lt;/p></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/p/lantern%E9%85%8D%E7%BD%AE/</guid><description>&lt;blockquote>
+&lt;/div>&lt;p>好,书的第二章到此为止,第三章将继续深入默认标签的解析&lt;/p></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/p/lantern/</guid><description>&lt;blockquote>
 &lt;p>第一步:飞跃长城&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="预备工作">
@@ -7105,628 +7758,4 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>当然有方便的自动切换代理的功能啦!&lt;/p>
 &lt;p>但是你已经身在墙外了,自己搜搜吧!&lt;/p>
-&lt;/blockquote></description></item><item><title>Archive</title><link>https://heeexy.com/archives/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/archives/</guid><description/></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/elasticsearch-2.3%E5%8D%87%E7%BA%A7%E8%87%B36.3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch-2.3%E5%8D%87%E7%BA%A7%E8%87%B36.3/</guid><description>&lt;h1 id="集群管理">
-&lt;a href="#%e9%9b%86%e7%be%a4%e7%ae%a1%e7%90%86">#&lt;/a>
-集群管理
-&lt;/h1>&lt;h3 id="节点分配">
-&lt;a href="#%e8%8a%82%e7%82%b9%e5%88%86%e9%85%8d">#&lt;/a>
-节点分配
-&lt;/h3>&lt;p>原集群 master*3 data*12 client*0&lt;/p>
-&lt;p>新集群 master*3 data*12 injest*0 coordinating*0&lt;/p>
-&lt;p>ingest 节点用于支持 pipeline 操作 对bulk和index文档进行预处理&lt;/p>
-&lt;p>coordinating 功能主要是分发请求,聚合各节点的处理结果,负载均衡,大规模集群可以设置一个给读,一个给写。但coordinating 数量也不宜过多,会拖慢选举主节点的时间,并且data节点其实也可以处理这些请求.&lt;/p>
-&lt;h3 id="节点设置">
-&lt;a href="#%e8%8a%82%e7%82%b9%e8%ae%be%e7%bd%ae">#&lt;/a>
-节点设置
-&lt;/h3>&lt;p>search.remote.connect: false
-node.ingest: false&lt;/p>
-&lt;h1 id="数据迁移">
-&lt;a href="#%e6%95%b0%e6%8d%ae%e8%bf%81%e7%a7%bb">#&lt;/a>
-数据迁移
-&lt;/h1>&lt;h3 id="数据源">
-&lt;a href="#%e6%95%b0%e6%8d%ae%e6%ba%90">#&lt;/a>
-数据源
-&lt;/h3>&lt;p>由于有数据源及同步方案,所以只需数据全量导入6.3版本的集群即可.&lt;/p>
-&lt;h3 id="索引管理">
-&lt;a href="#%e7%b4%a2%e5%bc%95%e7%ae%a1%e7%90%86">#&lt;/a>
-索引管理
-&lt;/h3>&lt;p>目前生产环境有300个索引需要同步,要检查同步脚本的创建索引,切别名等步骤.&lt;/p>
-&lt;h3 id="mapping设置">
-&lt;a href="#mapping%e8%ae%be%e7%bd%ae">#&lt;/a>
-mapping设置
-&lt;/h3>&lt;ol>
-&lt;li>type 只支持1种，自 ES7.0 起将不再支持 type&amp;mdash;&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/removal-of-types.html" target="_blank" rel="noopener"
->官方说明&lt;/a>&lt;/li>
-&lt;li>对可以使用自增 id 的索引使用自增 id&lt;/li>
-&lt;li>对大多数字符串字段使用 keyword 类型&lt;/li>
-&lt;li>对不用于数值范围查找的数值类型改为keyword类型&lt;/li>
-&lt;li>&lt;a class="link" href="https://www.jianshu.com/p/d53ef9aa8416" target="_blank" rel="noopener"
->分词插件可能需要改动&lt;/a>&lt;/li>
-&lt;li>index: no 改为 index:false&lt;/li>
-&lt;li>index: not_analyzed 删掉&lt;/li>
-&lt;/ol>
-&lt;h3 id="提高迁移速度">
-&lt;a href="#%e6%8f%90%e9%ab%98%e8%bf%81%e7%a7%bb%e9%80%9f%e5%ba%a6">#&lt;/a>
-提高迁移速度
-&lt;/h3>&lt;ol>
-&lt;li>sudo swapoff -a&lt;/li>
-&lt;li>副本设置为0&lt;/li>
-&lt;li>refresh_interval 设置为 -1 （对线上生产集群上索引批量导入时，设置-1后，重新打开时可能会导致集群压力暴增）&lt;/li>
-&lt;li>导入数据&lt;/li>
-&lt;li>refresh_interval 设置为30&lt;/li>
-&lt;li>确认数据正确性&lt;/li>
-&lt;li>POST /_forcemerge max_num_segments=1（对于大索引可能非常耗时）&lt;/li>
-&lt;li>副本设置为1&lt;/li>
-&lt;/ol>
-&lt;h1 id="scala项目升级">
-&lt;a href="#scala%e9%a1%b9%e7%9b%ae%e5%8d%87%e7%ba%a7">#&lt;/a>
-scala项目升级
-&lt;/h1>&lt;ol>
-&lt;li>scala &amp;amp; play 升级, 尤其是play的升级会导致大量代码改动&lt;/li>
-&lt;li>&lt;a class="link" href="https://github.com/sksamuel/elastic4s" target="_blank" rel="noopener"
->elastic4s&lt;/a> 依赖升级，注意除了core包还需要http包 。&lt;/li>
-&lt;li>原本的获取client, 构建dsl,excute,解析response的大量代码要修改，尤其是构建dsl涉及大量业务，需要逐一比对修改。&lt;/li>
-&lt;/ol>
-&lt;h1 id="监控">
-&lt;a href="#%e7%9b%91%e6%8e%a7">#&lt;/a>
-监控
-&lt;/h1>&lt;p>Prometheus + Grafana 主要是获取ES信息的api随之升级，改动通常不大&lt;/p>
-&lt;p>另外推荐 xpack 的 monitor，收集了 segment 的数据，收集了每个索引的请求量，响应时间等信息，信息集成进了 kibana&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/elasticsearch%E5%9C%A8%E9%AB%98%E5%B9%B6%E5%8F%91%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9A%84%E5%BA%94%E7%94%A8/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch%E5%9C%A8%E9%AB%98%E5%B9%B6%E5%8F%91%E5%A4%8D%E6%9D%82%E6%9F%A5%E8%AF%A2%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9A%84%E5%BA%94%E7%94%A8/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
-&lt;blockquote>
-&lt;p>You Know, for Search&lt;/p>
-&lt;/blockquote>
-&lt;p>我们团队就一直使用 ES 作为主力数据库， 从一开始做全文检索，到现在承担全部的商品列表页查询。近几个月将查询系统的 qps 从 1k 优化到了 10k+，其中 ES 的优化占了很重要一部分，准确的来说，应该是对 ES 特性的扬长避短起到了非常大的作用。&lt;/p>
-&lt;p>&lt;img src="http://img.heeexy.com/webpage.png"
-loading="lazy"
->&lt;/p>
-&lt;h2 id="数组--嵌套结构">
-&lt;a href="#%e6%95%b0%e7%bb%84--%e5%b5%8c%e5%a5%97%e7%bb%93%e6%9e%84">#&lt;/a>
-数组 &amp;amp; 嵌套结构
-&lt;/h2>&lt;p>ES 没有 join，很多人直接就会认为 ES 无法处理一对多的情况，其实还有&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/array.html" target="_blank" rel="noopener"
->数组&lt;/a>和&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/nested.html" target="_blank" rel="noopener"
->嵌套结构&lt;/a>可以应付常见的业务场景。&lt;/p>
-&lt;p>比如一个商品拥有多种属性，都存放在一个数组字段中，使用 must 和 must_not 就可以灵活地进行查询筛选。&lt;/p>
-&lt;p>比如同款不同色的几件T恤，使用嵌套结构保存，搜索时只需要其中一件满足筛选条件，便可以全部带出来，在页面上以多个小色块展示，而无需占用多个展示位。并且还可以拿满足筛选条件的商品中的某属性最大值/最小值等进行排序，如官网给出的&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/search-request-sort.html" target="_blank" rel="noopener"
->示例&lt;/a>:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;span class="lnt">24
-&lt;/span>&lt;span class="lnt">25
-&lt;/span>&lt;span class="lnt">26
-&lt;/span>&lt;span class="lnt">27
-&lt;/span>&lt;span class="lnt">28
-&lt;/span>&lt;span class="lnt">29
-&lt;/span>&lt;span class="lnt">30
-&lt;/span>&lt;span class="lnt">31
-&lt;/span>&lt;span class="lnt">32
-&lt;/span>&lt;span class="lnt">33
-&lt;/span>&lt;span class="lnt">34
-&lt;/span>&lt;span class="lnt">35
-&lt;/span>&lt;span class="lnt">36
-&lt;/span>&lt;span class="lnt">37
-&lt;/span>&lt;span class="lnt">38
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;bool&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;must&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}},&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;query&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;sort&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;parent.child.age&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;mode&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;min&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;order&amp;#34;&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;asc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;range&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.age&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;gte&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">21&lt;/span>&lt;span class="p">}}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;nested&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;path&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;parent.child&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;filter&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;match&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="nt">&amp;#34;parent.child.name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;matt&amp;#34;&lt;/span>&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="聚合">
-&lt;a href="#%e8%81%9a%e5%90%88">#&lt;/a>
-聚合
-&lt;/h2>&lt;p>商品列表页面能用到聚合的场景非常多，比如聚合出分类下（可能多达数万个商品）的各子分类，各属性的数量，并且需要支持复杂的筛选条件，比如库存，价格范围等等，并且这种查询速度远比 RDS 的 join + group by + count 快。&lt;/p>
-&lt;p>又比如需要查出最近10天内有新商品的日期列表，那就可以用到 date_histogram 聚合函数。&lt;/p>
-&lt;h2 id="动态字段">
-&lt;a href="#%e5%8a%a8%e6%80%81%e5%ad%97%e6%ae%b5">#&lt;/a>
-动态字段
-&lt;/h2>&lt;p>动态字段的设计也为我们的业务提供了很大便利，由于与具体业务关联性太强，就不详细展开了。&lt;/p>
-&lt;p>ES能支持的动态字段数量非常的多，不过这里要留意的就是动态字段一个比较容易出问题的地方，就是瞬时写入大量的动态字段会导致集群索引的元数据大量变动，master 节点负载暴涨甚至挂掉。&lt;/p>
-&lt;h2 id="缺陷">
-&lt;a href="#%e7%bc%ba%e9%99%b7">#&lt;/a>
-缺陷
-&lt;/h2>&lt;ol>
-&lt;li>没有 join。ES 的查询速度非常的快，但是不能 join 毕竟还是有一些业务场景无法使用。当然话又说回来，在高并发量下，多表 join 能不能抗得住也是个问题。对于查询，我们一贯的原则还是：&lt;strong>把数据离线准备成便于查询的结构，线上实时查询尽可能的简单，一步到位&lt;/strong>。&lt;/li>
-&lt;li>由于要把数据离线准备好，这便带来了数据同步更新的问题，数据的时效性、准确性都需要保证，数组与嵌套结构的数据更新也不够方便高效，这些都会增加很多的工作量。&lt;/li>
-&lt;/ol></description></item><item><title>MemSQL简介</title><link>https://heeexy.com/p/memsql%E7%AE%80%E4%BB%8B/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/memsql%E7%AE%80%E4%BB%8B/</guid><description>&lt;h2 id="为什么要看memsql">
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%9c%8bmemsql">#&lt;/a>
-为什么要看MemSQL
-&lt;/h2>&lt;p>因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。&lt;/p>
-&lt;h2 id="初体验结果">
-&lt;a href="#%e5%88%9d%e4%bd%93%e9%aa%8c%e7%bb%93%e6%9e%9c">#&lt;/a>
-初体验结果
-&lt;/h2>&lt;p>MemSQL与我们期望的ms级别查询相差甚远，最简单的查询也通常是500ms返回，并不能应对线上的高并发实时查询系统。秒级查询已经有presto等各种大数据组件，对于我们团队已经没有理由再来深入使用MemSQL。&lt;/p>
-&lt;p>MemSQL 其实有很多优点，有完善的文档，精致的页面管理工具，方便的安装，甚至一键导入大量数据来方便用户体验 （就差把sql的耗时贴出来了，要是贴出来就省了我调研的时间了），可惜在同一梯队还有太多免费、开源、有活跃社区的竞争对手。&lt;/p>
-&lt;h2 id="特点">
-&lt;a href="#%e7%89%b9%e7%82%b9">#&lt;/a>
-特点
-&lt;/h2>&lt;ul>
-&lt;li>MemSQL属于商业公司，免费4 units. (每8核32G 为1 unit)，不开源&lt;/li>
-&lt;li>自带portal界面管理，MemSQL Studio，自带安装工具&lt;/li>
-&lt;li>完全支持mysql语法，jdbc，增删改查&lt;/li>
-&lt;li>支持 in-memory rowstore &amp;amp;&amp;amp; on-disk columnstore&lt;/li>
-&lt;li>大吞吐量数据写入(loading TPC-H SF100 (approximately 100 GBs of row files) will take around four minutes)&lt;/li>
-&lt;li>exactly-once&lt;/li>
-&lt;li>aggregator节点运行sql，聚合结果；leaf节点存储&amp;amp;处理数据&lt;/li>
-&lt;/ul>
-&lt;h2 id="数据导入">
-&lt;a href="#%e6%95%b0%e6%8d%ae%e5%af%bc%e5%85%a5">#&lt;/a>
-数据导入
-&lt;/h2>&lt;ol>
-&lt;li>file , 指定分隔符&lt;/li>
-&lt;li>Streaming (Kafka , S3 , Azure Blob , Filesystem) 通过Pipelines&lt;/li>
-&lt;li>MySQL (sql文件)&lt;/li>
-&lt;/ol>
-&lt;h2 id="选择-shard-key---类似es的routing">
-&lt;a href="#%e9%80%89%e6%8b%a9-shard-key---%e7%b1%bb%e4%bc%bces%e7%9a%84routing">#&lt;/a>
-选择 shard key (类似ES的routing)
-&lt;/h2>&lt;ul>
-&lt;li>
-&lt;p>Using a column or set of columns unique enough to minimize skew.&lt;/p>
-&lt;p>独特的key，使数据均匀分布&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Sharding on columns which you expect to filter or join on often. This allows the optimizer to minimize network traffic during the execution of the query (see [Distributed DML] for more details).&lt;/p>
-&lt;p>使用你经常要join或过滤的字段，减小网络传输。比如订单相关，使用user_id&lt;/p>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="查询调优">
-&lt;a href="#%e6%9f%a5%e8%af%a2%e8%b0%83%e4%bc%98">#&lt;/a>
-查询调优
-&lt;/h2>&lt;ol>
-&lt;li>加index 优化过滤 groupby sort&lt;/li>
-&lt;li>shard key : Gather partitions:all 优化为 Gather partitions:single&lt;/li>
-&lt;li>Reference Tables 小表，不常更新 ，每个节点都有复制&lt;/li>
-&lt;/ol>
-&lt;p>&lt;img src="http://img.heeexy.com/memsql-profile.png"
-loading="lazy"
-alt="profile"
->&lt;/p>
-&lt;h2 id="表结构优化">
-&lt;a href="#%e8%a1%a8%e7%bb%93%e6%9e%84%e4%bc%98%e5%8c%96">#&lt;/a>
-表结构优化
-&lt;/h2>&lt;h3 id="rowstore-vs-columnstore">
-&lt;a href="#rowstore-vs-columnstore">#&lt;/a>
-Rowstore vs. Columnstore
-&lt;/h3>&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/" target="_blank" rel="noopener"
->https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/&lt;/a>&lt;/p>
-&lt;p>Rowstore : 查询指定列，并发更新。使用无锁索引，支持多索引。频繁更新的事务场景。unique constraints 。同样会往disk写一份 用于恢复。&lt;/p>
-&lt;p>Columnstore： 顺序扫描，单索引。适用场景：聚合仅很少列（10列内）,扫描大量行，很少频繁单行删改，更新应该是大批量的修改&lt;/p>
-&lt;h2 id="分布式sql">
-&lt;a href="#%e5%88%86%e5%b8%83%e5%bc%8fsql">#&lt;/a>
-分布式SQL
-&lt;/h2>&lt;h3 id="ddl">
-&lt;a href="#ddl">#&lt;/a>
-DDL
-&lt;/h3>&lt;ul>
-&lt;li>每一个并行的查询都在每个leaf的每个partition上分开执行。&lt;/li>
-&lt;li>默认每个leaf的partition数量=cpu数量&lt;/li>
-&lt;li>每个partition都是个单独的库&lt;/li>
-&lt;li>reference tables在每个aggregator和leaf都有一份复制，适合小表&lt;/li>
-&lt;li>shard key 决定数据落到哪一partition&lt;/li>
-&lt;li>主键和unique key 需要包含shard key ，例如：&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;span class="lnt">7
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-sql" data-lang="sql">&lt;span class="line">&lt;span class="cl">&lt;span class="k">CREATE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">TABLE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">clicks&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">click_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">BIGINT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AUTO_INCREMENT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">INT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">page_id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">INT&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">SHARD&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">KEY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">PRIMARY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">KEY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">click_id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">user_id&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h3 id="dml">
-&lt;a href="#dml">#&lt;/a>
-DML
-&lt;/h3>&lt;ul>
-&lt;li>分布式join 相同的shard key来join可以提升性能&lt;/li>
-&lt;li>分布式事务，等待每个partition都ready，再一起提交&lt;/li>
-&lt;li>引用表必须具有显式主键。 分布式表中的AUTO_INCREMENT列必须是BIGINT。 自动增量值在每个聚合器上单调递增，但在整个群集中不连续。 分片表不支持唯一键（除非唯一键是分片键的超集）。 分片表不支持修改分片键的UPDATE查询。 分片表不支持UPDATE &amp;hellip; LIMIT。&lt;/li>
-&lt;/ul>
-&lt;h2 id="遇到问题">
-&lt;a href="#%e9%81%87%e5%88%b0%e9%97%ae%e9%a2%98">#&lt;/a>
-遇到问题
-&lt;/h2>&lt;ol>
-&lt;li>
-&lt;p>mysql front连接不上&lt;/p>
-&lt;p>换用其它客户端可以，比如idea&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;a class="link" href="https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/" target="_blank" rel="noopener"
->https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/&lt;/a> 导入csv文件提示找不到文件&lt;/p>
-&lt;p>docker cp /home/hxy/download/companylist.csv 62b8df2d8761://usr/share&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="性能体验">
-&lt;a href="#%e6%80%a7%e8%83%bd%e4%bd%93%e9%aa%8c">#&lt;/a>
-性能体验
-&lt;/h2>&lt;h3 id="测试机器">
-&lt;a href="#%e6%b5%8b%e8%af%95%e6%9c%ba%e5%99%a8">#&lt;/a>
-测试机器
-&lt;/h3>&lt;p>AWS 8c32g&lt;/p>
-&lt;h3 id="测试数据">
-&lt;a href="#%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae">#&lt;/a>
-测试数据
-&lt;/h3>&lt;p>官方S3的数据，我们使用 columnstore 和 rowstore 各测一次sql查询。&lt;/p>
-&lt;p>&lt;a class="link" href="https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/" target="_blank" rel="noopener"
->https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/&lt;/a>&lt;/p>
-&lt;h4 id="columnstore数据">
-&lt;a href="#columnstore%e6%95%b0%e6%8d%ae">#&lt;/a>
-&lt;strong>columnstore数据&lt;/strong>
-&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/columnstore.png"
-loading="lazy"
-alt="columnstore.png"
->&lt;/p>
-&lt;h4 id="rowstore-数据">
-&lt;a href="#rowstore-%e6%95%b0%e6%8d%ae">#&lt;/a>
-&lt;strong>rowstore&lt;/strong> &lt;strong>数据&lt;/strong>
-&lt;/h4>&lt;p>&lt;img src="http://img.heeexy.com/rowstore.png"
-loading="lazy"
-alt="rowstore.png"
->&lt;/p>
-&lt;p>由于150W行数据存disk 占1G，存memory需要占5G，发现机器内存不足，只导入了一张150W行和一张25行的表。&lt;/p>
-&lt;h4 id="执行sql耗时">
-&lt;a href="#%e6%89%a7%e8%a1%8csql%e8%80%97%e6%97%b6">#&lt;/a>
-执行sql耗时
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select * from nation limit 20;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 770ms&lt;/p>
-&lt;p>&lt;strong>rowstore&lt;/strong> 700ms&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select l_returnflag,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_linestatus,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_quantity) as sum_qty,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice) as sum_base_price,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_quantity) as avg_qty,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_extendedprice) as avg_price,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">avg(l_discount) as avg_disc,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">count(*) as count_order
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from lineitem
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where l_shipdate &amp;lt;= date(&amp;#39;1998-12-01&amp;#39; - interval &amp;#39;90&amp;#39; day)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by l_returnflag, l_linestatus
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by l_returnflag, l_linestatus;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore 19s 5s 5s&lt;/strong>&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_orderkey,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as revenue,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_shippriority
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customer,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_mktsegment = &amp;#39;BUILDING&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and c_custkey = o_custkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_orderkey = o_orderkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;lt; date(&amp;#39;1995-03-15&amp;#39;)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_shipdate &amp;gt; date(&amp;#39;1995-03-15&amp;#39;)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_orderkey,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_shippriority
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">revenue desc,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_orderdate
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 10s 5s 5s&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;span class="lnt">24
-&lt;/span>&lt;span class="lnt">25
-&lt;/span>&lt;span class="lnt">26
-&lt;/span>&lt;span class="lnt">27
-&lt;/span>&lt;span class="lnt">28
-&lt;/span>&lt;span class="lnt">29
-&lt;/span>&lt;span class="lnt">30
-&lt;/span>&lt;span class="lnt">31
-&lt;/span>&lt;span class="lnt">32
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_name,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(l_extendedprice * (1 - l_discount)) as revenue,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_acctbal,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_address,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_phone,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_comment
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">customer,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey = o_custkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_orderkey = o_orderkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;gt;= date(&amp;#39;1993-10-01&amp;#39;)
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderdate &amp;lt; date(&amp;#39;1993-10-01&amp;#39;) + interval &amp;#39;3&amp;#39; month
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and l_returnflag = &amp;#39;R&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and c_nationkey = n_nationkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_custkey,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_name,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_acctbal,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_phone,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_address,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">c_comment
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">revenue desc
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 20;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 12s 9s 9s&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;span class="lnt">24
-&lt;/span>&lt;span class="lnt">25
-&lt;/span>&lt;span class="lnt">26
-&lt;/span>&lt;span class="lnt">27
-&lt;/span>&lt;span class="lnt">28
-&lt;/span>&lt;span class="lnt">29
-&lt;/span>&lt;span class="lnt">30
-&lt;/span>&lt;span class="lnt">31
-&lt;/span>&lt;span class="lnt">32
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sum(amount) as sum_profit
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">select
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">n_name as nation,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">extract(year from o_orderdate) as o_year,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">part,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">supplier,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lineitem,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">partsupp,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">orders,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">s_suppkey = l_suppkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and ps_suppkey = l_suppkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and ps_partkey = l_partkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and p_partkey = l_partkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and o_orderkey = l_orderkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and s_nationkey = n_nationkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and p_name like &amp;#39;%green%&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">) as profit
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">order by
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nation,
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">o_year desc;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 19s 19s&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join orders o on c.c_custkey = o.o_custkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join nation n on c.c_nationkey = n.n_nationkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;8367&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore&lt;/strong> 32s 4s 4s&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join orders o on c.c_custkey = o.o_custkey and o_custkey = &amp;#39;2141&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">left join nation n on c.c_nationkey = n.n_nationkey
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;2141&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>columnstore 2s 1s 1s&lt;/strong>&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">select *
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">from customer c
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">where c.c_custkey = &amp;#39;2141&amp;#39;
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>rowstore&lt;/strong> 500ms&lt;/p></description></item></channel></rss>
+&lt;/blockquote></description></item></channel></rss>

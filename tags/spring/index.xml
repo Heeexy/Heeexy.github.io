@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spring on 街上的动物园</title><link>https://heeexy.com/tags/spring/</link><description>Recent content in Spring on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Tue, 03 Apr 2018 17:07:46 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/%E4%BD%BF%E7%94%A8mybatis%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88dao%E5%B1%82%E4%B8%8D%E9%9C%80%E8%A6%81@repository/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0000</pubDate><guid>https://heeexy.com/p/%E4%BD%BF%E7%94%A8mybatis%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88dao%E5%B1%82%E4%B8%8D%E9%9C%80%E8%A6%81@repository/</guid><description>&lt;h1 id="问题">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spring on 街上的动物园</title><link>https://heeexy.com/tags/spring/</link><description>Recent content in Spring on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Tue, 03 Apr 2018 17:07:46 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/mybatis-classpathmapperscanner/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0000</pubDate><guid>https://heeexy.com/p/mybatis-classpathmapperscanner/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>Service层注入Dao时， Intellij 总会以红色波浪线提示我们&lt;/p>
@@ -160,7 +160,7 @@ doScan() 扫描资源，转换为 BeanDefinition
 &lt;/h1>&lt;p>&lt;a class="link" href="https://blog.csdn.net/java280580332/article/details/72123890" target="_blank" rel="noopener"
 >https://blog.csdn.net/java280580332/article/details/72123890&lt;/a>&lt;/p>
 &lt;p>&lt;a class="link" href="https://blog.csdn.net/mingtian625/article/details/47684271" target="_blank" rel="noopener"
->https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/%E6%9E%81%E7%AE%80-spring-%E6%A1%86%E6%9E%B6--%E6%B5%85%E6%9E%90%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0000</pubDate><guid>https://heeexy.com/p/%E6%9E%81%E7%AE%80-spring-%E6%A1%86%E6%9E%B6--%E6%B5%85%E6%9E%90%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</guid><description>&lt;blockquote>
+>https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/ioc/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0000</pubDate><guid>https://heeexy.com/p/ioc/</guid><description>&lt;blockquote>
 &lt;p>从网上看到一篇博文 &lt;a class="link" href="https://diaozxin007.github.io/2018/01/08/spring-ioc/" target="_blank" rel="noopener"
 >徒手撸框架&amp;ndash;实现IoC&lt;/a> ，写得很棒，作者抛开了 Spring 源码中复杂的校验，拓展等功能，实现了一个极简的 IoC 框架，让 Spring 源码初学者可以清楚的看到 IOC 的实现流程。&lt;/p>
 &lt;p>本文就借其框架，略加改造，再次介绍一下 Spring 是如何处理循环依赖的。&lt;/p>
@@ -283,7 +283,7 @@ Q &amp;amp; A
 心得
 &lt;/h3>&lt;p>上面只贴了 getBean 的代码，仅仅修改了原作者不到 10 行代码，其实在修改原框架，实现我们要的功能时不止这么多，包括调整对 json 的解析，对 bean 的填充等。&lt;/p>
 &lt;p>感受到 Spring 框架真的是很复杂很全面，这复杂程度靠说是说不清楚的，也不是翻一遍书看看源码就能明白的。而且看源码其实还是似懂非懂，中间的细节迷迷糊糊就可能跳过去了。&lt;/p>
-&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.8-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean--%E6%89%BE%E5%87%BA%E6%89%80%E6%9C%89%E5%8C%B9%E9%85%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-beanname/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.8-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean--%E6%89%BE%E5%87%BA%E6%89%80%E6%9C%89%E5%8C%B9%E9%85%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-beanname/</guid><description>&lt;blockquote>
+&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/beannamesfortypeincludingancestors/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0000</pubDate><guid>https://heeexy.com/p/beannamesfortypeincludingancestors/</guid><description>&lt;blockquote>
 &lt;p>&lt;a class="link" href="https://heeexy.com/2018/01/23/findAutowireCandidates/" >前文&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="源码解析">
@@ -618,7 +618,7 @@ isTypeMatch
 &lt;/div>
 &lt;/div>&lt;p>总结：&lt;/p>
 &lt;p>目前很遗憾 isTypeMatch 往下还有很复杂的逻辑暂时不能看懂，但是从外层的逻辑大致知道寻找所有匹配的beanName 的方法非常的“复杂粗暴”。遍历 beanDefinitionNames 已定义的所有 bean，即使是一个小型的项目也有近200个 bean 需要遍历，并且这数百个 beanName 还要遍历非常多次。&lt;/p>
-&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.7-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.7-%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%AF%BB%E6%89%BE-bean/</guid><description>&lt;h2 id="前言">
+&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/findautowirecandidates/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0000</pubDate><guid>https://heeexy.com/p/findautowirecandidates/</guid><description>&lt;h2 id="前言">
 &lt;a href="#%e5%89%8d%e8%a8%80">#&lt;/a>
 前言
 &lt;/h2>&lt;p>Spring 装配 bean 有两种类型：&lt;code>autowireByName&lt;/code> 和 &lt;code>autowireByType&lt;/code> 。&lt;/p>
@@ -796,7 +796,7 @@ isTypeMatch
 &lt;li>&lt;a class="link" href="https://heeexy.com/2018/01/24/beanNamesForTypeIncludingAncestors/" >如何查找出所有符合类型的 beanName&lt;/a>&lt;/li>
 &lt;li>什么是符合装配候选&lt;/li>
 &lt;li>什么是回退匹配&lt;/li>
-&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.6-beanwrapper-%E5%AF%B9%E6%AF%94-mybatis/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0000</pubDate><guid>https://heeexy.com/p/spring-%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.6-beanwrapper-%E5%AF%B9%E6%AF%94-mybatis/</guid><description>&lt;h2 id="spring-vs-mybatis">
+&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/beanwrapper/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0000</pubDate><guid>https://heeexy.com/p/beanwrapper/</guid><description>&lt;h2 id="spring-vs-mybatis">
 &lt;a href="#spring-vs-mybatis">#&lt;/a>
 Spring vs MyBatis
 &lt;/h2>&lt;p>Spring 和 MyBatis 中都有 BeanWrapper , Spring 中为接口， 实现类为 BeanWrapperImpl , 为了方便后面区分，本文用 SB 指代 Spring 的 BeanWrapperImpl ，用 MB 指代 MyBatis 中的 BeanWrapper。&lt;/p>
@@ -858,7 +858,7 @@ Spring vs MyBatis
 &lt;p>MB 属于&lt;code>BaseWrapper&lt;/code> 的子类之一，同级别的还有 MapWrapper ，上级还有 CollectionWrapper 。&lt;/p>
 &lt;p>而 SB 就已经是在创建 Bean 时直接使用到的接口了。&lt;/p>
 &lt;p>像&lt;strong>解析嵌套参数名&lt;/strong> (比如 user.name / address.city.mailcode)，&lt;strong>类型转换&lt;/strong>这些事情，SB 都能处理完。而 MB 都是先要使用其它工具类处理，比如依靠 PropertyTokenizer 。&lt;/p>
-&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.5-createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.5-createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
+&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0000</pubDate><guid>https://heeexy.com/p/createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
 &lt;p>并且不管这个bean是单例还是 prototype 还是其它 scope ,最终都是会走到此处，只是前后的一些验证、处理有区别。比如单例的就要先去缓存中获取，prototype 就不需要。&lt;/p>
 &lt;p>源码阅读到这里，我们已经习惯了一层一层剥。createBean 依然还是没有直接地把 bean 创建出来（当然我所期望的看到创建 bean 就是看到它的反射源码为止）。&lt;/p>
 &lt;p>createBean 的大致步骤为:&lt;/p>
@@ -972,7 +972,7 @@ setter 循环依赖
 &lt;p>testA 先创建，并且暴露一个工厂出去，进行 setter 注入 testB.&lt;/p>
 &lt;p>testB 创建，并且暴露一个工厂，进行 setter 注入 testA.&lt;/p>
 &lt;p>在这里想用 testA 时，&lt;strong>由于发现提前暴露的工厂，从而在此处走了另一条路&lt;/strong>，使用此工厂来创建 testA ,在此处解决了循环问题。&lt;/p>
-&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.4-%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8B/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.4-%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8B/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
+&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
 &lt;a href="#%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;blockquote>
@@ -1133,7 +1133,7 @@ setter 循环依赖
 &lt;p>2.1 在各种 map 里记录它的 创建、销毁等信息&lt;/p>
 &lt;p>2.2 通过&lt;code>createBean&lt;/code> 方法去具体创建这个实例。&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.3-%E7%BC%93%E5%AD%98%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8Bbean%E5%8F%8A%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.3-%E7%BC%93%E5%AD%98%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%8D%95%E4%BE%8Bbean%E5%8F%8A%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
+&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
 &lt;a href="#%e7%bc%93%e5%ad%98%e4%b8%ad%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 缓存中获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;p>&lt;code>DefaultSingletonBeanRegistry&lt;/code> 中实现此方法&lt;/p>
@@ -1244,7 +1244,7 @@ loading="lazy"
 &lt;p>​ 它的关键是 &lt;code>doGetObjectFromFactoryBean&lt;/code> ,方法名前面多加了个do&amp;hellip;&lt;/p>
 &lt;pre>&lt;code>在这个方法里面,我们终于看到想要看到的 `object = factory.getObject();` ,虽然早已知道必须要走到这,但是到这一步`getObject()` 还是绕了很多路,包括到这里居然还使用了`java.security.AccessController` 权限验证...
 &lt;/code>&lt;/pre>
-&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.2-factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.2-factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0000</pubDate><guid>https://heeexy.com/p/factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
 &lt;/span>&lt;span class="lnt"> 2
@@ -1377,7 +1377,7 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>疑问: 具体哪些地方用&lt;code>FactoryBean&lt;/code> 带来了真正的便利呢?&lt;/p>
 &lt;p>答:&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.1-bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%88%9D%E6%8E%A2/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-2.1-bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%88%9D%E6%8E%A2/</guid><description>&lt;h3 id="本文要看啥">
+&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/load_bean/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0000</pubDate><guid>https://heeexy.com/p/load_bean/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥?
 &lt;/h3>&lt;p>​ 前面已经了解了bean从配置文件到解析成BDHolder到注册的流程,我们已经将bean的信息封装好,塞入了map中,这个map可能在不同的实现里面,前面重点学的就是DefaultListableBeanFactory里的beanDefinitionMap.&lt;/p>
@@ -1706,7 +1706,7 @@ loading="lazy"
 &lt;p>类型转换&lt;/p>
 &lt;p>有可能有这种情况,返回的bean,是个String,但是requiredType传入的是Integer类型,那么这时候本步骤就会起作用了. Spring中提供了各种各样的转换器,用户也可以自己扩展转换器来满足需求&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.6-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.6-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90/</guid><description>&lt;h2 id="自定义标签的使用">
+&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/custom_element/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0000</pubDate><guid>https://heeexy.com/p/custom_element/</guid><description>&lt;h2 id="自定义标签的使用">
 &lt;a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e6%a0%87%e7%ad%be%e7%9a%84%e4%bd%bf%e7%94%a8">#&lt;/a>
 自定义标签的使用
 &lt;/h2>&lt;p>主要内容都在书上,p80&lt;/p>
@@ -1871,7 +1871,7 @@ loading="lazy"
 &lt;/div>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/findParserForElement.png"
 loading="lazy"
 >&lt;/p>
-&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.5-%E5%85%B6%E5%AE%83%E6%A0%87%E7%AD%BE%E8%A7%A3%E6%9E%90/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.5-%E5%85%B6%E5%AE%83%E6%A0%87%E7%AD%BE%E8%A7%A3%E6%9E%90/</guid><description>&lt;h2 id="本文要看啥">
+&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/other_default_elements/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0000</pubDate><guid>https://heeexy.com/p/other_default_elements/</guid><description>&lt;h2 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h2>&lt;p>之前我们看解析默认标签,从最核心的bean开始看的&lt;/p>
@@ -2010,7 +2010,7 @@ impory标签的解析
 &lt;h5 id="加载bean">
 &lt;a href="#%e5%8a%a0%e8%bd%bdbean">#&lt;/a>
 加载bean
-&lt;/h5>&lt;p>其实最后都是调用在第一篇博文中我们就看过的 &lt;code>loadBeanDefinitions&lt;/code> 方法&lt;/p></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0000</pubDate><guid>https://heeexy.com/p/simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
+&lt;/h5>&lt;p>其实最后都是调用在第一篇博文中我们就看过的 &lt;code>loadBeanDefinitions&lt;/code> 方法&lt;/p></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/spring_simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0000</pubDate><guid>https://heeexy.com/p/spring_simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
 &lt;p>唯一成员变量为&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -2440,7 +2440,7 @@ impory标签的解析
 &lt;p>遍历map,每个键值对都解析一遍,&lt;/p>
 &lt;p>如果这对能解析出新的一对合法别名&amp;ndash;本名键值对,那么就把之前的那对删掉,注册新的这个解析后的一对,&lt;/p>
 &lt;p>此外检验下解析后的别名是不是被占用,如果占用了还指向错了值,就抛异常,&lt;/p>
-&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.4-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E6%B3%A8%E5%86%8Cbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.4-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E6%B3%A8%E5%86%8Cbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/registerbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0000</pubDate><guid>https://heeexy.com/p/registerbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -2812,7 +2812,7 @@ impory标签的解析
 &lt;/div>&lt;p>到这还要温习一遍的话,可以去看Spring的&lt;a class="link" href="https://heeexy.com/2017/09/11/spring_note_1/" >第一篇笔记&lt;/a>了&lt;/p>
 &lt;p>哈哈,这么点东西,读了一个礼拜,读了后面的忘了前面的,还是在读读记记的情况下,&lt;/p>
 &lt;p>要是没有这个笔记,这时候估计已经迷路得要放弃了,不容易啊&lt;/p>
-&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.3-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E8%A7%A3%E6%9E%90bean%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E5%85%83%E7%B4%A0/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.3-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E8%A7%A3%E6%9E%90bean%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E5%85%83%E7%B4%A0/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring_note_3/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -2951,7 +2951,7 @@ impory标签的解析
 &lt;/div>&lt;p>具体的用handler解析node会在后面详细学习,这个就先到这吧!&lt;/p>
 &lt;blockquote>
 &lt;p>前面几篇文章都长得没法看了&amp;hellip;吸取教训 篇幅尽量不要太长了.&lt;/p>
-&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/constructorargumentvalues-%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E5%80%BC%E4%BF%9D%E5%AD%98%E5%99%A8/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0000</pubDate><guid>https://heeexy.com/p/constructorargumentvalues-%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E5%80%BC%E4%BF%9D%E5%AD%98%E5%99%A8/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;span class="lnt">2
@@ -3299,7 +3299,7 @@ impory标签的解析
 &lt;/ol>
 &lt;blockquote>
 &lt;p>这个地方盯着看了几个小时,不知道作者写这么复杂是何居心,调用的时候也准备做这么复杂么?拿构造器参数的时候就不能把requiredName和requiredType都带过来??? 还搞些双引号&amp;quot;&amp;ldquo;这种怪事情???&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.2-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8Bbean%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90%E5%8F%8A%E6%B3%A8%E5%86%8C/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.2-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8Bbean%E6%A0%87%E7%AD%BE%E7%9A%84%E8%A7%A3%E6%9E%90%E5%8F%8A%E6%B3%A8%E5%86%8C/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
+&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring_note_2/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0000</pubDate><guid>https://heeexy.com/p/spring_note_2/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
 loading="lazy"
 >&lt;/p>
 &lt;h2 id="1解析beandefinition">
@@ -3757,7 +3757,7 @@ bd设好resource和source,作为结果成功返回.
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BeanDefinitionHolder&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">beanDefinition&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">beanName&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aliasesArray&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.1-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0000</pubDate><guid>https://heeexy.com/p/spring%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0-1.1-%E8%8E%B7%E5%8F%96bean%E6%B5%81%E7%A8%8B%E4%B9%8B%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/</guid><description>&lt;blockquote>
+&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring_note_1/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_1/</guid><description>&lt;blockquote>
 &lt;p>以通过BeanFactory获取bean为例学习,实际项目中更多是使用ApplicationContext&lt;/p>
 &lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/springGetBean.png"
 loading="lazy"

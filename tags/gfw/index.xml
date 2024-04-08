@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gfw on 街上的动物园</title><link>https://heeexy.com/tags/gfw/</link><description>Recent content in Gfw on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Mon, 23 Dec 2019 22:55:59 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gfw/index.xml" rel="self" type="application/rss+xml"/><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/wifi%E9%87%8C%E9%83%BD%E6%98%AF%E8%87%AA%E7%94%B1%E7%9A%84%E9%A6%99%E5%91%B3----%E8%BD%AF%E8%B7%AF%E7%94%B1/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/p/wifi%E9%87%8C%E9%83%BD%E6%98%AF%E8%87%AA%E7%94%B1%E7%9A%84%E9%A6%99%E5%91%B3----%E8%BD%AF%E8%B7%AF%E7%94%B1/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gfw on 街上的动物园</title><link>https://heeexy.com/tags/gfw/</link><description>Recent content in Gfw on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Mon, 23 Dec 2019 22:55:59 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/gfw/index.xml" rel="self" type="application/rss+xml"/><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/router/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/p/router/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
 loading="lazy"
 alt="网络拓扑"
 >&lt;/p>
@@ -82,7 +82,7 @@ alt="网络拓扑"
 &lt;/h5>&lt;p>源码 &lt;a class="link" href="https://github.com/coolsnowwolf/lede" target="_blank" rel="noopener"
 >https://github.com/coolsnowwolf/lede&lt;/a>&lt;/p>
 &lt;p>使用Github Actions 云编译 &lt;a class="link" href="https://www.youtube.com/watch?v=2Y8DN-ROYIs" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/p/%E8%B0%B7%E6%AD%8C%E4%BA%91%E6%90%AD%E5%BB%BAssr/</guid><description>&lt;blockquote>
+>https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/setup-ssr-in-gce/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/p/setup-ssr-in-gce/</guid><description>&lt;blockquote>
 &lt;p>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
@@ -233,7 +233,7 @@ SSR客户端
 >http://www.jianshu.com/p/6bd66829a1ce&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="http://suppore.cn/512.html" target="_blank" rel="noopener"
 >http://suppore.cn/512.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/p/lantern%E9%85%8D%E7%BD%AE/</guid><description>&lt;blockquote>
+&lt;/ol></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/p/lantern/</guid><description>&lt;blockquote>
 &lt;p>第一步:飞跃长城&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="预备工作">

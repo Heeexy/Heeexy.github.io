@@ -1,0 +1,166 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="# 前言 Spring 装配 bean 有两种类型：autowireByName 和 autowireByType 。 autowireByName 通过名称查找很直接，就是我们一直在学的 getBean() 。 而 autowireByType 根据类型查找相比起来就要复杂一些"><title>Spring 源码笔记-2.7 根据类型寻找 bean</title>
+<link rel=canonical href=https://heeexy.com/p/findautowirecandidates/><link rel=stylesheet href=/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css><meta property='og:title' content="Spring 源码笔记-2.7 根据类型寻找 bean"><meta property='og:description' content="# 前言 Spring 装配 bean 有两种类型：autowireByName 和 autowireByType 。 autowireByName 通过名称查找很直接，就是我们一直在学的 getBean() 。 而 autowireByType 根据类型查找相比起来就要复杂一些"><meta property='og:url' content='https://heeexy.com/p/findautowirecandidates/'><meta property='og:site_name' content='街上的动物园'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='java'><meta property='article:tag' content='spring'><meta property='article:tag' content='笔记'><meta property='article:published_time' content='2018-01-23T09:00:22+00:00'><meta property='article:modified_time' content='2018-01-23T09:00:22+00:00'><meta name=twitter:title content="Spring 源码笔记-2.7 根据类型寻找 bean"><meta name=twitter:description content="# 前言 Spring 装配 bean 有两种类型：autowireByName 和 autowireByType 。 autowireByName 通过名称查找很直接，就是我们一直在学的 getBean() 。 而 autowireByType 根据类型查找相比起来就要复杂一些"></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.setItem(e,"light")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=https://img.heeexy.com/avatar.jpg width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>街上的动物园</a></h1><h2 class=site-description></h2></div></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/tags><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11 3l9 9a1.5 1.5.0 010 2l-6 6a1.5 1.5.0 01-2 0L3 11V7a4 4 0 014-4h4"/><circle cx="9" cy="9" r="2"/></svg>
+<span>Tags</span></a></li><li><a href=/archives><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li class=menu-bottom-section><ol class=menu></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#正文>正文</a><ol><li><a href=#本函数要做什么>本函数要做什么</a></li><li><a href=#源码解析>源码解析</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/findautowirecandidates/>Spring 源码笔记-2.7 根据类型寻找 bean</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jan 09, 2018</time></div></footer></div></header><section class=article-content><h2 id=前言><a href=#%e5%89%8d%e8%a8%80>#</a>
+前言</h2><p>Spring 装配 bean 有两种类型：<code>autowireByName</code> 和 <code>autowireByType</code> 。</p><p><code>autowireByName</code> 通过名称查找很直接，就是我们一直在学的 getBean() 。</p><p>而 <code>autowireByType</code> 根据类型查找相比起来就要复杂一些了，《 Spring 源码深度解析 》 中有介绍过的部分我就不再重复贴了，但是书中遗漏了一处重要的部分&mdash;&mdash; <strong>findAutowireCandidates 查找所有合适的 bean</strong>，还有一处新版本 Spring 中升级的部分&mdash;&mdash;<strong>如果只需要一个但是找出多个 bean 该怎么处理</strong>，今天我们先来学习第一部分。</p><h2 id=正文><a href=#%e6%ad%a3%e6%96%87>#</a>
+正文</h2><h3 id=本函数要做什么><a href=#%e6%9c%ac%e5%87%bd%e6%95%b0%e8%a6%81%e5%81%9a%e4%bb%80%e4%b9%88>#</a>
+本函数要做什么</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RequestMapping</span><span class=p>(</span><span class=s>&#34;/article&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ArticleController</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>ArticleService</span><span class=w> </span><span class=n>articleService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>在初始化 ArticleController 的过程中，我们要为其装配 ArticleService 。</p><p>忽略掉外面代码一层一层的包裹之后，我们走到 <code>DefaultListableBeanFactory.findAutowireCandidates</code> 这个函数中，要寻找合适的候选 bean 。由于可能会找到多个，因此返回结果是候选 bean 的名称和其对应实例构成的 Map 。</p><h3 id=源码解析><a href=#%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90>#</a>
+源码解析</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>//三个参数的含义依次是 </span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 正在解析的 beanName, 本例中即 &#34;articleController&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 需要装配的 bean 类型, 本例中即 ArticleService.class</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 对当前依赖关系的解析类，记录了 ArticleController 和 ArticleService 的依赖关系</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findAutowireCandidates</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>beanName</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>   </span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>requiredType</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=n>DependencyDescriptor</span><span class=w> </span><span class=n>descriptor</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c1>//第一步就是查找出所有符合类型的 beanName 。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c1>//似乎第一句就干完全部逻辑了？？？稍后我们再详细分析这个方法。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>candidateNames</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>BeanFactoryUtils</span><span class=p>.</span><span class=na>beanNamesForTypeIncludingAncestors</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=k>this</span><span class=p>,</span><span class=w> </span><span class=n>requiredType</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=n>descriptor</span><span class=p>.</span><span class=na>isEager</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>result</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>LinkedHashMap</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=p>(</span><span class=n>candidateNames</span><span class=p>.</span><span class=na>length</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   *	resolvableDependencies 记录了 依赖类型--具体装配值 的映射
+</span></span></span><span class=line><span class=cl><span class=cm>   *  	遍历 resolvableDependencies。如果该类型是我们需要的类型（ArticleService），
+</span></span></span><span class=line><span class=cl><span class=cm>   *	
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>autowiringType</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>resolvableDependencies</span><span class=p>.</span><span class=na>keySet</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>autowiringType</span><span class=p>.</span><span class=na>isAssignableFrom</span><span class=p>(</span><span class=n>requiredType</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=n>Object</span><span class=w> </span><span class=n>autowiringValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>resolvableDependencies</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>autowiringType</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=c1>//key值是我们需要的类型，但value值未必。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=c1>//value可能是ObjectFactory，就得调用它的 getObject() 来获取真正的bean.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=n>autowiringValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>AutowireUtils</span><span class=p>.</span><span class=na>resolveAutowiringValue</span><span class=p>(</span><span class=n>autowiringValue</span><span class=p>,</span><span class=w> </span><span class=n>requiredType</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>requiredType</span><span class=p>.</span><span class=na>isInstance</span><span class=p>(</span><span class=n>autowiringValue</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=c1>//如果类型匹配，则塞入result</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=n>result</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=n>ObjectUtils</span><span class=p>.</span><span class=na>identityToString</span><span class=p>(</span><span class=n>autowiringValue</span><span class=p>),</span><span class=w> </span><span class=n>autowiringValue</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=k>break</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>candidate</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>candidateNames</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c1>//如果不是自己依赖自己 ， 并且符合装配候选，就塞入result。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c1>//何为符合装配候选（isAutowireCandidate）呢？稍后我们再详细分析。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>isSelfReference</span><span class=p>(</span><span class=n>beanName</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>)</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>isAutowireCandidate</span><span class=p>(</span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>descriptor</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=n>addCandidateEntry</span><span class=p>(</span><span class=n>result</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>descriptor</span><span class=p>,</span><span class=w> </span><span class=n>requiredType</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>isEmpty</span><span class=p>()</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>indicatesMultipleBeans</span><span class=p>(</span><span class=n>requiredType</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=c1>// Consider fallback matches if the first pass failed to find anything...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c1>//如果之前一轮都没找到，则考虑回退匹配，什么是回退匹配？稍后再分析。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=n>DependencyDescriptor</span><span class=w> </span><span class=n>fallbackDescriptor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>descriptor</span><span class=p>.</span><span class=na>forFallbackMatch</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>candidate</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>candidateNames</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>isSelfReference</span><span class=p>(</span><span class=n>beanName</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>)</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>isAutowireCandidate</span><span class=p>(</span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>fallbackDescriptor</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//再执行一遍上面的方法。如果不是自己依赖自己，并且符合装配候选，就塞入result。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=n>addCandidateEntry</span><span class=p>(</span><span class=n>result</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>descriptor</span><span class=p>,</span><span class=w> </span><span class=n>requiredType</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>result</span><span class=p>.</span><span class=na>isEmpty</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// Consider self references as a final pass...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// but in the case of a dependency collection, not the very same bean itself.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 如果依然没找到结果，那么满足以下条件的也是我们的目标。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 1.是自引用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 2.依赖不是多元素依赖 或者 bean名和候选者名字不相等（这里就避免了自引用导致无限循环）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 3.候选者符合回退匹配之后的装配候选</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>candidate</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>candidateNames</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isSelfReference</span><span class=p>(</span><span class=n>beanName</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>)</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>							</span><span class=p>(</span><span class=o>!</span><span class=p>(</span><span class=n>descriptor</span><span class=w> </span><span class=k>instanceof</span><span class=w> </span><span class=n>MultiElementDescriptor</span><span class=p>)</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=o>!</span><span class=n>beanName</span><span class=p>.</span><span class=na>equals</span><span class=p>(</span><span class=n>candidate</span><span class=p>))</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>							</span><span class=n>isAutowireCandidate</span><span class=p>(</span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>fallbackDescriptor</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>						</span><span class=n>addCandidateEntry</span><span class=p>(</span><span class=n>result</span><span class=p>,</span><span class=w> </span><span class=n>candidate</span><span class=p>,</span><span class=w> </span><span class=n>descriptor</span><span class=p>,</span><span class=w> </span><span class=n>requiredType</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>					</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>				</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>			</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>return</span><span class=w> </span><span class=n>result</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>看完主干自然还是有点迷糊，我们留下了三个问题要继续研究：</p><ul><li><a class=link href=/2018/01/24/beanNamesForTypeIncludingAncestors/>如何查找出所有符合类型的 beanName</a></li><li>什么是符合装配候选</li><li>什么是回退匹配</li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/java/>Java</a>
+<a href=/tags/spring/>Spring</a>
+<a href=/tags/%E7%AC%94%E8%AE%B0/>笔记</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/ioc/><div class=article-details><h2 class=article-title>极简 Spring 框架 -- 浅析循环依赖</h2></div></a></article><article><a href=/p/beannamesfortypeincludingancestors/><div class=article-details><h2 class=article-title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</h2></div></a></article><article><a href=/p/beanwrapper/><div class=article-details><h2 class=article-title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</h2></div></a></article><article><a href=/p/createbean/><div class=article-details><h2 class=article-title>Spring源码笔记-2.5 createBean</h2></div></a></article><article><a href=/p/getsingleton/><div class=article-details><h2 class=article-title>Spring源码笔记-2.4 获取单例</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2017 -
+2024 Heeexy</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.25.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,0 +1,285 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="# 为什么要看MemSQL 因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。 # 初体验结果 Me"><title>MemSQL简介</title>
+<link rel=canonical href=https://heeexy.com/p/memsql/><link rel=stylesheet href=/scss/style.min.8e60baf4cd3fc55968717a6e39762f4d28ed7ef6007566b6c7970ad0fe907198.css><meta property='og:title' content="MemSQL简介"><meta property='og:description' content="# 为什么要看MemSQL 因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。 # 初体验结果 Me"><meta property='og:url' content='https://heeexy.com/p/memsql/'><meta property='og:site_name' content='街上的动物园'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='MemSQL'><meta property='article:tag' content='大数据'><meta property='article:published_time' content='2019-06-18T22:25:00+00:00'><meta property='article:modified_time' content='2019-06-18T22:25:00+00:00'><meta name=twitter:title content="MemSQL简介"><meta name=twitter:description content="# 为什么要看MemSQL 因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。 # 初体验结果 Me"></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.setItem(e,"light")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=https://img.heeexy.com/avatar.jpg width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>街上的动物园</a></h1><h2 class=site-description></h2></div></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/tags><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11 3l9 9a1.5 1.5.0 010 2l-6 6a1.5 1.5.0 01-2 0L3 11V7a4 4 0 014-4h4"/><circle cx="9" cy="9" r="2"/></svg>
+<span>Tags</span></a></li><li><a href=/archives><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li class=menu-bottom-section><ol class=menu></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#为什么要看memsql>为什么要看MemSQL</a></li><li><a href=#初体验结果>初体验结果</a></li><li><a href=#特点>特点</a></li><li><a href=#数据导入>数据导入</a></li><li><a href=#选择-shard-key---类似es的routing>选择 shard key (类似ES的routing)</a></li><li><a href=#查询调优>查询调优</a></li><li><a href=#表结构优化>表结构优化</a><ol><li><a href=#rowstore-vs-columnstore>Rowstore vs. Columnstore</a></li></ol></li><li><a href=#分布式sql>分布式SQL</a><ol><li><a href=#ddl>DDL</a></li><li><a href=#dml>DML</a></li></ol></li><li><a href=#遇到问题>遇到问题</a></li><li><a href=#性能体验>性能体验</a><ol><li><a href=#测试机器>测试机器</a></li><li><a href=#测试数据>测试数据</a><ol><li><a href=#columnstore数据><strong>columnstore数据</strong></a></li><li><a href=#rowstore-数据><strong>rowstore</strong> <strong>数据</strong></a></li><li><a href=#执行sql耗时>执行sql耗时</a></li></ol></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/memsql/>MemSQL简介</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jun 10, 2019</time></div></footer></div></header><section class=article-content><h2 id=为什么要看memsql><a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%9c%8bmemsql>#</a>
+为什么要看MemSQL</h2><p>因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。</p><h2 id=初体验结果><a href=#%e5%88%9d%e4%bd%93%e9%aa%8c%e7%bb%93%e6%9e%9c>#</a>
+初体验结果</h2><p>MemSQL与我们期望的ms级别查询相差甚远，最简单的查询也通常是500ms返回，并不能应对线上的高并发实时查询系统。秒级查询已经有presto等各种大数据组件，对于我们团队已经没有理由再来深入使用MemSQL。</p><p>MemSQL 其实有很多优点，有完善的文档，精致的页面管理工具，方便的安装，甚至一键导入大量数据来方便用户体验 （就差把sql的耗时贴出来了，要是贴出来就省了我调研的时间了），可惜在同一梯队还有太多免费、开源、有活跃社区的竞争对手。</p><h2 id=特点><a href=#%e7%89%b9%e7%82%b9>#</a>
+特点</h2><ul><li>MemSQL属于商业公司，免费4 units. (每8核32G 为1 unit)，不开源</li><li>自带portal界面管理，MemSQL Studio，自带安装工具</li><li>完全支持mysql语法，jdbc，增删改查</li><li>支持 in-memory rowstore && on-disk columnstore</li><li>大吞吐量数据写入(loading TPC-H SF100 (approximately 100 GBs of row files) will take around four minutes)</li><li>exactly-once</li><li>aggregator节点运行sql，聚合结果；leaf节点存储&处理数据</li></ul><h2 id=数据导入><a href=#%e6%95%b0%e6%8d%ae%e5%af%bc%e5%85%a5>#</a>
+数据导入</h2><ol><li>file , 指定分隔符</li><li>Streaming (Kafka , S3 , Azure Blob , Filesystem) 通过Pipelines</li><li>MySQL (sql文件)</li></ol><h2 id=选择-shard-key---类似es的routing><a href=#%e9%80%89%e6%8b%a9-shard-key---%e7%b1%bb%e4%bc%bces%e7%9a%84routing>#</a>
+选择 shard key (类似ES的routing)</h2><ul><li><p>Using a column or set of columns unique enough to minimize skew.</p><p>独特的key，使数据均匀分布</p></li><li><p>Sharding on columns which you expect to filter or join on often. This allows the optimizer to minimize network traffic during the execution of the query (see [Distributed DML] for more details).</p><p>使用你经常要join或过滤的字段，减小网络传输。比如订单相关，使用user_id</p></li></ul><h2 id=查询调优><a href=#%e6%9f%a5%e8%af%a2%e8%b0%83%e4%bc%98>#</a>
+查询调优</h2><ol><li>加index 优化过滤 groupby sort</li><li>shard key : Gather partitions:all 优化为 Gather partitions:single</li><li>Reference Tables 小表，不常更新 ，每个节点都有复制</li></ol><p><img src=http://img.heeexy.com/memsql-profile.png loading=lazy alt=profile></p><h2 id=表结构优化><a href=#%e8%a1%a8%e7%bb%93%e6%9e%84%e4%bc%98%e5%8c%96>#</a>
+表结构优化</h2><h3 id=rowstore-vs-columnstore><a href=#rowstore-vs-columnstore>#</a>
+Rowstore vs. Columnstore</h3><p><a class=link href=https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/ target=_blank rel=noopener>https://docs.memsql.com/tutorials/v6.8/optimizing-table-data-structures/</a></p><p>Rowstore : 查询指定列，并发更新。使用无锁索引，支持多索引。频繁更新的事务场景。unique constraints 。同样会往disk写一份 用于恢复。</p><p>Columnstore： 顺序扫描，单索引。适用场景：聚合仅很少列（10列内）,扫描大量行，很少频繁单行删改，更新应该是大批量的修改</p><h2 id=分布式sql><a href=#%e5%88%86%e5%b8%83%e5%bc%8fsql>#</a>
+分布式SQL</h2><h3 id=ddl><a href=#ddl>#</a>
+DDL</h3><ul><li>每一个并行的查询都在每个leaf的每个partition上分开执行。</li><li>默认每个leaf的partition数量=cpu数量</li><li>每个partition都是个单独的库</li><li>reference tables在每个aggregator和leaf都有一份复制，适合小表</li><li>shard key 决定数据落到哪一partition</li><li>主键和unique key 需要包含shard key ，例如：</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=n>clicks</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>click_id</span><span class=w> </span><span class=nb>BIGINT</span><span class=w> </span><span class=n>AUTO_INCREMENT</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>user_id</span><span class=w> </span><span class=nb>INT</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>page_id</span><span class=w> </span><span class=nb>INT</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>SHARD</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=p>(</span><span class=n>user_id</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>PRIMARY</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=p>(</span><span class=n>click_id</span><span class=p>,</span><span class=w> </span><span class=n>user_id</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=dml><a href=#dml>#</a>
+DML</h3><ul><li>分布式join 相同的shard key来join可以提升性能</li><li>分布式事务，等待每个partition都ready，再一起提交</li><li>引用表必须具有显式主键。 分布式表中的AUTO_INCREMENT列必须是BIGINT。 自动增量值在每个聚合器上单调递增，但在整个群集中不连续。 分片表不支持唯一键（除非唯一键是分片键的超集）。 分片表不支持修改分片键的UPDATE查询。 分片表不支持UPDATE &mldr; LIMIT。</li></ul><h2 id=遇到问题><a href=#%e9%81%87%e5%88%b0%e9%97%ae%e9%a2%98>#</a>
+遇到问题</h2><ol><li><p>mysql front连接不上</p><p>换用其它客户端可以，比如idea</p></li><li><p><a class=link href=https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/ target=_blank rel=noopener>https://docs.memsql.com/tutorials/v6.8/build-stock-trade-database/</a> 导入csv文件提示找不到文件</p><p>docker cp /home/hxy/download/companylist.csv 62b8df2d8761://usr/share</p></li></ol><h2 id=性能体验><a href=#%e6%80%a7%e8%83%bd%e4%bd%93%e9%aa%8c>#</a>
+性能体验</h2><h3 id=测试机器><a href=#%e6%b5%8b%e8%af%95%e6%9c%ba%e5%99%a8>#</a>
+测试机器</h3><p>AWS 8c32g</p><h3 id=测试数据><a href=#%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae>#</a>
+测试数据</h3><p>官方S3的数据，我们使用 columnstore 和 rowstore 各测一次sql查询。</p><p><a class=link href=https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/ target=_blank rel=noopener>https://docs.memsql.com/guides/latest/load-data/pipelines/step-1/</a></p><h4 id=columnstore数据><a href=#columnstore%e6%95%b0%e6%8d%ae>#</a>
+<strong>columnstore数据</strong></h4><p><img src=http://img.heeexy.com/columnstore.png loading=lazy alt=columnstore.png></p><h4 id=rowstore-数据><a href=#rowstore-%e6%95%b0%e6%8d%ae>#</a>
+<strong>rowstore</strong> <strong>数据</strong></h4><p><img src=http://img.heeexy.com/rowstore.png loading=lazy alt=rowstore.png></p><p>由于150W行数据存disk 占1G，存memory需要占5G，发现机器内存不足，只导入了一张150W行和一张25行的表。</p><h4 id=执行sql耗时><a href=#%e6%89%a7%e8%a1%8csql%e8%80%97%e6%97%b6>#</a>
+执行sql耗时</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select * from nation limit 20;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore</strong> 770ms</p><p><strong>rowstore</strong> 700ms</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select l_returnflag,
+</span></span><span class=line><span class=cl>l_linestatus,
+</span></span><span class=line><span class=cl>sum(l_quantity) as sum_qty,
+</span></span><span class=line><span class=cl>sum(l_extendedprice) as sum_base_price,
+</span></span><span class=line><span class=cl>sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+</span></span><span class=line><span class=cl>sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+</span></span><span class=line><span class=cl>avg(l_quantity) as avg_qty,
+</span></span><span class=line><span class=cl>avg(l_extendedprice) as avg_price,
+</span></span><span class=line><span class=cl>avg(l_discount) as avg_disc,
+</span></span><span class=line><span class=cl>count(*) as count_order
+</span></span><span class=line><span class=cl>from lineitem
+</span></span><span class=line><span class=cl>where l_shipdate &lt;= date(&#39;1998-12-01&#39; - interval &#39;90&#39; day)
+</span></span><span class=line><span class=cl>group by l_returnflag, l_linestatus
+</span></span><span class=line><span class=cl>order by l_returnflag, l_linestatus;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore 19s 5s 5s</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select
+</span></span><span class=line><span class=cl>l_orderkey,
+</span></span><span class=line><span class=cl>sum(l_extendedprice * (1 - l_discount)) as revenue,
+</span></span><span class=line><span class=cl>o_orderdate,
+</span></span><span class=line><span class=cl>o_shippriority
+</span></span><span class=line><span class=cl>from
+</span></span><span class=line><span class=cl>customer,
+</span></span><span class=line><span class=cl>orders,
+</span></span><span class=line><span class=cl>lineitem
+</span></span><span class=line><span class=cl>where
+</span></span><span class=line><span class=cl>c_mktsegment = &#39;BUILDING&#39;
+</span></span><span class=line><span class=cl>and c_custkey = o_custkey
+</span></span><span class=line><span class=cl>and l_orderkey = o_orderkey
+</span></span><span class=line><span class=cl>and o_orderdate &lt; date(&#39;1995-03-15&#39;)
+</span></span><span class=line><span class=cl>and l_shipdate &gt; date(&#39;1995-03-15&#39;)
+</span></span><span class=line><span class=cl>group by
+</span></span><span class=line><span class=cl>l_orderkey,
+</span></span><span class=line><span class=cl>o_orderdate,
+</span></span><span class=line><span class=cl>o_shippriority
+</span></span><span class=line><span class=cl>order by
+</span></span><span class=line><span class=cl>revenue desc,
+</span></span><span class=line><span class=cl>o_orderdate
+</span></span><span class=line><span class=cl>limit 10;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore</strong> 10s 5s 5s</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select
+</span></span><span class=line><span class=cl>c_custkey,
+</span></span><span class=line><span class=cl>c_name,
+</span></span><span class=line><span class=cl>sum(l_extendedprice * (1 - l_discount)) as revenue,
+</span></span><span class=line><span class=cl>c_acctbal,
+</span></span><span class=line><span class=cl>n_name,
+</span></span><span class=line><span class=cl>c_address,
+</span></span><span class=line><span class=cl>c_phone,
+</span></span><span class=line><span class=cl>c_comment
+</span></span><span class=line><span class=cl>from
+</span></span><span class=line><span class=cl>customer,
+</span></span><span class=line><span class=cl>orders,
+</span></span><span class=line><span class=cl>lineitem,
+</span></span><span class=line><span class=cl>nation
+</span></span><span class=line><span class=cl>where
+</span></span><span class=line><span class=cl>c_custkey = o_custkey
+</span></span><span class=line><span class=cl>and l_orderkey = o_orderkey
+</span></span><span class=line><span class=cl>and o_orderdate &gt;= date(&#39;1993-10-01&#39;)
+</span></span><span class=line><span class=cl>and o_orderdate &lt; date(&#39;1993-10-01&#39;) + interval &#39;3&#39; month
+</span></span><span class=line><span class=cl>and l_returnflag = &#39;R&#39;
+</span></span><span class=line><span class=cl>and c_nationkey = n_nationkey
+</span></span><span class=line><span class=cl>group by
+</span></span><span class=line><span class=cl>c_custkey,
+</span></span><span class=line><span class=cl>c_name,
+</span></span><span class=line><span class=cl>c_acctbal,
+</span></span><span class=line><span class=cl>c_phone,
+</span></span><span class=line><span class=cl>n_name,
+</span></span><span class=line><span class=cl>c_address,
+</span></span><span class=line><span class=cl>c_comment
+</span></span><span class=line><span class=cl>order by
+</span></span><span class=line><span class=cl>revenue desc
+</span></span><span class=line><span class=cl>limit 20;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore</strong> 12s 9s 9s</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select
+</span></span><span class=line><span class=cl>nation,
+</span></span><span class=line><span class=cl>o_year,
+</span></span><span class=line><span class=cl>sum(amount) as sum_profit
+</span></span><span class=line><span class=cl>from
+</span></span><span class=line><span class=cl>(
+</span></span><span class=line><span class=cl>select
+</span></span><span class=line><span class=cl>n_name as nation,
+</span></span><span class=line><span class=cl>extract(year from o_orderdate) as o_year,
+</span></span><span class=line><span class=cl>l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+</span></span><span class=line><span class=cl>from
+</span></span><span class=line><span class=cl>part,
+</span></span><span class=line><span class=cl>supplier,
+</span></span><span class=line><span class=cl>lineitem,
+</span></span><span class=line><span class=cl>partsupp,
+</span></span><span class=line><span class=cl>orders,
+</span></span><span class=line><span class=cl>nation
+</span></span><span class=line><span class=cl>where
+</span></span><span class=line><span class=cl>s_suppkey = l_suppkey
+</span></span><span class=line><span class=cl>and ps_suppkey = l_suppkey
+</span></span><span class=line><span class=cl>and ps_partkey = l_partkey
+</span></span><span class=line><span class=cl>and p_partkey = l_partkey
+</span></span><span class=line><span class=cl>and o_orderkey = l_orderkey
+</span></span><span class=line><span class=cl>and s_nationkey = n_nationkey
+</span></span><span class=line><span class=cl>and p_name like &#39;%green%&#39;
+</span></span><span class=line><span class=cl>) as profit
+</span></span><span class=line><span class=cl>group by
+</span></span><span class=line><span class=cl>nation,
+</span></span><span class=line><span class=cl>o_year
+</span></span><span class=line><span class=cl>order by
+</span></span><span class=line><span class=cl>nation,
+</span></span><span class=line><span class=cl>o_year desc;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore</strong> 32s 19s 19s</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select *
+</span></span><span class=line><span class=cl>from customer c
+</span></span><span class=line><span class=cl>left join orders o on c.c_custkey = o.o_custkey
+</span></span><span class=line><span class=cl>left join nation n on c.c_nationkey = n.n_nationkey
+</span></span><span class=line><span class=cl>where c.c_custkey = &#39;8367&#39;
+</span></span><span class=line><span class=cl>limit 10;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore</strong> 32s 4s 4s</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select *
+</span></span><span class=line><span class=cl>from customer c
+</span></span><span class=line><span class=cl>left join orders o on c.c_custkey = o.o_custkey and o_custkey = &#39;2141&#39;
+</span></span><span class=line><span class=cl>left join nation n on c.c_nationkey = n.n_nationkey
+</span></span><span class=line><span class=cl>where c.c_custkey = &#39;2141&#39;
+</span></span><span class=line><span class=cl>limit 10;
+</span></span></code></pre></td></tr></table></div></div><p><strong>columnstore 2s 1s 1s</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>select *
+</span></span><span class=line><span class=cl>from customer c
+</span></span><span class=line><span class=cl>where c.c_custkey = &#39;2141&#39;
+</span></span><span class=line><span class=cl>limit 10;
+</span></span></code></pre></td></tr></table></div></div><p><strong>rowstore</strong> 500ms</p></section><footer class=article-footer><section class=article-tags><a href=/tags/memsql/>MemSQL</a>
+<a href=/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/>大数据</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><footer class=site-footer><section class=copyright>&copy;
+2017 -
+2024 Heeexy</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.25.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
