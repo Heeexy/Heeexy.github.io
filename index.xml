@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>街上的动物园</title><link>https://heeexy.com/</link><description>Recent content on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Mon, 08 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/index.xml" rel="self" type="application/rss+xml"/><item><title>------------------------------✂️ 分割线 ✂️------------------------------</title><link>https://heeexy.com/p/dividing-line/</link><pubDate>Mon, 08 Apr 2024 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/dividing-line/</guid><description>&lt;h2 id="之前">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>街上的动物园</title><link>https://heeexy.com/</link><description>Recent content on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Mon, 08 Apr 2024 22:04:33 +0800</lastBuildDate><atom:link href="https://heeexy.com/index.xml" rel="self" type="application/rss+xml"/><item><title>------------------------------✂️ 分割线 ✂️------------------------------</title><link>https://heeexy.com/p/dividing-line/</link><pubDate>Mon, 08 Apr 2024 22:04:33 +0800</pubDate><guid>https://heeexy.com/p/dividing-line/</guid><description>&lt;h2 id="之前">
 &lt;a href="#%e4%b9%8b%e5%89%8d">#&lt;/a>
 之前
 &lt;/h2>&lt;p>之前的博客存在以下几个问题：&lt;/p>
@@ -30,7 +30,7 @@ loading="lazy"
 &lt;p>仔细一想也大可不必，既然博客主要为自己服务，那还是要关注博客对自己的提升，是否帮助到了自己总结学习、工作的经验。&lt;/p></description></item><item><title>About</title><link>https://heeexy.com/about/about/</link><pubDate>Sun, 07 Apr 2024 18:29:00 +0800</pubDate><guid>https://heeexy.com/about/about/</guid><description>&lt;h1 id="关于">
 &lt;a href="#%e5%85%b3%e4%ba%8e">#&lt;/a>
 关于
-&lt;/h1></description></item><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/database-crash-safe/</guid><description>&lt;h1 id="序">
+&lt;/h1></description></item><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 11:19:33 +0800</pubDate><guid>https://heeexy.com/p/database-crash-safe/</guid><description>&lt;h1 id="序">
 &lt;a href="#%e5%ba%8f">#&lt;/a>
 序
 &lt;/h1>&lt;p>生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？&lt;/p>
@@ -152,7 +152,7 @@ loading="lazy"
 alt="Untitled"
 >&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Redisson分布式锁报错问题排查</title><link>https://heeexy.com/p/redisson-illegalmonitorstateexception/</link><pubDate>Thu, 16 Jul 2020 23:47:00 +0000</pubDate><guid>https://heeexy.com/p/redisson-illegalmonitorstateexception/</guid><description>&lt;h2 id="故障">
+&lt;/ol></description></item><item><title>Redisson分布式锁报错问题排查</title><link>https://heeexy.com/p/redisson-illegalmonitorstateexception/</link><pubDate>Thu, 16 Jul 2020 23:47:00 +0800</pubDate><guid>https://heeexy.com/p/redisson-illegalmonitorstateexception/</guid><description>&lt;h2 id="故障">
 &lt;a href="#%e6%95%85%e9%9a%9c">#&lt;/a>
 故障
 &lt;/h2>&lt;p>业务线测试同学反馈压测时，有以下报错日志：&lt;/p>
@@ -404,7 +404,7 @@ alt="Untitled"
 &lt;p>多次错过了正确答案。&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;p>其实也主要是因为不是自己的项目，在改代码、发布、压测、日志、监控这些方面都缺乏掌控，因此难免走了一些弯路。&lt;/p></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/elasticsearch-segment-merge/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch-segment-merge/</guid><description>&lt;h2 id="先抛结论">
+&lt;p>其实也主要是因为不是自己的项目，在改代码、发布、压测、日志、监控这些方面都缺乏掌控，因此难免走了一些弯路。&lt;/p></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/elasticsearch-segment-merge/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0800</pubDate><guid>https://heeexy.com/p/elasticsearch-segment-merge/</guid><description>&lt;h2 id="先抛结论">
 &lt;a href="#%e5%85%88%e6%8a%9b%e7%bb%93%e8%ae%ba">#&lt;/a>
 先抛结论
 &lt;/h2>&lt;p>如果日志型ES集群system load 过高，I/O打满，尤其是在&lt;strong>读写低谷时间段 read 异常高&lt;/strong>，可以考虑排查段合并的问题。&lt;/p>
@@ -459,7 +459,7 @@ loading="lazy"
 &lt;p>&lt;img src="http://img.heeexy.com/es-io.png"
 loading="lazy"
 alt="es-io"
->&lt;/p></description></item><item><title>QPS从1k到2w，我做了什么</title><link>https://heeexy.com/p/optimization-experience/</link><pubDate>Mon, 17 Feb 2020 21:15:00 +0000</pubDate><guid>https://heeexy.com/p/optimization-experience/</guid><description>&lt;p>这两年有幸参与了商品列表系统的两次黑五挑战，QPS从最开始的1k都顶不住，到1w，再到2w，加上支持大量的AB实验，排序千人千面，功能越来越复杂，系统越来越庞大，可能这样的机会都不会常有，在此简单记录一下做系统优化的实践心得。&lt;/p>
+>&lt;/p></description></item><item><title>QPS从1k到2w，我做了什么</title><link>https://heeexy.com/p/optimization-experience/</link><pubDate>Mon, 17 Feb 2020 21:15:00 +0800</pubDate><guid>https://heeexy.com/p/optimization-experience/</guid><description>&lt;p>这两年有幸参与了商品列表系统的两次黑五挑战，QPS从最开始的1k都顶不住，到1w，再到2w，加上支持大量的AB实验，排序千人千面，功能越来越复杂，系统越来越庞大，可能这样的机会都不会常有，在此简单记录一下做系统优化的实践心得。&lt;/p>
 &lt;h1 id="要素">
 &lt;a href="#%e8%a6%81%e7%b4%a0">#&lt;/a>
 要素
@@ -512,7 +512,7 @@ alt="es-io"
 &lt;p>当接口都很快，DB（Elasticsearch）开始顶不住，我们尝试了加机器、扩副本、调堆内存大小等手段，最终还是通过将商品详情的查询移出ES，由单独的服务通过查Redis来提供，减轻了ES大半的压力。&lt;/p>
 &lt;p>。。。&lt;/p>
 &lt;p>以上的手段未必适合其它项目，但系统的优化就是这样，从来就没有标准答案。&lt;/p>
-&lt;p>我们能做的就只有深入业务，利用好每一种工具，然后充满信心地迎接下一个挑战。&lt;/p></description></item><item><title>JDBC为什么不需要Class.forName()</title><link>https://heeexy.com/p/classloader/</link><pubDate>Mon, 03 Feb 2020 19:57:00 +0000</pubDate><guid>https://heeexy.com/p/classloader/</guid><description>&lt;h3 id="drivermanager">
+&lt;p>我们能做的就只有深入业务，利用好每一种工具，然后充满信心地迎接下一个挑战。&lt;/p></description></item><item><title>JDBC为什么不需要Class.forName()</title><link>https://heeexy.com/p/classloader/</link><pubDate>Mon, 03 Feb 2020 19:57:00 +0800</pubDate><guid>https://heeexy.com/p/classloader/</guid><description>&lt;h3 id="drivermanager">
 &lt;a href="#drivermanager">#&lt;/a>
 DriverManager
 &lt;/h3>&lt;p>在初学JDBC时，总是记得开头就要来这么一句&lt;/p>
@@ -853,7 +853,7 @@ JarLoader
 &lt;/div>&lt;p>&lt;img src="http://img.heeexy.com/JarLoader.png"
 loading="lazy"
 >&lt;/p>
-&lt;p>至此，我们已经找到了全部遍历的地方，URLClassLoader加载了全部jar包之后，在开始迭代时，URLClassPath 遍历每个jar包，JarLoader查找每个jar包中是否有目标文件META-INF/services/java.sql.Driver。&lt;/p></description></item><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/router/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0000</pubDate><guid>https://heeexy.com/p/router/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
+&lt;p>至此，我们已经找到了全部遍历的地方，URLClassLoader加载了全部jar包之后，在开始迭代时，URLClassPath 遍历每个jar包，JarLoader查找每个jar包中是否有目标文件META-INF/services/java.sql.Driver。&lt;/p></description></item><item><title>WIFI里都是自由的香味----软路由</title><link>https://heeexy.com/p/router/</link><pubDate>Mon, 23 Dec 2019 22:55:59 +0800</pubDate><guid>https://heeexy.com/p/router/</guid><description>&lt;p>&lt;img src="http://img.heeexy.com/route.png"
 loading="lazy"
 alt="网络拓扑"
 >&lt;/p>
@@ -937,7 +937,7 @@ alt="网络拓扑"
 &lt;/h5>&lt;p>源码 &lt;a class="link" href="https://github.com/coolsnowwolf/lede" target="_blank" rel="noopener"
 >https://github.com/coolsnowwolf/lede&lt;/a>&lt;/p>
 &lt;p>使用Github Actions 云编译 &lt;a class="link" href="https://www.youtube.com/watch?v=2Y8DN-ROYIs" target="_blank" rel="noopener"
->https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>MemSQL简介</title><link>https://heeexy.com/p/memsql/</link><pubDate>Tue, 18 Jun 2019 22:25:00 +0000</pubDate><guid>https://heeexy.com/p/memsql/</guid><description>&lt;h2 id="为什么要看memsql">
+>https://www.youtube.com/watch?v=2Y8DN-ROYIs&lt;/a>&lt;/p></description></item><item><title>MemSQL简介</title><link>https://heeexy.com/p/memsql/</link><pubDate>Tue, 18 Jun 2019 22:25:00 +0800</pubDate><guid>https://heeexy.com/p/memsql/</guid><description>&lt;h2 id="为什么要看memsql">
 &lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%9c%8bmemsql">#&lt;/a>
 为什么要看MemSQL
 &lt;/h2>&lt;p>因为 MemSQL 自称突出一个快！而我们团队的数据平台正需要一个ms级别查询的数据库，因此花了一点时间来调研 MemSQL 。&lt;/p>
@@ -1380,7 +1380,7 @@ alt="rowstore.png"
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">limit 10;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>&lt;strong>rowstore&lt;/strong> 500ms&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/es-for-search/</link><pubDate>Sun, 02 Dec 2018 16:08:38 +0000</pubDate><guid>https://heeexy.com/p/es-for-search/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
+&lt;/div>&lt;p>&lt;strong>rowstore&lt;/strong> 500ms&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/es-for-search/</link><pubDate>Sun, 02 Dec 2018 16:08:38 +0800</pubDate><guid>https://heeexy.com/p/es-for-search/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
 &lt;blockquote>
 &lt;p>You Know, for Search&lt;/p>
 &lt;/blockquote>
@@ -1495,7 +1495,7 @@ loading="lazy"
 &lt;/h2>&lt;ol>
 &lt;li>没有 join。ES 的查询速度非常的快，但是不能 join 毕竟还是有一些业务场景无法使用。当然话又说回来，在高并发量下，多表 join 能不能抗得住也是个问题。对于查询，我们一贯的原则还是：&lt;strong>把数据离线准备成便于查询的结构，线上实时查询尽可能的简单，一步到位&lt;/strong>。&lt;/li>
 &lt;li>由于要把数据离线准备好，这便带来了数据同步更新的问题，数据的时效性、准确性都需要保证，数组与嵌套结构的数据更新也不够方便高效，这些都会增加很多的工作量。&lt;/li>
-&lt;/ol></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/upgrade-elasticsearch/</link><pubDate>Sat, 01 Sep 2018 11:29:00 +0000</pubDate><guid>https://heeexy.com/p/upgrade-elasticsearch/</guid><description>&lt;h1 id="集群管理">
+&lt;/ol></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/upgrade-elasticsearch/</link><pubDate>Sat, 01 Sep 2018 11:29:00 +0800</pubDate><guid>https://heeexy.com/p/upgrade-elasticsearch/</guid><description>&lt;h1 id="集群管理">
 &lt;a href="#%e9%9b%86%e7%be%a4%e7%ae%a1%e7%90%86">#&lt;/a>
 集群管理
 &lt;/h1>&lt;h3 id="节点分配">
@@ -1561,7 +1561,7 @@ scala项目升级
 &lt;a href="#%e7%9b%91%e6%8e%a7">#&lt;/a>
 监控
 &lt;/h1>&lt;p>Prometheus + Grafana 主要是获取ES信息的api随之升级，改动通常不大&lt;/p>
-&lt;p>另外推荐 xpack 的 monitor，收集了 segment 的数据，收集了每个索引的请求量，响应时间等信息，信息集成进了 kibana&lt;/p></description></item><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/mybatis-classpathmapperscanner/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0000</pubDate><guid>https://heeexy.com/p/mybatis-classpathmapperscanner/</guid><description>&lt;h1 id="问题">
+&lt;p>另外推荐 xpack 的 monitor，收集了 segment 的数据，收集了每个索引的请求量，响应时间等信息，信息集成进了 kibana&lt;/p></description></item><item><title>使用MyBatis时为什么Dao层不需要@Repository</title><link>https://heeexy.com/p/mybatis-classpathmapperscanner/</link><pubDate>Tue, 03 Apr 2018 17:07:46 +0800</pubDate><guid>https://heeexy.com/p/mybatis-classpathmapperscanner/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>Service层注入Dao时， Intellij 总会以红色波浪线提示我们&lt;/p>
@@ -1723,7 +1723,7 @@ doScan() 扫描资源，转换为 BeanDefinition
 &lt;/h1>&lt;p>&lt;a class="link" href="https://blog.csdn.net/java280580332/article/details/72123890" target="_blank" rel="noopener"
 >https://blog.csdn.net/java280580332/article/details/72123890&lt;/a>&lt;/p>
 &lt;p>&lt;a class="link" href="https://blog.csdn.net/mingtian625/article/details/47684271" target="_blank" rel="noopener"
->https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>近期阅读源码的总结与转变</title><link>https://heeexy.com/p/recent-summary/</link><pubDate>Sun, 28 Jan 2018 19:11:29 +0000</pubDate><guid>https://heeexy.com/p/recent-summary/</guid><description>&lt;h2 id="阅读源码">
+>https://blog.csdn.net/mingtian625/article/details/47684271&lt;/a>&lt;/p></description></item><item><title>近期阅读源码的总结与转变</title><link>https://heeexy.com/p/recent-summary/</link><pubDate>Sun, 28 Jan 2018 19:11:29 +0800</pubDate><guid>https://heeexy.com/p/recent-summary/</guid><description>&lt;h2 id="阅读源码">
 &lt;a href="#%e9%98%85%e8%af%bb%e6%ba%90%e7%a0%81">#&lt;/a>
 阅读源码
 &lt;/h2>&lt;h3 id="初读-spring">
@@ -1759,7 +1759,7 @@ MyBatis
 &lt;h3 id="学习">
 &lt;a href="#%e5%ad%a6%e4%b9%a0">#&lt;/a>
 学习
-&lt;/h3>&lt;p>博客的更新频率将会降低，一方面是要自己先学透，提示博文质量，另一方面也是其实后面一段时间将会将重心放在找工作上。毕竟对于技术面试和以前的考试差不多，精读源码实在是性价比有点低，全面复习准备面试题效果更好。虽然我是不喜欢准备面试题的，但没有办法，下一份工作很关键，只有找到稳定的，能追求技术的团队，才能提供安心的钻研技术的环境。&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/ioc/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0000</pubDate><guid>https://heeexy.com/p/ioc/</guid><description>&lt;blockquote>
+&lt;/h3>&lt;p>博客的更新频率将会降低，一方面是要自己先学透，提示博文质量，另一方面也是其实后面一段时间将会将重心放在找工作上。毕竟对于技术面试和以前的考试差不多，精读源码实在是性价比有点低，全面复习准备面试题效果更好。虽然我是不喜欢准备面试题的，但没有办法，下一份工作很关键，只有找到稳定的，能追求技术的团队，才能提供安心的钻研技术的环境。&lt;/p></description></item><item><title>极简 Spring 框架 -- 浅析循环依赖</title><link>https://heeexy.com/p/ioc/</link><pubDate>Sun, 28 Jan 2018 13:37:32 +0800</pubDate><guid>https://heeexy.com/p/ioc/</guid><description>&lt;blockquote>
 &lt;p>从网上看到一篇博文 &lt;a class="link" href="https://diaozxin007.github.io/2018/01/08/spring-ioc/" target="_blank" rel="noopener"
 >徒手撸框架&amp;ndash;实现IoC&lt;/a> ，写得很棒，作者抛开了 Spring 源码中复杂的校验，拓展等功能，实现了一个极简的 IoC 框架，让 Spring 源码初学者可以清楚的看到 IOC 的实现流程。&lt;/p>
 &lt;p>本文就借其框架，略加改造，再次介绍一下 Spring 是如何处理循环依赖的。&lt;/p>
@@ -1882,7 +1882,7 @@ Q &amp;amp; A
 心得
 &lt;/h3>&lt;p>上面只贴了 getBean 的代码，仅仅修改了原作者不到 10 行代码，其实在修改原框架，实现我们要的功能时不止这么多，包括调整对 json 的解析，对 bean 的填充等。&lt;/p>
 &lt;p>感受到 Spring 框架真的是很复杂很全面，这复杂程度靠说是说不清楚的，也不是翻一遍书看看源码就能明白的。而且看源码其实还是似懂非懂，中间的细节迷迷糊糊就可能跳过去了。&lt;/p>
-&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/beannamesfortypeincludingancestors/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0000</pubDate><guid>https://heeexy.com/p/beannamesfortypeincludingancestors/</guid><description>&lt;blockquote>
+&lt;p>在追随 Spring 脚步，复现其代码的时候，才更深刻的理解其中很多操作，很多类的作用。比如说 BeanDefinition, BeanWrapper , PropertyDescriptor 这些类在我想要实现一些功能的时候才能体会到 Spring 创造它们的重要性。&lt;/p></description></item><item><title>Spring 源码笔记-2.8 根据类型寻找 bean--找出所有匹配类型的 beanName</title><link>https://heeexy.com/p/beannamesfortypeincludingancestors/</link><pubDate>Wed, 24 Jan 2018 09:48:02 +0800</pubDate><guid>https://heeexy.com/p/beannamesfortypeincludingancestors/</guid><description>&lt;blockquote>
 &lt;p>&lt;a class="link" href="https://heeexy.com/2018/01/23/findAutowireCandidates/" >前文&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="源码解析">
@@ -2217,7 +2217,7 @@ isTypeMatch
 &lt;/div>
 &lt;/div>&lt;p>总结：&lt;/p>
 &lt;p>目前很遗憾 isTypeMatch 往下还有很复杂的逻辑暂时不能看懂，但是从外层的逻辑大致知道寻找所有匹配的beanName 的方法非常的“复杂粗暴”。遍历 beanDefinitionNames 已定义的所有 bean，即使是一个小型的项目也有近200个 bean 需要遍历，并且这数百个 beanName 还要遍历非常多次。&lt;/p>
-&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/findautowirecandidates/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0000</pubDate><guid>https://heeexy.com/p/findautowirecandidates/</guid><description>&lt;h2 id="前言">
+&lt;p>只能说根据 type 寻找 bean 实在是比根据 name 复杂了太多太多，从源码看真是深坑，理解了为什么作者直接忽略了这部分&amp;hellip;应该是第二遍或第三遍阅读 Spring 源码时才能理解。&lt;/p></description></item><item><title>Spring 源码笔记-2.7 根据类型寻找 bean</title><link>https://heeexy.com/p/findautowirecandidates/</link><pubDate>Tue, 23 Jan 2018 09:00:22 +0800</pubDate><guid>https://heeexy.com/p/findautowirecandidates/</guid><description>&lt;h2 id="前言">
 &lt;a href="#%e5%89%8d%e8%a8%80">#&lt;/a>
 前言
 &lt;/h2>&lt;p>Spring 装配 bean 有两种类型：&lt;code>autowireByName&lt;/code> 和 &lt;code>autowireByType&lt;/code> 。&lt;/p>
@@ -2395,7 +2395,7 @@ isTypeMatch
 &lt;li>&lt;a class="link" href="https://heeexy.com/2018/01/24/beanNamesForTypeIncludingAncestors/" >如何查找出所有符合类型的 beanName&lt;/a>&lt;/li>
 &lt;li>什么是符合装配候选&lt;/li>
 &lt;li>什么是回退匹配&lt;/li>
-&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/beanwrapper/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0000</pubDate><guid>https://heeexy.com/p/beanwrapper/</guid><description>&lt;h2 id="spring-vs-mybatis">
+&lt;/ul></description></item><item><title>Spring 源码笔记-2.6 BeanWrapper 对比 MyBatis</title><link>https://heeexy.com/p/beanwrapper/</link><pubDate>Fri, 19 Jan 2018 15:21:58 +0800</pubDate><guid>https://heeexy.com/p/beanwrapper/</guid><description>&lt;h2 id="spring-vs-mybatis">
 &lt;a href="#spring-vs-mybatis">#&lt;/a>
 Spring vs MyBatis
 &lt;/h2>&lt;p>Spring 和 MyBatis 中都有 BeanWrapper , Spring 中为接口， 实现类为 BeanWrapperImpl , 为了方便后面区分，本文用 SB 指代 Spring 的 BeanWrapperImpl ，用 MB 指代 MyBatis 中的 BeanWrapper。&lt;/p>
@@ -2457,7 +2457,7 @@ Spring vs MyBatis
 &lt;p>MB 属于&lt;code>BaseWrapper&lt;/code> 的子类之一，同级别的还有 MapWrapper ，上级还有 CollectionWrapper 。&lt;/p>
 &lt;p>而 SB 就已经是在创建 Bean 时直接使用到的接口了。&lt;/p>
 &lt;p>像&lt;strong>解析嵌套参数名&lt;/strong> (比如 user.name / address.city.mailcode)，&lt;strong>类型转换&lt;/strong>这些事情，SB 都能处理完。而 MB 都是先要使用其它工具类处理，比如依靠 PropertyTokenizer 。&lt;/p>
-&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0000</pubDate><guid>https://heeexy.com/p/createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
+&lt;p>总而言之，SB 就是对外的一个大接口，包含很多功能，MB 则是MyBatis 反射工具箱内的一个小的工具实现。&lt;/p></description></item><item><title>Spring源码笔记-2.5 createBean</title><link>https://heeexy.com/p/createbean/</link><pubDate>Thu, 18 Jan 2018 14:22:06 +0800</pubDate><guid>https://heeexy.com/p/createbean/</guid><description>&lt;p>此方法交给了 &lt;code>AbstractBeanFactory&lt;/code> 的子类 &lt;code>AbstractAutowireCapableBeanFactory&lt;/code> 去实现。&lt;/p>
 &lt;p>并且不管这个bean是单例还是 prototype 还是其它 scope ,最终都是会走到此处，只是前后的一些验证、处理有区别。比如单例的就要先去缓存中获取，prototype 就不需要。&lt;/p>
 &lt;p>源码阅读到这里，我们已经习惯了一层一层剥。createBean 依然还是没有直接地把 bean 创建出来（当然我所期望的看到创建 bean 就是看到它的反射源码为止）。&lt;/p>
 &lt;p>createBean 的大致步骤为:&lt;/p>
@@ -2571,7 +2571,7 @@ setter 循环依赖
 &lt;p>testA 先创建，并且暴露一个工厂出去，进行 setter 注入 testB.&lt;/p>
 &lt;p>testB 创建，并且暴露一个工厂，进行 setter 注入 testA.&lt;/p>
 &lt;p>在这里想用 testA 时，&lt;strong>由于发现提前暴露的工厂，从而在此处走了另一条路&lt;/strong>，使用此工厂来创建 testA ,在此处解决了循环问题。&lt;/p>
-&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/p/typehandlerregistry/</guid><description>&lt;h1 id="问题">
+&lt;p>再返回回去继续完成 testA 的 setter 注入。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0800</pubDate><guid>https://heeexy.com/p/typehandlerregistry/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>上一篇我们讲到，对于未知数据类型的解析，UnknownTypeHandler 把部分任务交给了 TypeHandlerRegistry ,甚至可能仅仅只丢了一个 javaType 过来就要求返回一个合适的解析器回去 。TypeHandlerRegistry 到底里面做了啥可以找到合适的解析器呢？&lt;/p>
@@ -2768,7 +2768,7 @@ ObjectTypeHandler
 TypeHandlerRegistry
 &lt;/h3>&lt;p>注册表功能，将常规的数十种关系映射在初始化时就都注册好，也就是提前存入 map 中，需要的时候去 map 中取。&lt;/p>
 &lt;p>尤其是将 javaType 和 TypeHandler 关联起来，并对一些类型注册了默认的解析器，即 jdbcType 未指明时所要采用的解析器。&lt;/p>
-&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/p/typehandler/</guid><description>&lt;h1 id="问题">
+&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0800</pubDate><guid>https://heeexy.com/p/typehandler/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>前面说到，我们可以用 JSONObject 替代习惯使用的 JavaBean ，而之所以能用 JSONObject 主要就是因为它实现了 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> 。&lt;/p>
@@ -3114,7 +3114,7 @@ loading="lazy"
 总结
 &lt;/h1>&lt;p>今天我们分析完了类型转换器，发现对于未知的数据类型，有一部分是通过ObjectTypeHandler 解析，其底层的用了&lt;code>com.mysql.jdbc.ResultSetImpl.getObject&lt;/code> 内的依据 Field.SQLType 的 swtich-case 。&lt;/p>
 &lt;p>另一部分则是通过&lt;code>UnknownTypeHandler&lt;/code> 去查找合适的解析器来解析。&lt;/p>
-&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/p/one2many/</guid><description>&lt;h1 id="问题">
+&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0800</pubDate><guid>https://heeexy.com/p/one2many/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>在&lt;a class="link" href="https://heeexy.com/2017/12/30/JSONObject-in-MyBatis/" >上一文&lt;/a>介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。&lt;/p>
@@ -3292,7 +3292,7 @@ loading="lazy"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/jsonobject-in-mybatis/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/p/jsonobject-in-mybatis/</guid><description>&lt;h1 id="问题背景">
+&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/jsonobject-in-mybatis/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0800</pubDate><guid>https://heeexy.com/p/jsonobject-in-mybatis/</guid><description>&lt;h1 id="问题背景">
 &lt;a href="#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af">#&lt;/a>
 问题背景
 &lt;/h1>&lt;p>项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？&lt;/p>
@@ -3486,7 +3486,7 @@ loading="lazy"
 总结
 &lt;/h2>&lt;p>JSONObject 开发非常方便，具有更强的灵活性，适用于中小型项目，简单业务的开发，也适用于&lt;strong>文档至上&lt;/strong>的前后端分离开发与微服务项目。&lt;/p>
 &lt;p>更具体的用法，可以参考 &lt;a class="link" href="https://github.com/Heeexy/SpringBoot-Shiro-Vue" target="_blank" rel="noopener"
->Github 项目&lt;/a>。&lt;/p></description></item><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/p/mybatis_design_patterns/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0000</pubDate><guid>https://heeexy.com/p/mybatis_design_patterns/</guid><description>&lt;p>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。&lt;/p>
+>Github 项目&lt;/a>。&lt;/p></description></item><item><title>MyBatis 的日志设计--适配器模式 &amp; 工厂模式</title><link>https://heeexy.com/p/mybatis_design_patterns/</link><pubDate>Thu, 14 Dec 2017 14:45:47 +0800</pubDate><guid>https://heeexy.com/p/mybatis_design_patterns/</guid><description>&lt;p>​ MyBatis 想要打印日志，时不时想要来句 log.debug() 、log.error() ，需要个打印机 ，可是自己又不想去实现（而且跟着整个项目用同样的打印系统才是王道啊），需要去用别人家的打印机，要用别人家的产品啊，那问题可就来了。&lt;/p>
 &lt;h2 id="问题-1">
 &lt;a href="#%e9%97%ae%e9%a2%98-1">#&lt;/a>
 问题 1
@@ -3641,7 +3641,7 @@ loading="lazy"
 &lt;/div>
 &lt;/div>&lt;p>​ LogFactory 提供了对外的 getLog(String logger) 方法，给需要 logger 的地方提供一个 Log 的实例。&lt;/p>
 &lt;p>​ 内部的实现依靠 &lt;code>logConstructor&lt;/code> 这个构造器通过反射来实例化一个 Log 的 Impl ，也就是之前的适配器，比如 Slf4jLoggerImpl 。&lt;/p>
-&lt;p>​ 判断采用哪种&lt;code>logConstructor&lt;/code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/setup-ssr-in-gce/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0000</pubDate><guid>https://heeexy.com/p/setup-ssr-in-gce/</guid><description>&lt;blockquote>
+&lt;p>​ 判断采用哪种&lt;code>logConstructor&lt;/code> 的任务则在类初始化的时候就执行了，依次尝试了我们的每一款适配器，碰上报错就说明没 jar 包，下一款，全都没有的话，就用 NoLoggingImpl 了。&lt;/p></description></item><item><title>谷歌云搭建SSR</title><link>https://heeexy.com/p/setup-ssr-in-gce/</link><pubDate>Mon, 13 Nov 2017 14:02:44 +0800</pubDate><guid>https://heeexy.com/p/setup-ssr-in-gce/</guid><description>&lt;blockquote>
 &lt;p>⚠️ 2024 年注: GCE 已不再推荐，近年已改成了免费 3 个月，并且将我的服务封掉，直接导致了VPS上的数据无法恢复，博客的图片全部丢失。&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
@@ -3792,7 +3792,7 @@ SSR客户端
 >http://www.jianshu.com/p/6bd66829a1ce&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="http://suppore.cn/512.html" target="_blank" rel="noopener"
 >http://suppore.cn/512.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/end-to-end/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/p/end-to-end/</guid><description>&lt;h2 id="背景">
+&lt;/ol></description></item><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/end-to-end/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0800</pubDate><guid>https://heeexy.com/p/end-to-end/</guid><description>&lt;h2 id="背景">
 &lt;a href="#%e8%83%8c%e6%99%af">#&lt;/a>
 背景
 &lt;/h2>&lt;p>​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.&lt;/p>
@@ -3932,7 +3932,7 @@ SSR客户端
 &lt;li>近期主要问题基本都是待我去研究深入的技术,比如shiro的动态权限与vue-router的异步路由的结合,vue组件的通信,vuex的状态管理&lt;/li>
 &lt;li>其次是组员需要对vue更加熟悉,我这次要求了大家抛弃jQuery,用数据绑定的思想去写前端.目前大家的前端水平也还只是可以快速复制粘贴出页面,对于复杂的页面和组件,甚至对我们前端项目的目录结构与各部分功能,都不算掌握.&lt;/li>
 &lt;li>目前我们所谓的前后端分离其实还只是初步的业务和代码上的分离,以后如果要重构H5项目,可能还需要开NodeJS项目来解决和Android/iOS一样的接口加密问题,统一session管理问题,以及更多的前后端分离可能给我们带来的问题.&lt;/li>
-&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/build-springboot-shiro-vue/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0000</pubDate><guid>https://heeexy.com/p/build-springboot-shiro-vue/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
+&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/build-springboot-shiro-vue/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0800</pubDate><guid>https://heeexy.com/p/build-springboot-shiro-vue/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
 &lt;h3 id="跨域">
 &lt;a href="#%e8%b7%a8%e5%9f%9f">#&lt;/a>
 跨域
@@ -4210,7 +4210,7 @@ Access-Control-Allow-Origin
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">res.setHeader(&amp;#34;Access-Control-Allow-Origin&amp;#34;, ((HttpServletRequest) request).getHeader(&amp;#34;Origin&amp;#34;));
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
+&lt;/div></description></item><item><title>Spring源码笔记-2.4 获取单例</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Fri, 29 Sep 2017 22:49:00 +0800</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="获取单例bean-getsingleton">
 &lt;a href="#%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;blockquote>
@@ -4371,7 +4371,7 @@ Access-Control-Allow-Origin
 &lt;p>2.1 在各种 map 里记录它的 创建、销毁等信息&lt;/p>
 &lt;p>2.2 通过&lt;code>createBean&lt;/code> 方法去具体创建这个实例。&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0000</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
+&lt;/ol></description></item><item><title>Spring源码笔记-2.3 缓存中获取单例bean及获取对象</title><link>https://heeexy.com/p/getsingleton/</link><pubDate>Tue, 26 Sep 2017 23:28:00 +0800</pubDate><guid>https://heeexy.com/p/getsingleton/</guid><description>&lt;h2 id="缓存中获取单例bean-getsingleton">
 &lt;a href="#%e7%bc%93%e5%ad%98%e4%b8%ad%e8%8e%b7%e5%8f%96%e5%8d%95%e4%be%8bbean-getsingleton">#&lt;/a>
 缓存中获取单例bean &lt;code>getSingleton&lt;/code>
 &lt;/h2>&lt;p>&lt;code>DefaultSingletonBeanRegistry&lt;/code> 中实现此方法&lt;/p>
@@ -4482,7 +4482,7 @@ loading="lazy"
 &lt;p>​ 它的关键是 &lt;code>doGetObjectFromFactoryBean&lt;/code> ,方法名前面多加了个do&amp;hellip;&lt;/p>
 &lt;pre>&lt;code>在这个方法里面,我们终于看到想要看到的 `object = factory.getObject();` ,虽然早已知道必须要走到这,但是到这一步`getObject()` 还是绕了很多路,包括到这里居然还使用了`java.security.AccessController` 权限验证...
 &lt;/code>&lt;/pre>
-&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0000</pubDate><guid>https://heeexy.com/p/factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;p>​&lt;/p></description></item><item><title>Spring源码笔记-2.2 FactoryBean</title><link>https://heeexy.com/p/factorybean/</link><pubDate>Tue, 26 Sep 2017 14:47:00 +0800</pubDate><guid>https://heeexy.com/p/factorybean/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
 &lt;/span>&lt;span class="lnt"> 2
@@ -4615,7 +4615,7 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>疑问: 具体哪些地方用&lt;code>FactoryBean&lt;/code> 带来了真正的便利呢?&lt;/p>
 &lt;p>答:&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/load_bean/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0000</pubDate><guid>https://heeexy.com/p/load_bean/</guid><description>&lt;h3 id="本文要看啥">
+&lt;/blockquote></description></item><item><title>Spring源码笔记-2.1 bean的加载初探</title><link>https://heeexy.com/p/load_bean/</link><pubDate>Tue, 26 Sep 2017 11:16:00 +0800</pubDate><guid>https://heeexy.com/p/load_bean/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥?
 &lt;/h3>&lt;p>​ 前面已经了解了bean从配置文件到解析成BDHolder到注册的流程,我们已经将bean的信息封装好,塞入了map中,这个map可能在不同的实现里面,前面重点学的就是DefaultListableBeanFactory里的beanDefinitionMap.&lt;/p>
@@ -4944,7 +4944,7 @@ loading="lazy"
 &lt;p>类型转换&lt;/p>
 &lt;p>有可能有这种情况,返回的bean,是个String,但是requiredType传入的是Integer类型,那么这时候本步骤就会起作用了. Spring中提供了各种各样的转换器,用户也可以自己扩展转换器来满足需求&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/custom_element/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0000</pubDate><guid>https://heeexy.com/p/custom_element/</guid><description>&lt;h2 id="自定义标签的使用">
+&lt;/ol></description></item><item><title>Spring源码笔记-1.6 自定义标签的解析</title><link>https://heeexy.com/p/custom_element/</link><pubDate>Tue, 19 Sep 2017 19:33:23 +0800</pubDate><guid>https://heeexy.com/p/custom_element/</guid><description>&lt;h2 id="自定义标签的使用">
 &lt;a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e6%a0%87%e7%ad%be%e7%9a%84%e4%bd%bf%e7%94%a8">#&lt;/a>
 自定义标签的使用
 &lt;/h2>&lt;p>主要内容都在书上,p80&lt;/p>
@@ -5109,7 +5109,7 @@ loading="lazy"
 &lt;/div>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/findParserForElement.png"
 loading="lazy"
 >&lt;/p>
-&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/other_default_elements/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0000</pubDate><guid>https://heeexy.com/p/other_default_elements/</guid><description>&lt;h2 id="本文要看啥">
+&lt;p>而parse方法主要步骤就是调用自己实现类的&lt;code>parseInternal&lt;/code> 方法,&lt;code>parseInternal&lt;/code> 方法除了调用我们实现的doParse方法之外,首先会进行一系列的数据准备,包括对beanClass.scope.lazyInit等属性的准备&lt;/p></description></item><item><title>Spring源码笔记-1.5 其它标签解析</title><link>https://heeexy.com/p/other_default_elements/</link><pubDate>Tue, 19 Sep 2017 19:33:04 +0800</pubDate><guid>https://heeexy.com/p/other_default_elements/</guid><description>&lt;h2 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h2>&lt;p>之前我们看解析默认标签,从最核心的bean开始看的&lt;/p>
@@ -5248,7 +5248,7 @@ impory标签的解析
 &lt;h5 id="加载bean">
 &lt;a href="#%e5%8a%a0%e8%bd%bdbean">#&lt;/a>
 加载bean
-&lt;/h5>&lt;p>其实最后都是调用在第一篇博文中我们就看过的 &lt;code>loadBeanDefinitions&lt;/code> 方法&lt;/p></description></item><item><title>test_volatile_object</title><link>https://heeexy.com/p/test_volatile_object/</link><pubDate>Mon, 18 Sep 2017 22:28:29 +0000</pubDate><guid>https://heeexy.com/p/test_volatile_object/</guid><description>&lt;h3 id="本文要看啥">
+&lt;/h5>&lt;p>其实最后都是调用在第一篇博文中我们就看过的 &lt;code>loadBeanDefinitions&lt;/code> 方法&lt;/p></description></item><item><title>test_volatile_object</title><link>https://heeexy.com/p/test_volatile_object/</link><pubDate>Mon, 18 Sep 2017 22:28:29 +0800</pubDate><guid>https://heeexy.com/p/test_volatile_object/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -5625,7 +5625,7 @@ impory标签的解析
 &lt;/div>&lt;p>ReentrantLock 貌似是安全了, 但是为什么这里也用了置换数组啊???&lt;/p>
 &lt;p>​&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/spring_simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0000</pubDate><guid>https://heeexy.com/p/spring_simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
+&lt;/ol></description></item><item><title>SimpleAliasRegistry</title><link>https://heeexy.com/p/spring_simplealiasregistry/</link><pubDate>Fri, 15 Sep 2017 21:27:09 +0800</pubDate><guid>https://heeexy.com/p/spring_simplealiasregistry/</guid><description>&lt;p>功能:注册/存放别名&lt;/p>
 &lt;p>唯一成员变量为&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -6055,7 +6055,7 @@ impory标签的解析
 &lt;p>遍历map,每个键值对都解析一遍,&lt;/p>
 &lt;p>如果这对能解析出新的一对合法别名&amp;ndash;本名键值对,那么就把之前的那对删掉,注册新的这个解析后的一对,&lt;/p>
 &lt;p>此外检验下解析后的别名是不是被占用,如果占用了还指向错了值,就抛异常,&lt;/p>
-&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/registerbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0000</pubDate><guid>https://heeexy.com/p/registerbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>如果占用了也是指向解析后名字,那就说明解析后的这对已经注册好了,只需删掉旧的那对&lt;/p></description></item><item><title>Spring源码笔记-1.4 获取bean流程之注册BeanDefinition</title><link>https://heeexy.com/p/registerbeandefinition/</link><pubDate>Fri, 15 Sep 2017 21:26:00 +0800</pubDate><guid>https://heeexy.com/p/registerbeandefinition/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -6427,7 +6427,7 @@ impory标签的解析
 &lt;/div>&lt;p>到这还要温习一遍的话,可以去看Spring的&lt;a class="link" href="https://heeexy.com/2017/09/11/spring_note_1/" >第一篇笔记&lt;/a>了&lt;/p>
 &lt;p>哈哈,这么点东西,读了一个礼拜,读了后面的忘了前面的,还是在读读记记的情况下,&lt;/p>
 &lt;p>要是没有这个笔记,这时候估计已经迷路得要放弃了,不容易啊&lt;/p>
-&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring_note_3/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3/</guid><description>&lt;h3 id="本文要看啥">
+&lt;p>不说了 &lt;a class="link" href="https://heeexy.com/2017/09/15/spring_SimpleAliasRegistry/" >SimpleAliasRegistry&lt;/a> 和&lt;code>volatile&lt;/code> 两篇文章的坑还留着呢,继续&amp;hellip;&lt;/p></description></item><item><title>Spring源码笔记-1.3 获取bean流程之解析bean标签中的自定义标签元素</title><link>https://heeexy.com/p/spring_note_3/</link><pubDate>Fri, 15 Sep 2017 21:24:00 +0800</pubDate><guid>https://heeexy.com/p/spring_note_3/</guid><description>&lt;h3 id="本文要看啥">
 &lt;a href="#%e6%9c%ac%e6%96%87%e8%a6%81%e7%9c%8b%e5%95%a5">#&lt;/a>
 本文要看啥
 &lt;/h3>&lt;hr>
@@ -6566,7 +6566,7 @@ impory标签的解析
 &lt;/div>&lt;p>具体的用handler解析node会在后面详细学习,这个就先到这吧!&lt;/p>
 &lt;blockquote>
 &lt;p>前面几篇文章都长得没法看了&amp;hellip;吸取教训 篇幅尽量不要太长了.&lt;/p>
-&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0000</pubDate><guid>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;/blockquote></description></item><item><title>ConstructorArgumentValues 构造器参数值保存器</title><link>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</link><pubDate>Thu, 14 Sep 2017 21:10:33 +0800</pubDate><guid>https://heeexy.com/p/spring_note_3_constructorargumentvalues/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;span class="lnt">2
@@ -6914,7 +6914,7 @@ impory标签的解析
 &lt;/ol>
 &lt;blockquote>
 &lt;p>这个地方盯着看了几个小时,不知道作者写这么复杂是何居心,调用的时候也准备做这么复杂么?拿构造器参数的时候就不能把requiredName和requiredType都带过来??? 还搞些双引号&amp;quot;&amp;ldquo;这种怪事情???&lt;/p>
-&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring_note_2/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0000</pubDate><guid>https://heeexy.com/p/spring_note_2/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
+&lt;/blockquote></description></item><item><title>Spring源码笔记-1.2 获取bean流程之bean标签的解析及注册</title><link>https://heeexy.com/p/spring_note_2/</link><pubDate>Tue, 12 Sep 2017 21:41:09 +0800</pubDate><guid>https://heeexy.com/p/spring_note_2/</guid><description>&lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/spring_parseDefaultElement2.png"
 loading="lazy"
 >&lt;/p>
 &lt;h2 id="1解析beandefinition">
@@ -7372,7 +7372,7 @@ bd设好resource和source,作为结果成功返回.
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BeanDefinitionHolder&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">beanDefinition&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">beanName&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aliasesArray&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring_note_1/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0000</pubDate><guid>https://heeexy.com/p/spring_note_1/</guid><description>&lt;blockquote>
+&lt;/div></description></item><item><title>Spring源码笔记-1.1 获取bean流程之容器的基本实现</title><link>https://heeexy.com/p/spring_note_1/</link><pubDate>Mon, 11 Sep 2017 20:31:00 +0800</pubDate><guid>https://heeexy.com/p/spring_note_1/</guid><description>&lt;blockquote>
 &lt;p>以通过BeanFactory获取bean为例学习,实际项目中更多是使用ApplicationContext&lt;/p>
 &lt;p>&lt;img src="http://ots7yt7am.bkt.clouddn.com/blog/springGetBean.png"
 loading="lazy"
@@ -7690,7 +7690,7 @@ loading="lazy"
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;tx:annotation-driven/&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>好,书的第二章到此为止,第三章将继续深入默认标签的解析&lt;/p></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0000</pubDate><guid>https://heeexy.com/p/lantern/</guid><description>&lt;blockquote>
+&lt;/div>&lt;p>好,书的第二章到此为止,第三章将继续深入默认标签的解析&lt;/p></description></item><item><title>Lantern配置</title><link>https://heeexy.com/p/lantern/</link><pubDate>Thu, 03 Aug 2017 13:45:14 +0800</pubDate><guid>https://heeexy.com/p/lantern/</guid><description>&lt;blockquote>
 &lt;p>第一步:飞跃长城&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="预备工作">

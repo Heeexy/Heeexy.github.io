@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shiro on 街上的动物园</title><link>https://heeexy.com/tags/shiro/</link><description>Recent content in Shiro on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 29 Oct 2017 00:27:05 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/shiro/index.xml" rel="self" type="application/rss+xml"/><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/end-to-end/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0000</pubDate><guid>https://heeexy.com/p/end-to-end/</guid><description>&lt;h2 id="背景">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shiro on 街上的动物园</title><link>https://heeexy.com/tags/shiro/</link><description>Recent content in Shiro on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 29 Oct 2017 00:27:05 +0800</lastBuildDate><atom:link href="https://heeexy.com/tags/shiro/index.xml" rel="self" type="application/rss+xml"/><item><title>前后端分离实践小结</title><link>https://heeexy.com/p/end-to-end/</link><pubDate>Sun, 29 Oct 2017 00:27:05 +0800</pubDate><guid>https://heeexy.com/p/end-to-end/</guid><description>&lt;h2 id="背景">
 &lt;a href="#%e8%83%8c%e6%99%af">#&lt;/a>
 背景
 &lt;/h2>&lt;p>​ 公司项目转型,要开新的运营管理平台,我提议借此开新项目的机会,进行前后端分离,由我负责带领小组新技术学习/分享,探坑填坑.&lt;/p>
@@ -138,7 +138,7 @@
 &lt;li>近期主要问题基本都是待我去研究深入的技术,比如shiro的动态权限与vue-router的异步路由的结合,vue组件的通信,vuex的状态管理&lt;/li>
 &lt;li>其次是组员需要对vue更加熟悉,我这次要求了大家抛弃jQuery,用数据绑定的思想去写前端.目前大家的前端水平也还只是可以快速复制粘贴出页面,对于复杂的页面和组件,甚至对我们前端项目的目录结构与各部分功能,都不算掌握.&lt;/li>
 &lt;li>目前我们所谓的前后端分离其实还只是初步的业务和代码上的分离,以后如果要重构H5项目,可能还需要开NodeJS项目来解决和Android/iOS一样的接口加密问题,统一session管理问题,以及更多的前后端分离可能给我们带来的问题.&lt;/li>
-&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/build-springboot-shiro-vue/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0000</pubDate><guid>https://heeexy.com/p/build-springboot-shiro-vue/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
+&lt;/ol></description></item><item><title>搭建springboot-shiro-vue框架时遇到的坑</title><link>https://heeexy.com/p/build-springboot-shiro-vue/</link><pubDate>Sun, 22 Oct 2017 11:19:33 +0800</pubDate><guid>https://heeexy.com/p/build-springboot-shiro-vue/</guid><description>&lt;p>​ 最近在做前后端分离的新框架,选用了后端springboot+shiro,前端vue+elementUI,第一次搭SSM之外的非demo项目,尤其shiro更是之前从未接触,折腾了很多天,遇到很多问题,大部分能百度出来,剩下的非常费时的问题且称之为坑吧.&lt;/p>
 &lt;h3 id="跨域">
 &lt;a href="#%e8%b7%a8%e5%9f%9f">#&lt;/a>
 跨域

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JSONObject on 街上的动物园</title><link>https://heeexy.com/tags/jsonobject/</link><description>Recent content in JSONObject on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Thu, 04 Jan 2018 21:22:33 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/jsonobject/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0000</pubDate><guid>https://heeexy.com/p/typehandlerregistry/</guid><description>&lt;h1 id="问题">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JSONObject on 街上的动物园</title><link>https://heeexy.com/tags/jsonobject/</link><description>Recent content in JSONObject on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Thu, 04 Jan 2018 21:22:33 +0800</lastBuildDate><atom:link href="https://heeexy.com/tags/jsonobject/index.xml" rel="self" type="application/rss+xml"/><item><title>MyBatis 对未知数据类型的转换(二)TypeHandlerRegistry</title><link>https://heeexy.com/p/typehandlerregistry/</link><pubDate>Thu, 04 Jan 2018 21:22:33 +0800</pubDate><guid>https://heeexy.com/p/typehandlerregistry/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>上一篇我们讲到，对于未知数据类型的解析，UnknownTypeHandler 把部分任务交给了 TypeHandlerRegistry ,甚至可能仅仅只丢了一个 javaType 过来就要求返回一个合适的解析器回去 。TypeHandlerRegistry 到底里面做了啥可以找到合适的解析器呢？&lt;/p>
@@ -195,7 +195,7 @@ ObjectTypeHandler
 TypeHandlerRegistry
 &lt;/h3>&lt;p>注册表功能，将常规的数十种关系映射在初始化时就都注册好，也就是提前存入 map 中，需要的时候去 map 中取。&lt;/p>
 &lt;p>尤其是将 javaType 和 TypeHandler 关联起来，并对一些类型注册了默认的解析器，即 jdbcType 未指明时所要采用的解析器。&lt;/p>
-&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0000</pubDate><guid>https://heeexy.com/p/typehandler/</guid><description>&lt;h1 id="问题">
+&lt;p>这个更多是用在 PreparedStatement 入参的赋值时。&lt;/p></description></item><item><title>MyBatis 对未知数据类型的转换(一)TypeHandler</title><link>https://heeexy.com/p/typehandler/</link><pubDate>Tue, 02 Jan 2018 22:35:52 +0800</pubDate><guid>https://heeexy.com/p/typehandler/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>前面说到，我们可以用 JSONObject 替代习惯使用的 JavaBean ，而之所以能用 JSONObject 主要就是因为它实现了 &lt;code>Map&amp;lt;String,Object&amp;gt;&lt;/code> 。&lt;/p>
@@ -541,7 +541,7 @@ loading="lazy"
 总结
 &lt;/h1>&lt;p>今天我们分析完了类型转换器，发现对于未知的数据类型，有一部分是通过ObjectTypeHandler 解析，其底层的用了&lt;code>com.mysql.jdbc.ResultSetImpl.getObject&lt;/code> 内的依据 Field.SQLType 的 swtich-case 。&lt;/p>
 &lt;p>另一部分则是通过&lt;code>UnknownTypeHandler&lt;/code> 去查找合适的解析器来解析。&lt;/p>
-&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0000</pubDate><guid>https://heeexy.com/p/one2many/</guid><description>&lt;h1 id="问题">
+&lt;p>关于查找解析器的步骤，我们将进入下一层级&lt;code>TypeHandlerRegistry&lt;/code> 来继续学习。&lt;/p></description></item><item><title>MyBatis 中使用 JSONObject 处理一对多结果</title><link>https://heeexy.com/p/one2many/</link><pubDate>Sun, 31 Dec 2017 12:11:29 +0800</pubDate><guid>https://heeexy.com/p/one2many/</guid><description>&lt;h1 id="问题">
 &lt;a href="#%e9%97%ae%e9%a2%98">#&lt;/a>
 问题
 &lt;/h1>&lt;p>在&lt;a class="link" href="https://heeexy.com/2017/12/30/JSONObject-in-MyBatis/" >上一文&lt;/a>介绍了 JSONObject 接受 MyBatis 的结果集的简单用法，但是在处理一对多的情况时，单纯的JSONObject就不好使了。&lt;/p>
@@ -719,7 +719,7 @@ loading="lazy"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/jsonobject-in-mybatis/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0000</pubDate><guid>https://heeexy.com/p/jsonobject-in-mybatis/</guid><description>&lt;h1 id="问题背景">
+&lt;/div></description></item><item><title>MyBatis 中使用 JSONObject 替代 JavaBean</title><link>https://heeexy.com/p/jsonobject-in-mybatis/</link><pubDate>Sat, 30 Dec 2017 21:51:55 +0800</pubDate><guid>https://heeexy.com/p/jsonobject-in-mybatis/</guid><description>&lt;h1 id="问题背景">
 &lt;a href="#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af">#&lt;/a>
 问题背景
 &lt;/h1>&lt;p>项目后端与前端全部使用 JSON 进行数据交互，比如查询用户列表，通常后端从数据库查出的数据放入实体类再转为 JSON 返回给前端，但是前端的小伙伴表示明明只需要 nickname,avatar,userId 三个字段，为什么传过来的数据多出 phone,address ,profile 之类十几个字段，里面都 null,0 等值？&lt;/p>

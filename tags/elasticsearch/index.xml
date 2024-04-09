@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elasticsearch on 街上的动物园</title><link>https://heeexy.com/tags/elasticsearch/</link><description>Recent content in Elasticsearch on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 13 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heeexy.com/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate><guid>https://heeexy.com/p/database-crash-safe/</guid><description>&lt;h1 id="序">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elasticsearch on 街上的动物园</title><link>https://heeexy.com/tags/elasticsearch/</link><description>Recent content in Elasticsearch on 街上的动物园</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Heeexy</copyright><lastBuildDate>Sun, 13 Nov 2022 11:19:33 +0800</lastBuildDate><atom:link href="https://heeexy.com/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库如果断电，我们需不需要慌？</title><link>https://heeexy.com/p/database-crash-safe/</link><pubDate>Sun, 13 Nov 2022 11:19:33 +0800</pubDate><guid>https://heeexy.com/p/database-crash-safe/</guid><description>&lt;h1 id="序">
 &lt;a href="#%e5%ba%8f">#&lt;/a>
 序
 &lt;/h1>&lt;p>生产环境我们时时刻刻在向数据库发送着写入、新增、删除数据的请求，不知道各位有没有和我一样的顾虑，如果服务器突然断电或者死机，数据会不会丢失，甚至数据库会不会挂了再也无法恢复？&lt;/p>
@@ -120,7 +120,7 @@ loading="lazy"
 alt="Untitled"
 >&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/elasticsearch-segment-merge/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0000</pubDate><guid>https://heeexy.com/p/elasticsearch-segment-merge/</guid><description>&lt;h2 id="先抛结论">
+&lt;/ol></description></item><item><title>日志ES集群的潜在性能瓶颈--段合并</title><link>https://heeexy.com/p/elasticsearch-segment-merge/</link><pubDate>Sun, 28 Jun 2020 18:37:00 +0800</pubDate><guid>https://heeexy.com/p/elasticsearch-segment-merge/</guid><description>&lt;h2 id="先抛结论">
 &lt;a href="#%e5%85%88%e6%8a%9b%e7%bb%93%e8%ae%ba">#&lt;/a>
 先抛结论
 &lt;/h2>&lt;p>如果日志型ES集群system load 过高，I/O打满，尤其是在&lt;strong>读写低谷时间段 read 异常高&lt;/strong>，可以考虑排查段合并的问题。&lt;/p>
@@ -175,7 +175,7 @@ loading="lazy"
 &lt;p>&lt;img src="http://img.heeexy.com/es-io.png"
 loading="lazy"
 alt="es-io"
->&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/es-for-search/</link><pubDate>Sun, 02 Dec 2018 16:08:38 +0000</pubDate><guid>https://heeexy.com/p/es-for-search/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
+>&lt;/p></description></item><item><title>Elasticsearch在高并发复杂查询业务场景的应用</title><link>https://heeexy.com/p/es-for-search/</link><pubDate>Sun, 02 Dec 2018 16:08:38 +0800</pubDate><guid>https://heeexy.com/p/es-for-search/</guid><description>&lt;p>说起 Elasticsearch，往往大家想到的都是 ELK 的一套，但是作为 NoSQL，ES 有极快的响应速度，强大的聚合功能，支持复杂的查询条件，应对高并发的复杂查询的业务场景其实也是非常强力的。&lt;/p>
 &lt;blockquote>
 &lt;p>You Know, for Search&lt;/p>
 &lt;/blockquote>
@@ -290,7 +290,7 @@ loading="lazy"
 &lt;/h2>&lt;ol>
 &lt;li>没有 join。ES 的查询速度非常的快，但是不能 join 毕竟还是有一些业务场景无法使用。当然话又说回来，在高并发量下，多表 join 能不能抗得住也是个问题。对于查询，我们一贯的原则还是：&lt;strong>把数据离线准备成便于查询的结构，线上实时查询尽可能的简单，一步到位&lt;/strong>。&lt;/li>
 &lt;li>由于要把数据离线准备好，这便带来了数据同步更新的问题，数据的时效性、准确性都需要保证，数组与嵌套结构的数据更新也不够方便高效，这些都会增加很多的工作量。&lt;/li>
-&lt;/ol></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/upgrade-elasticsearch/</link><pubDate>Sat, 01 Sep 2018 11:29:00 +0000</pubDate><guid>https://heeexy.com/p/upgrade-elasticsearch/</guid><description>&lt;h1 id="集群管理">
+&lt;/ol></description></item><item><title>Elasticsearch 2.3升级至6.3</title><link>https://heeexy.com/p/upgrade-elasticsearch/</link><pubDate>Sat, 01 Sep 2018 11:29:00 +0800</pubDate><guid>https://heeexy.com/p/upgrade-elasticsearch/</guid><description>&lt;h1 id="集群管理">
 &lt;a href="#%e9%9b%86%e7%be%a4%e7%ae%a1%e7%90%86">#&lt;/a>
 集群管理
 &lt;/h1>&lt;h3 id="节点分配">
