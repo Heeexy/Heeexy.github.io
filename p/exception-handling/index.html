@@ -80,7 +80,7 @@
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>logger</span><span class=p>.</span><span class=na>error</span><span class=p>(</span><span class=s>&#34;Failed to update user stats for userId: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>userId</span><span class=p>,</span><span class=w> </span><span class=n>e</span><span class=p>);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><p>这在业务代码中也是很常见的，因为害怕出异常，直接 try 一个大括号从头包到位，满满的安全感。</p><p>我甚至见过有团队按这种方式作为规范。
+</span></span></span></code></pre></td></tr></table></div></div><p>这在业务代码中也是很常见的，因为害怕出异常，直接 try 一个大括号从头包到尾，满满的安全感。</p><p>我甚至见过有团队按这种方式作为规范。
 <img src=https://img.heeexy.com/m1/excuse-me.png loading=lazy alt=???></p><h4 id=类型区分><a href=#%e7%b1%bb%e5%9e%8b%e5%8c%ba%e5%88%86>#</a>
 类型区分</h4><p>可以根据不同的异常类型进行捕获和处理。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
@@ -158,12 +158,140 @@
 </span></span><span class=line><span class=cl>    <span class=nf>processData</span><span class=p>()</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span></code></pre></td></tr></table></div></div><p>上面的示例代码中，<code>fetchData</code>函数清楚知道自己是不应该吞下「获取数据失败」这个异常的，所以向上抛出。而 <code>processData</code> 函数明白自己有权力也有能力对「获取数据失败」 这个异常进行处理，所以它不再向上抛。</p><h4 id=使用自定义异常和精细化处理><a href=#%e4%bd%bf%e7%94%a8%e8%87%aa%e5%ae%9a%e4%b9%89%e5%bc%82%e5%b8%b8%e5%92%8c%e7%b2%be%e7%bb%86%e5%8c%96%e5%a4%84%e7%90%86>#</a>
-使用自定义异常和精细化处理</h4><h4 id=预防日志记录和恢复策略><a href=#%e9%a2%84%e9%98%b2%e6%97%a5%e5%bf%97%e8%ae%b0%e5%bd%95%e5%92%8c%e6%81%a2%e5%a4%8d%e7%ad%96%e7%95%a5>#</a>
-预防、日志记录和恢复策略</h4><h4 id=监控告警><a href=#%e7%9b%91%e6%8e%a7%e5%91%8a%e8%ad%a6>#</a>
-监控、告警</h4><h4 id=优雅的异常处理策略><a href=#%e4%bc%98%e9%9b%85%e7%9a%84%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e7%ad%96%e7%95%a5>#</a>
-优雅的异常处理策略</h4><h3 id=业务架构层面><a href=#%e4%b8%9a%e5%8a%a1%e6%9e%b6%e6%9e%84%e5%b1%82%e9%9d%a2>#</a>
+使用自定义异常和精细化处理</h4><ul><li>特点：定义自定义异常类，根据业务逻辑进行细致的异常处理。</li><li>技能：设计并使用自定义异常，区分检查型和非检查型异常。</li></ul><p>Q：<strong>作为异常抛出者，该抛 Unchecked Exception 还是 Checked Exception?</strong></p><p>A：问题的关键在于上一级中提到的【<strong>上下文</strong>】</p><ul><li>Unchecked Exception：无需调用方显式处理，或有统一的拦截器处理即可</li><li>Checked Exception： 可以预料，期望调用方高度注意</li><li>不抛异常：（没错，我们还有第三种选择）避免因为较小的错误而中断用户的主要工作流程，例如 <code>log.info</code>函数通常就不会抛出异常。</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Java data-lang=Java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Product</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>stock</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 构造函数，初始化库存量</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>Product</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>initialStock</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>stock</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>initialStock</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 购买商品的方法，接受购买数量作为参数</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>purchase</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>quantity</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 当请求购买的数量超过当前库存时抛出异常</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>quantity</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>stock</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 如果请求的数量超过现有库存，则抛出一个不足异常</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 这里抛出自定义的异常有三个原因：</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 1. 库存不足本身就是一个运行时的问题，通常不是由编程错误导致的。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 2. 这种情况下的异常处理通常需要特定的业务逻辑来解决，如通知用户、调整订单数量</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>//    或者通知仓库补货，等等。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 3. 使用户体验更丰富且以错误消息和异常调用栈信息而不仅仅是返回一个简单的错误代码。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>throw</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>InsufficientStockException</span><span class=p>(</span><span class=s>&#34;Attempted to purchase &#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>quantity</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; units, but only &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>stock</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; units are available.&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 如果库存足够，则减少相应数量的库存</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>stock</span><span class=w> </span><span class=o>-=</span><span class=w> </span><span class=n>quantity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 自定义的库存不足异常类，用于表示库存不足的情况</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>InsufficientStockException</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>RuntimeException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>InsufficientStockException</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kd>super</span><span class=p>(</span><span class=n>message</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>上下文就需要根据实际代码来判断，最终也是考验个人的边界划分能力。但是有一个有意思的问题我们可以拿出来思考下：</p><p>Q：<strong>为什么 NullPointException 被设计为 Unchecked Exception？</strong></p><p>或者说</p><p>Q：<strong>为什么 FileNotFoundException 被设计为 Checked Exception？</strong></p><p>答案就不贴了，希望大家能从这个问题里欣赏到一点 Java 的异常处理机制的设计哲学。</p><h4 id=预防日志记录和恢复策略><a href=#%e9%a2%84%e9%98%b2%e6%97%a5%e5%bf%97%e8%ae%b0%e5%bd%95%e5%92%8c%e6%81%a2%e5%a4%8d%e7%ad%96%e7%95%a5>#</a>
+预防、日志记录和恢复策略</h4><ul><li>特点：预防异常的发生，记录详细的错误日志，设计错误恢复策略。</li><li>技能：有效记录错误信息，实现错误的容错和回滚机制。</li></ul><p>这里就不贴大段代码做详细的示范了，相信不少朋友都能做好。但是这里想要留一个问题给大家思考：</p><p>Q：<strong>如何平衡异常处理和代码清晰度？</strong></p><p>下面这段示例代码，的确严谨，但这么长一串就为了实现一个 <code>GetUserByID</code> 的功能，让人看了实在抬不起兴致。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Golang data-lang=Golang><span class=line><span class=cl><span class=c1>// FindUserByID 通过ID查找用户
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>repo</span> <span class=o>*</span><span class=nx>UserRepository</span><span class=p>)</span> <span class=nf>FindUserByID</span><span class=p>(</span><span class=nx>id</span> <span class=kt>uint</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>User</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>user</span> <span class=nx>User</span>
+</span></span><span class=line><span class=cl>    <span class=nx>err</span> <span class=o>:=</span> <span class=nx>repo</span><span class=p>.</span><span class=nx>db</span><span class=p>.</span><span class=nf>First</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>user</span><span class=p>,</span> <span class=nx>id</span><span class=p>).</span><span class=nx>Error</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=nx>gorm</span><span class=p>.</span><span class=nf>IsRecordNotFoundError</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=kc>nil</span> <span class=c1>// 没记录表示此操作结果为空
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>err</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=o>&amp;</span><span class=nx>user</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// GetUserByID 通过ID获取用户
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>func</span> <span class=p>(</span><span class=nx>service</span> <span class=o>*</span><span class=nx>UserService</span><span class=p>)</span> <span class=nf>GetUserByID</span><span class=p>(</span><span class=nx>id</span> <span class=kt>uint</span><span class=p>)</span> <span class=p>(</span><span class=o>*</span><span class=nx>User</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>user</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>service</span><span class=p>.</span><span class=nx>userRepository</span><span class=p>.</span><span class=nf>FindUserByID</span><span class=p>(</span><span class=nx>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>err</span> <span class=c1>// 处理数据库层面的错误
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nx>user</span> <span class=o>==</span> <span class=kc>nil</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;No user found&#34;</span><span class=p>)</span> <span class=c1>// 指定业务逻辑处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 可能需要进一步处理，例如创建新用户等
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>user</span><span class=p>,</span> <span class=kc>nil</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=监控告警><a href=#%e7%9b%91%e6%8e%a7%e5%91%8a%e8%ad%a6>#</a>
+监控、告警</h4><p><img src=https://img.heeexy.com/m1/monitor-and-alert.png loading=lazy alt=monitor-and-alert.png></p><p>监控，告警大家可能每天都接触，但我这里还是要重点拿出来讲一下。我们现在回过头来看【引子】里的这段代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Java data-lang=Java><span class=line><span class=cl><span class=nd>@Scheduled</span><span class=p>(</span><span class=n>fixedDelay</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>5</span><span class=p>,</span><span class=w> </span><span class=n>timeUnit</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>TimeUnit</span><span class=p>.</span><span class=na>MINUTES</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>scheduledTask</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>long</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>debug</span><span class=p>(</span><span class=s>&#34;开始执行定时任务&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>performTask</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>e</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>log</span><span class=p>.</span><span class=na>error</span><span class=p>(</span><span class=s>&#34;定时任务执行失败&#34;</span><span class=p>,</span><span class=w> </span><span class=n>e</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>log</span><span class=p>.</span><span class=na>info</span><span class=p>(</span><span class=s>&#34;定时任务完成，耗时 {}ms&#34;</span><span class=p>,</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=na>currentTimeMillis</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>a</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Q：<strong>这样处理就够了吗？</strong></p><p>A：实际生产中，【<strong>定时任务执行失败</strong>】这种问题如果没有加上监控，没有告警告到负责人那边，这里的 <code>log.error</code> 一定是石沉大海。等到某一天业务反馈 Bug 了，才回过头来找到这边。</p><p><strong>监控</strong>提供了分析能力，有了监控可以做出<strong>告警</strong>。</p><p><strong>告警</strong>提供了<strong>主动</strong>发现问题的能力，你不需要也不可能 24 小时盯着日志滚动。</p><p>不要因为有 <code>log.error</code> 就放松了警惕！</p><h4 id=优雅的异常处理策略><a href=#%e4%bc%98%e9%9b%85%e7%9a%84%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e7%ad%96%e7%95%a5>#</a>
+优雅的异常处理策略</h4><p>特点：综合运用异常处理最佳实践，实现优雅的错误处理，不仅考虑技术面，还考虑<strong>用户体验</strong>。</p><p>这里重点讲到的<strong>用户友好的反馈</strong>范围其实很广，包括但不限于：</p><ul><li>C 端用户：引导、弹窗、跳转</li><li>API 接入方：文档、SDK、详尽的错误提示</li><li>程序维护人员：维护手册、一键诊断工具</li></ul><p>从反过来的角度可能更好理解，就是一句话：<strong>想想你这么处理异常，有没有人骂你</strong>。</p><h3 id=业务架构层面><a href=#%e4%b8%9a%e5%8a%a1%e6%9e%b6%e6%9e%84%e5%b1%82%e9%9d%a2>#</a>
 业务/架构层面</h3><p>最后再提一下，我们在业务/架构层面也有很多的机制都是为了做异常处理，例如重试、限流、熔断、功能降级、异地多活，甚至数据手动修复、健壮的发布机制都是为了应对各种异常情况。</p><p>编码层面如果能做好，相信到了这个层面你也一定能做得很不错。</p><h2 id=为什么异常处理是关于爆炸的艺术><a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e6%98%af%e5%85%b3%e4%ba%8e%e7%88%86%e7%82%b8%e7%9a%84%e8%89%ba%e6%9c%af>#</a>
-为什么异常处理是关于爆炸的艺术？</h2><p>我认为已经不需要专门回答这个问题，但还是想在文章最后吐槽下：</p><p>异常处理人人都能做，但很多人做出来的就是 💩，挖坑，辣眼睛！</p><p>希望大家重视起这件小事。</p></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+为什么异常处理是关于爆炸的艺术？</h2><p>我认为已经不需要专门回答这个问题，但还是想在文章最后吐槽下：</p><p><strong>异常处理人人都能做，但很多人做出来的就是 💩，挖坑，辣眼睛！</strong></p><p>没错，我就是为了这碟醋包的这顿饺子！</p><p>希望大家重视起这件小事。</p></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
 <span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><footer class=site-footer><section class=copyright>&copy;
 2017 -
 2024 Heeexy</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.25.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
